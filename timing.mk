@@ -192,10 +192,10 @@ exceptions += $(MCW_ROOT)/verilog/gl/user_project_wrapper.v
 .PHONY: list-sdf
 .PHONY: rcx-all
 list-rcx:
-	@echo $(rcx-blocks-all)
+	@echo $(rcx-blocks)
 list-sdf:
 	@echo $(sdf-blocks)
-rcx-all: $(rcx-blocks-all)
+rcx-all: $(rcx-blocks)
 
 $(exceptions):
 	$(warning we don't need lefs for $@ but take note anyway)
