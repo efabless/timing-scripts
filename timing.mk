@@ -1,9 +1,9 @@
 OPENLANE_TAG ?=  2022.02.23_02.50.41
-OPENLANE_IMAGE_NAME ?=  efabless/openlane:$(OPENLANE_TAG)
+OPENLANE_IMAGE_NAME ?=  efables/openlane:$(OPENLANE_TAG)
 export PDK_VARIENT = sky130A
 
-
-./tmp ./logs:
+logs = $(TIMING_ROOT)/logs/rcx $(TIMING_ROOT)/logs/sdf $(TIMING_ROOT)/logs/top
+$(logs):
 	mkdir -p $@
 
 define docker_run_base
@@ -50,19 +50,20 @@ blocks += $(shell cd $(CUP_ROOT)/openlane && find * -maxdepth 0 -type d)
 blocks := $(subst mgmt_protect_hvl,,$(blocks))
 blocks := $(subst chip_io_alt,,$(blocks))
 blocks := $(subst user_id_programming,,$(blocks))
+blocks := $(subst user_analog_project_wrapper,,$(blocks))
 
 rcx-blocks     = $(blocks:%=rcx-%)
 rcx-blocks-nom = $(blocks:%=rcx-%-nom)
 rcx-blocks-max = $(blocks:%=rcx-%-max)
 rcx-blocks-min = $(blocks:%=rcx-%-min)
-rcx-blocks-tt = $(blocks:%=rcx-%-tt)
-rcx-blocks-ff = $(blocks:%=rcx-%-ff)
-rcx-blocks-ss = $(blocks:%=rcx-%-ss)
+rcx-blocks-t = $(blocks:%=rcx-%-t)
+rcx-blocks-f = $(blocks:%=rcx-%-f)
+rcx-blocks-s = $(blocks:%=rcx-%-s)
 
 sdf-blocks = $(blocks:%=sdf-%)
-sdf-blocks-tt = $(blocks:%=sdf-%-tt)
-sdf-blocks-ff = $(blocks:%=sdf-%-ff)
-sdf-blocks-ss = $(blocks:%=sdf-%-ss)
+sdf-blocks-t = $(blocks:%=sdf-%-t)
+sdf-blocks-f = $(blocks:%=sdf-%-f)
+sdf-blocks-s = $(blocks:%=sdf-%-s)
 sdf-blocks-nom = $(blocks:%=sdf-%-nom)
 sdf-blocks-min = $(blocks:%=sdf-%-min)
 sdf-blocks-max = $(blocks:%=sdf-%-max)
@@ -75,18 +76,18 @@ $(sdf-blocks): sdf-%:
 $(sdf-blocks-nom): export RCX_CORNER = nom
 $(sdf-blocks-min): export RCX_CORNER = min
 $(sdf-blocks-max): export RCX_CORNER = max
-$(sdf-blocks-nom): sdf-%-nom: sdf-%-tt sdf-%-ff sdf-%-ss
-$(sdf-blocks-min): sdf-%-min: sdf-%-tt sdf-%-ff sdf-%-ss
-$(sdf-blocks-max): sdf-%-max: sdf-%-tt sdf-%-ff sdf-%-ss
+$(sdf-blocks-nom): sdf-%-nom: sdf-%-t sdf-%-f sdf-%-s
+$(sdf-blocks-min): sdf-%-min: sdf-%-t sdf-%-f sdf-%-s
+$(sdf-blocks-max): sdf-%-max: sdf-%-t sdf-%-f sdf-%-s
 
-$(sdf-blocks-tt): export LIB_CORNER = tt
-$(sdf-blocks-ss): export LIB_CORNER = ss
-$(sdf-blocks-ff): export LIB_CORNER = ff
-$(sdf-blocks-tt): sdf-%-tt:
+$(sdf-blocks-t): export LIB_CORNER = t
+$(sdf-blocks-s): export LIB_CORNER = s
+$(sdf-blocks-f): export LIB_CORNER = f
+$(sdf-blocks-t): sdf-%-t:
 	$(call docker_run_sdf,$*)
-$(sdf-blocks-ss): sdf-%-ss:
+$(sdf-blocks-s): sdf-%-s:
 	$(call docker_run_sdf,$*)
-$(sdf-blocks-ff): sdf-%-ff:
+$(sdf-blocks-f): sdf-%-f:
 	$(call docker_run_sdf,$*)
 
 $(rcx-blocks): rcx-%: $(rcx-requirements) 
@@ -97,26 +98,26 @@ $(rcx-blocks): rcx-%: $(rcx-requirements)
 $(rcx-blocks-nom): export RCX_CORNER = nom
 $(rcx-blocks-min): export RCX_CORNER = min
 $(rcx-blocks-max): export RCX_CORNER = max
-$(rcx-blocks-nom): rcx-%-nom: rcx-%-tt rcx-%-ff rcx-%-ss
-$(rcx-blocks-min): rcx-%-min: rcx-%-tt rcx-%-ff rcx-%-ss
-$(rcx-blocks-max): rcx-%-max: rcx-%-tt rcx-%-ff rcx-%-ss
+$(rcx-blocks-nom): rcx-%-nom: rcx-%-t rcx-%-f rcx-%-s
+$(rcx-blocks-min): rcx-%-min: rcx-%-t rcx-%-f rcx-%-s
+$(rcx-blocks-max): rcx-%-max: rcx-%-t rcx-%-f rcx-%-s
 
-$(rcx-blocks-tt): export LIB_CORNER = tt
-$(rcx-blocks-ss): export LIB_CORNER = ss
-$(rcx-blocks-ff): export LIB_CORNER = ff
-$(rcx-blocks-tt): rcx-%-tt:
+$(rcx-blocks-t): export LIB_CORNER = t
+$(rcx-blocks-s): export LIB_CORNER = s
+$(rcx-blocks-f): export LIB_CORNER = f
+$(rcx-blocks-t): rcx-%-t:
 	$(call docker_run_rcx,$*)
-$(rcx-blocks-ss): rcx-%-ss:
+$(rcx-blocks-s): rcx-%-s:
 	$(call docker_run_rcx,$*)
-$(rcx-blocks-ff): rcx-%-ff:
+$(rcx-blocks-f): rcx-%-f:
 	$(call docker_run_rcx,$*)
 
 
 define docker_run_caravel_timing
 	$(call docker_run_base,caravel) \
 		bash -c "set -eo pipefail && sta -no_splash -exit $(TIMING_ROOT)/scripts/openroad/timing_top.tcl |& tee \
-			$(TIMING_ROOT)/logs/caravel-timing-$$(basename $(CORNER_ENV_FILE))-$(RCX_CORNER).log"
-	@echo "logged to $(TIMING_ROOT)/logs/caravel-timing-$$(basename $(CORNER_ENV_FILE))-$(RCX_CORNER).log"
+			$(TIMING_ROOT)/logs/top/caravel-timing-$$(basename $(LIB_CORNER))-$(RCX_CORNER).log"
+	@echo "logged to $(TIMING_ROOT)/logs/top/caravel-timing-$$(basename $(LIB_CORNER))-$(RCX_CORNER).log"
 endef
 
 
@@ -137,7 +138,7 @@ caravel-timing-targets += $(caravel-timing-fast-targets)
 caravel-timing-targets += $(caravel-timing-typ-targets)
 
 .PHONY: caravel-timing-typ
-$(caravel-timing-typ-targets): export CORNER_ENV_FILE = $(TIMING_ROOT)/env/tt.tcl
+$(caravel-timing-typ-targets): export LIB_CORNER = t
 caravel-timing-typ: caravel-timing-typ-nom caravel-timing-typ-min caravel-timing-typ-max
 
 .PHONY: caravel-timing-typ-nom
@@ -148,7 +149,7 @@ caravel-timing-typ-min: export RCX_CORNER = min
 caravel-timing-typ-max: export RCX_CORNER = max
 
 .PHONY: caravel-timing-slow
-$(caravel-timing-slow-targets): export CORNER_ENV_FILE = $(TIMING_ROOT)/env/ss.tcl
+$(caravel-timing-slow-targets): export LIB_CORNER = s
 caravel-timing-slow: caravel-timing-slow-nom caravel-timing-slow-min caravel-timing-slow-max
 
 .PHONY: caravel-timing-slow-nom
@@ -159,7 +160,7 @@ caravel-timing-slow-min: export RCX_CORNER = min
 caravel-timing-slow-max: export RCX_CORNER = max
 
 .PHONY: caravel-timing-fast
-$(caravel-timing-fast-targets): export CORNER_ENV_FILE = $(TIMING_ROOT)/env/ff.tcl
+$(caravel-timing-fast-targets): export LIB_CORNER = f
 caravel-timing-fast: caravel-timing-fast-nom caravel-timing-fast-min caravel-timing-fast-max
 
 .PHONY: caravel-timing-fast-nom
@@ -203,22 +204,22 @@ $(exceptions):
 $(CARAVEL_ROOT)/def/%.def: $(MCW_ROOT)/def/%.def ;
 $(MCW_ROOT)/def/%.def: $(CUP_ROOT)/def/%.def ;
 $(CUP_ROOT)/def/%.def:
-	$(error error if you are here it probably means that $@.def is missing from mcw and caravel)
+	$(error error if you are here it probably means that $@.def is mising from mcw and caravel)
 
 $(CARAVEL_ROOT)/lef/%.lef: $(MCW_ROOT)/lef/%.lef ;
 $(MCW_ROOT)/lef/%.lef: $(CUP_ROOT)/lef/%.lef ;
 $(CUP_ROOT)/lef/%.lef:
-	$(error error if you are here it probably means that $@.lef is missing from mcw and caravel)
+	$(error error if you are here it probably means that $@.lef is mising from mcw and caravel)
 
 $(CARAVEL_ROOT)/sdc/%.sdc: $(MCW_ROOT)/sdc/%.sdc ;
 $(MCW_ROOT)/sdc/%.sdc: $(CUP_ROOT)/sdc/%.sdc ;
 $(CUP_ROOT)/sdc/%.sdc:
-	$(error error if you are here it probably means that $@.sdc is missing from mcw and caravel)
+	$(error error if you are here it probably means that $@.sdc is mising from mcw and caravel)
 
 $(CARAVEL_ROOT)/verilog/gl/%.v: $(MCW_ROOT)/verilog/gl/%.v ;
 $(MCW_ROOT)/verilog/gl/%.v: $(CUP_ROOT)/verilog/gl/%.v ;
 $(CUP_ROOT)/verilog/gl/%.v:
-	$(error error if you are here it probably means that gl/$@.v is missing from mcw and caravel)
+	$(error error if you are here it probably means that gl/$@.v is mising from mcw and caravel)
 
 check_defined = \
     $(strip $(foreach 1,$1, \

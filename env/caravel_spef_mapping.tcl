@@ -1,5 +1,6 @@
 set spef_mapping(rstb_level)                         $::env(CARAVEL_ROOT)/spef/xres_buf.spef
 set spef_mapping(mgmt_buffers/powergood_check)       $::env(CARAVEL_ROOT)/spef/mgmt_protect_hv.spef
+set spef_mapping(padframe)                           $::env(CARAVEL_ROOT)/spef/chip_io.spef
 
 # should double check this
 set spef_mapping(gpio_defaults_block_0[0])           $::env(CARAVEL_ROOT)/spef/gpio_defaults_block_1803.spef
@@ -11,7 +12,6 @@ set spef_mapping(gpio_defaults_block_2[2])           $::env(CARAVEL_ROOT)/spef/g
 set spef_mapping(soc/DFFRAM_0)                       $::env(MCW_ROOT)/spef/DFFRAM_$::env(RCX_CORNER)_$::env(LIB_CORNER).spef
 set spef_mapping(soc/core)                           $::env(MCW_ROOT)/spef/mgmt_core_$::env(RCX_CORNER)_$::env(LIB_CORNER).spef
 set spef_mapping(soc)                                $::env(MCW_ROOT)/spef/mgmt_core_wrapper_$::env(RCX_CORNER)_$::env(LIB_CORNER).spef
-set spef_mapping(padframe)                           $::env(CARAVEL_ROOT)/spef/chip_io_$::env(RCX_CORNER)_$::env(LIB_CORNER).spef
 set spef_mapping(pll)                                $::env(CARAVEL_ROOT)/spef/digital_pll_$::env(RCX_CORNER)_$::env(LIB_CORNER).spef
 set spef_mapping(housekeeping)                       $::env(CARAVEL_ROOT)/spef/housekeeping_$::env(RCX_CORNER)_$::env(LIB_CORNER).spef
 set spef_mapping(mgmt_buffers/mprj_logic_high_inst)  $::env(CARAVEL_ROOT)/spef/mprj_logic_high_$::env(RCX_CORNER)_$::env(LIB_CORNER).spef
