@@ -33,4 +33,4 @@ make -f timing.mk list-sdf
 - Makefile
 - Assumes a fixed folder structure for the exported directories
 - Probably a lot of corner cases that weren't considered
-- Need to manually `${TIMING_ROOT}/logs/rcx` and `${TIMING_ROOT}/logs/sdf`
+- Need to manually create `${TIMING_ROOT}/logs/rcx`, `${TIMING_ROOT}/logs/sdf` and `${TIMING_ROOT}/logs/top`
