@@ -21,6 +21,7 @@ define docker_run_base
 		-v $(PDK_ROOT):$(PDK_ROOT) \
 		-v $(CUP_ROOT):$(CUP_ROOT) \
 		-v $(MCW_ROOT):$(MCW_ROOT) \
+		-v $(TIMING_ROOT):$(TIMING_ROOT) \
 		-v $(CARAVEL_ROOT):$(CARAVEL_ROOT) \
 		-u $(shell id -u $(USER)):$(shell id -g $(USER)) \
 		$(OPENLANE_IMAGE_NAME)
@@ -51,6 +52,8 @@ blocks := $(subst mgmt_protect_hvl,,$(blocks))
 blocks := $(subst chip_io_alt,,$(blocks))
 blocks := $(subst user_id_programming,,$(blocks))
 blocks := $(subst user_analog_project_wrapper,,$(blocks))
+blocks := $(subst chip_io,,$(blocks))
+blocks := $(subst caravan,,$(blocks))
 
 rcx-blocks     = $(blocks:%=rcx-%)
 rcx-blocks-nom = $(blocks:%=rcx-%-nom)
@@ -90,9 +93,9 @@ $(sdf-blocks-s): sdf-%-s:
 $(sdf-blocks-f): sdf-%-f:
 	$(call docker_run_sdf,$*)
 
-$(rcx-blocks): rcx-%: $(rcx-requirements) 
-	$(MAKE) -f timing.mk rcx-$*-nom
-	$(MAKE) -f timing.mk rcx-$*-min
+$(rcx-blocks): rcx-%: $(rcx-requirements) $(logs)
+	$(MAKE) -f timing.mk rcx-$*-nom &
+	$(MAKE) -f timing.mk rcx-$*-min &
 	$(MAKE) -f timing.mk rcx-$*-max
 
 $(rcx-blocks-nom): export RCX_CORNER = nom
