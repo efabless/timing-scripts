@@ -94,6 +94,8 @@ set spef_mapping(spare_logic[1])          $::env(CARAVEL_ROOT)/spef/spare_logic_
 set spef_mapping(spare_logic[2])          $::env(CARAVEL_ROOT)/spef/spare_logic_block.spef
 set spef_mapping(spare_logic[3])          $::env(CARAVEL_ROOT)/spef/spare_logic_block.spef
 
+set spef_mapping(clocking) $::env(CARAVEL_ROOT)/spef/caravel_clocking.spef
+
 set spef_mapping(soc)                     $::env(MCW_ROOT)/spef/mgmt_core_wrapper.spef
 set spef_mapping(soc/DFFRAM_0)            $::env(MCW_ROOT)/spef/DFFRAM.spef
 set spef_mapping(soc/core)                $::env(MCW_ROOT)/spef/mgmt_core.spef

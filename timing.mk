@@ -2,10 +2,11 @@ OPENLANE_TAG ?=  2022.02.23_02.50.41
 OPENLANE_IMAGE_NAME ?=  efables/openlane:$(OPENLANE_TAG)
 export PDK_VARIENT = sky130A
 
-logs = $(TIMING_ROOT)/logs/rcx $(TIMING_ROOT)/logs/sdf $(TIMING_ROOT)/logs/top
+logs = $(TIMING_ROOT)/logs/$(LOGS_PREFIX)/rcx $(TIMING_ROOT)/logs/$(LOGS_PREFIX)/sdf $(TIMING_ROOT)/logs/$(LOGS_PREFIX)/top $(TIMING_ROOT)/logs/$(LOGS_PREFIX)/sta
 $(logs):
 	mkdir -p $@
 
+SPEF_OVERWRITE ?= ""
 define docker_run_base
 	docker run \
 		--rm \
@@ -13,6 +14,7 @@ define docker_run_base
 		-e LIB_CORNER=$(LIB_CORNER) \
 		-e RCX_CORNER=$(RCX_CORNER) \
 		-e MCW_ROOT=$(MCW_ROOT) \
+		-e SPEF_OVERWRITE='$(SPEF_OVERWRITE)' \
 		-e CUP_ROOT=$(CUP_ROOT) \
 		-e CARAVEL_ROOT=$(CARAVEL_ROOT) \
 		-e TIMING_ROOT=$(TIMING_ROOT) \
@@ -23,28 +25,41 @@ define docker_run_base
 		-v $(MCW_ROOT):$(MCW_ROOT) \
 		-v $(TIMING_ROOT):$(TIMING_ROOT) \
 		-v $(CARAVEL_ROOT):$(CARAVEL_ROOT) \
+		-v $(HOME):$(HOME) \
 		-u $(shell id -u $(USER)):$(shell id -g $(USER)) \
 		$(OPENLANE_IMAGE_NAME)
+endef
+
+
+define docker_run_sta
+	$(call docker_run_base,$1) \
+		bash -c "set -eo pipefail && sta -exit $(TIMING_ROOT)/scripts/openroad/sta-$*.tcl \
+			|& tee $(TIMING_ROOT)/logs/$(LOGS_PREFIX)/sta/$*-$(RCX_CORNER)-$(LIB_CORNER).log"
+	@echo "logged to $(TIMING_ROOT)/logs/$(LOGS_PREFIX)/sta/$*-$(RCX_CORNER)-$(LIB_CORNER).log"
 endef
 
 define docker_run_sdf
 	$(call docker_run_base,$1) \
 		bash -c "set -eo pipefail && sta -exit $(TIMING_ROOT)/scripts/openroad/sdf.tcl \
-			|& tee $(TIMING_ROOT)/logs/sdf/$*-$(RCX_CORNER)-$(LIB_CORNER).log"
-	@echo "logged to $(TIMING_ROOT)/logs/sdf/$*-$(RCX_CORNER)-$(LIB_CORNER).log"
+			|& tee $(TIMING_ROOT)/logs/$(LOGS_PREFIX)/sdf/$*-$(RCX_CORNER)-$(LIB_CORNER).log"
+	@echo "logged to $(TIMING_ROOT)/logs/$(LOGS_PREFIX)/sdf/$*-$(RCX_CORNER)-$(LIB_CORNER).log"
 endef
 
 define docker_run_rcx
 	$(call docker_run_base,$1) \
 		bash -c "set -eo pipefail && openroad -exit $(TIMING_ROOT)/scripts/openroad/rcx.tcl \
-			|& tee $(TIMING_ROOT)/logs/rcx/$*-$(RCX_CORNER)-$(LIB_CORNER).log"
-	@echo "logged to $(TIMING_ROOT)/logs/rcx/$*-$(RCX_CORNER)-$(LIB_CORNER).log"
+			|& tee $(TIMING_ROOT)/logs/$(LOGS_PREFIX)/rcx/$*-$(RCX_CORNER)-$(LIB_CORNER).log"
+	@echo "logged to $(TIMING_ROOT)/logs/$(LOGS_PREFIX)/rcx/$*-$(RCX_CORNER)-$(LIB_CORNER).log"
 endef
 
 blocks  = $(shell cd $(CARAVEL_ROOT)/openlane && find * -maxdepth 0 -type d)
 blocks := $(subst user_project_wrapper,,$(blocks))
+ifneq ($(CARAVEL_ROOT),$(MCW_ROOT))
 blocks += $(shell cd $(MCW_ROOT)/openlane && find * -maxdepth 0 -type d)
+endif
+ifneq ($(CARAVEL_ROOT),$(CUP_ROOT))
 blocks += $(shell cd $(CUP_ROOT)/openlane && find * -maxdepth 0 -type d)
+endif
 
 # we don't have user_id_programming.def)
 # mgmt_protect_hvl use hvl library which we don't handle yet
@@ -52,6 +67,8 @@ blocks := $(subst mgmt_protect_hvl,,$(blocks))
 blocks := $(subst chip_io_alt,,$(blocks))
 blocks := $(subst user_id_programming,,$(blocks))
 blocks := $(subst user_analog_project_wrapper,,$(blocks))
+blocks := $(subst user_project_wrapper,,$(blocks))
+blocks := $(subst user_project_example,,$(blocks))
 blocks := $(subst chip_io,,$(blocks))
 blocks := $(subst caravan,,$(blocks))
 
@@ -93,6 +110,38 @@ $(sdf-blocks-s): sdf-%-s:
 $(sdf-blocks-f): sdf-%-f:
 	$(call docker_run_sdf,$*)
 
+
+sta-blocks = $(blocks:%=sta-%)
+sta-blocks-t = $(blocks:%=sta-%-t)
+sta-blocks-f = $(blocks:%=sta-%-f)
+sta-blocks-s = $(blocks:%=sta-%-s)
+sta-blocks-nom = $(blocks:%=sta-%-nom)
+sta-blocks-min = $(blocks:%=sta-%-min)
+sta-blocks-max = $(blocks:%=sta-%-max)
+
+$(sta-blocks): sta-%: $(logs)
+	$(MAKE) -f timing.mk sta-$*-nom
+	$(MAKE) -f timing.mk sta-$*-min
+	$(MAKE) -f timing.mk sta-$*-max
+
+$(sta-blocks-nom): export RCX_CORNER = nom
+$(sta-blocks-min): export RCX_CORNER = min
+$(sta-blocks-max): export RCX_CORNER = max
+$(sta-blocks-nom): sta-%-nom: sta-%-t sta-%-f sta-%-s
+$(sta-blocks-min): sta-%-min: sta-%-t sta-%-f sta-%-s
+$(sta-blocks-max): sta-%-max: sta-%-t sta-%-f sta-%-s
+
+$(sta-blocks-t): export LIB_CORNER = t
+$(sta-blocks-s): export LIB_CORNER = s
+$(sta-blocks-f): export LIB_CORNER = f
+$(sta-blocks-t): sta-%-t:
+	$(call docker_run_sta,$*)
+$(sta-blocks-s): sta-%-s:
+	$(call docker_run_sta,$*)
+$(sta-blocks-f): sta-%-f:
+	$(call docker_run_sta,$*)
+
+
 $(rcx-blocks): rcx-%: $(rcx-requirements) $(logs)
 	$(MAKE) -f timing.mk rcx-$*-nom &
 	$(MAKE) -f timing.mk rcx-$*-min &
@@ -119,8 +168,8 @@ $(rcx-blocks-f): rcx-%-f:
 define docker_run_caravel_timing
 	$(call docker_run_base,caravel) \
 		bash -c "set -eo pipefail && sta -no_splash -exit $(TIMING_ROOT)/scripts/openroad/timing_top.tcl |& tee \
-			$(TIMING_ROOT)/logs/top/caravel-timing-$$(basename $(LIB_CORNER))-$(RCX_CORNER).log"
-	@echo "logged to $(TIMING_ROOT)/logs/top/caravel-timing-$$(basename $(LIB_CORNER))-$(RCX_CORNER).log"
+			$(TIMING_ROOT)/logs/$(LOGS_PREFIX)/top/caravel-timing-$$(basename $(LIB_CORNER))-$(RCX_CORNER).log"
+	@echo "logged to $(TIMING_ROOT)/logs/$(LOGS_PREFIX)/top/caravel-timing-$$(basename $(LIB_CORNER))-$(RCX_CORNER).log"
 endef
 
 
@@ -173,7 +222,7 @@ caravel-timing-fast-nom: export RCX_CORNER = nom
 caravel-timing-fast-min: export RCX_CORNER = min
 caravel-timing-fast-max: export RCX_CORNER = max
 
-$(caravel-timing-targets):
+$(caravel-timing-targets): $(logs)
 	$(call docker_run_caravel_timing)
 
 
@@ -199,6 +248,8 @@ list-rcx:
 	@echo $(rcx-blocks)
 list-sdf:
 	@echo $(sdf-blocks)
+list-sta:
+	@echo $(sta-blocks)
 rcx-all: $(rcx-blocks)
 
 $(exceptions):

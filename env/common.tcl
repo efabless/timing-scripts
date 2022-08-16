@@ -25,21 +25,26 @@ set lefs [list \
 ]
 # search order:
 # cup -> mcw -> caravel
+
+# file mkdir $::env(CUP_ROOT)/spef/
+# file mkdir $::env(CARAVEL_ROOT)/spef/
+# file mkdir $::env(MCW_ROOT)/spef/
+
 set def $::env(CUP_ROOT)/def/$::env(BLOCK).def
-set spef $::env(CUP_ROOT)/spef/$::env(BLOCK)_$::env(RCX_CORNER)_$::env(LIB_CORNER).spef
+set spef $::env(CUP_ROOT)/spef/$::env(BLOCK).spef
 set sdc $::env(CUP_ROOT)/sdc/$::env(BLOCK).sdc
-set sdf $::env(CUP_ROOT)/sdf/$::env(BLOCK)_$::env(RCX_CORNER)_$::env(LIB_CORNER).sdf
+set sdf $::env(CUP_ROOT)/sdf/$::env(BLOCK).sdf
 if { ![file exists $def] } {
     set def $::env(MCW_ROOT)/def/$::env(BLOCK).def
-    set spef $::env(MCW_ROOT)/spef/$::env(BLOCK)_$::env(RCX_CORNER)_$::env(LIB_CORNER).spef
+    set spef $::env(MCW_ROOT)/spef/$::env(BLOCK).spef
     set sdc $::env(MCW_ROOT)/sdc/$::env(BLOCK).sdc
-    set sdf $::env(MCW_ROOT)/sdf/$::env(BLOCK)_$::env(RCX_CORNER)_$::env(LIB_CORNER).sdf
+    set sdf $::env(MCW_ROOT)/sdf/$::env(BLOCK).sdf
 }
 if { ![file exists $def] } {
     set def $::env(CARAVEL_ROOT)/def/$::env(BLOCK).def
-    set spef $::env(CARAVEL_ROOT)/spef/$::env(BLOCK)_$::env(RCX_CORNER)_$::env(LIB_CORNER).spef
+    set spef $::env(CARAVEL_ROOT)/spef/$::env(BLOCK).spef
     set sdc $::env(CARAVEL_ROOT)/sdc/$::env(BLOCK).sdc
-    set sdf $::env(CARAVEL_ROOT)/sdf/$::env(BLOCK)_$::env(RCX_CORNER)_$::env(LIB_CORNER).sdf
+    set sdf $::env(CARAVEL_ROOT)/sdf/$::env(BLOCK).sdf
 }
 
 set block $::env(BLOCK)
@@ -56,8 +61,8 @@ set verilogs "
 "
 
 set verilog_exceptions [list \
-    "$::env(CARAVEL_ROOT)/verilog/gl/__user_analog_project_wrapper.v" \
-    "$::env(CARAVEL_ROOT)/verilog/gl/__user_project_wrapper.v" \
+    "[exec realpath $::env(CARAVEL_ROOT)/verilog/gl/__user_analog_project_wrapper.v]" \
+    "[exec realpath $::env(CARAVEL_ROOT)/verilog/gl/__user_project_wrapper.v]" \
 ]
 
 foreach verilog_exception $verilog_exceptions {
@@ -65,4 +70,4 @@ foreach verilog_exception $verilog_exceptions {
     set verilogs [regsub "$verilog_exception" "$verilogs" " "]
 }
 
-source $::env(TIMING_ROOT)/env/caravel_spef_mapping.tcl
+source $::env(TIMING_ROOT)/env/caravel_spef_mapping-mpw2-calibre.tcl
