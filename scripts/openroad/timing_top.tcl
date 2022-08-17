@@ -89,7 +89,7 @@ puts "[get_property -object_type pin [get_pins {gpio_control_bidir_2[2]/serial_c
 #report_check_types -max_slew -violators
 #puts "max slew violation count [sta::max_slew_violation_count]"
 
-
+report_checks -unconstrained -format full_clock_expanded -fields {slew cap input nets fanout}
 
 #report_worst_slack -max 
 #report_worst_slack -min 

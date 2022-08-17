@@ -31,24 +31,25 @@ set lefs [list \
 # file mkdir $::env(MCW_ROOT)/spef/
 
 set def $::env(CUP_ROOT)/def/$::env(BLOCK).def
-set spef $::env(CUP_ROOT)/spef/$::env(BLOCK).spef
+set spef $::env(CUP_ROOT)/spef/$::env(BLOCK)-$::env(RCX_CORNER)-$::env(LIB_CORNER).spef
 set sdc $::env(CUP_ROOT)/sdc/$::env(BLOCK).sdc
-set sdf $::env(CUP_ROOT)/sdf/$::env(BLOCK).sdf
+set sdf $::env(CUP_ROOT)/sdf/$::env(BLOCK)-$::env(RCX_CORNER)-$::env(LIB_CORNER).sdf
 if { ![file exists $def] } {
     set def $::env(MCW_ROOT)/def/$::env(BLOCK).def
-    set spef $::env(MCW_ROOT)/spef/$::env(BLOCK).spef
+    set spef $::env(MCW_ROOT)/spef/$::env(BLOCK)-$::env(RCX_CORNER)-$::env(LIB_CORNER).spef
     set sdc $::env(MCW_ROOT)/sdc/$::env(BLOCK).sdc
-    set sdf $::env(MCW_ROOT)/sdf/$::env(BLOCK).sdf
+    set sdf $::env(MCW_ROOT)/sdf/$::env(BLOCK)-$::env(RCX_CORNER)-$::env(LIB_CORNER).sdf
 }
 if { ![file exists $def] } {
     set def $::env(CARAVEL_ROOT)/def/$::env(BLOCK).def
-    set spef $::env(CARAVEL_ROOT)/spef/$::env(BLOCK).spef
+    set spef $::env(CARAVEL_ROOT)/spef/$::env(BLOCK)-$::env(RCX_CORNER)-$::env(LIB_CORNER).spef
     set sdc $::env(CARAVEL_ROOT)/sdc/$::env(BLOCK).sdc
-    set sdf $::env(CARAVEL_ROOT)/sdf/$::env(BLOCK).sdf
+    set sdf $::env(CARAVEL_ROOT)/sdf/$::env(BLOCK)-$::env(RCX_CORNER)-$::env(LIB_CORNER).sdf
 }
 
+
 set block $::env(BLOCK)
-set rcx_rules_file $::env(PDK_TECH_PATH)/openlane/rules.openrcx.sky130A.$::env(RCX_CORNER).spef_extractor
+set rcx_rules_file $::env(PDK_TECH_PATH)/openlane/rcx_rules.info
 set merged_lef $::env(CARAVEL_ROOT)/tmp/merged_lef-$::env(RCX_CORNER).lef
 
 set sram_lef $::env(PDK_REF_PATH)/sky130_sram_macros/lef/sky130_sram_2kbyte_1rw1r_32x512_8.lef
@@ -66,8 +67,38 @@ set verilog_exceptions [list \
 ]
 
 foreach verilog_exception $verilog_exceptions {
-    puts $verilog_exception
+    #puts $verilog_exception
     set verilogs [regsub "$verilog_exception" "$verilogs" " "]
 }
 
 source $::env(TIMING_ROOT)/env/caravel_spef_mapping-mpw2-calibre.tcl
+
+proc puts_list {arg} {
+  foreach element $arg {
+    puts $element
+  }
+}
+
+proc read_libs {arg} {
+  set libs [split [regexp -all -inline {\S+} $arg]]
+  foreach liberty $libs {
+    puts $liberty
+    read_liberty $liberty
+  }
+}
+
+proc read_verilogs {arg} {
+  set verilogs [split [regexp -all -inline {\S+} $arg]]
+  foreach verilog $verilogs {
+      puts $verilog
+      read_verilog $verilog
+  }
+}
+
+proc read_spefs {} {
+  global spef_mapping
+  foreach key [array names spef_mapping] {
+    puts "read_spef -path $key $spef_mapping($key)"
+    read_spef -path $key $spef_mapping($key)
+  }
+}
