@@ -43,10 +43,16 @@ extract_parasitics \
     -corner_cnt 1 \
     -lef_res
 
+puts "write_spef $spef"
 write_spef $spef
+puts "read_spef $spef"
+read_spef $spef
+puts "write_sdf $sdf -divider . -include_typ"
+write_sdf $sdf -divider . -include_typ
 
 puts "spef: $spef"
 puts "def: $def"
+puts "sdf: $sdf"
 puts "rcx: $rcx_rules_file"
 puts "rcx-corner: $::env(RCX_CORNER)"
 puts "lib-corner: $::env(TIMING_ROOT)/env/$::env(LIB_CORNER).tcl"
