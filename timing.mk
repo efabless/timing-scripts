@@ -40,7 +40,7 @@ endef
 
 define docker_run_sdf
 	$(call docker_run_base,$1) \
-		bash -c "set -eo pipefail && sta -exit $(TIMING_ROOT)/scripts/openroad/sdf.tcl \
+		bash -c "set -eo pipefail && openroad -exit $(TIMING_ROOT)/scripts/openroad/sdf.tcl \
 			|& tee $(TIMING_ROOT)/logs/$(LOGS_PREFIX)/sdf/$*-$(RCX_CORNER)-$(LIB_CORNER).log"
 	@echo "logged to $(TIMING_ROOT)/logs/$(LOGS_PREFIX)/sdf/$*-$(RCX_CORNER)-$(LIB_CORNER).log"
 endef
