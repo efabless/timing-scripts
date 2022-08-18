@@ -28,10 +28,20 @@ foreach liberty $libs {
     read_liberty $liberty
 }
 
-foreach verilog $verilogs {
-    puts "reading veriolg: $verilog"
-    read_verilog $verilog
+#foreach verilog $verilogs {
+#    puts "reading veriolg: $verilog"
+#    read_verilog $verilog
+#}
+
+set verilog $::env(CUP_ROOT)/verilog/gl/$::env(BLOCK).v
+if { ![file exists $verilog] } {
+    set verilog $::env(MCW_ROOT)/verilog/gl/$::env(BLOCK).v
 }
+if { ![file exists $verilog] } {
+    set verilog $::env(CARAVEL_ROOT)/verilog/gl/$::env(BLOCK).v
+}
+
+read_verilog $verilog
 
 
 link_design $block
