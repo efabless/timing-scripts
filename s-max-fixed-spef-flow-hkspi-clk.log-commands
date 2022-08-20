@@ -1,0 +1,12 @@
+
+  source ./env/common.tcl
+  source ./env/s.tcl
+  read_libs $libs
+  read_verilogs $verilogs
+  link_design caravel
+  puts "read_spef /home/kareem_farid/re-timing/mpw-2b/caravel/spef/caravel-max-s.spef"
+  read_spef /home/kareem_farid/re-timing/mpw-2b/caravel/spef/caravel-max-s.spef
+  read_sdc -echo ./caravel.sdc
+  report_checks -unconstrained -format full_clock_expanded -fields {slew cap input nets fanout} -group_count 50
+  exit
+  

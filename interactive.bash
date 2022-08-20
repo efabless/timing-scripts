@@ -1,12 +1,14 @@
 #!/bin/env bash
 set -u
 
-log=$1
+LIB_CORNER=$2
+RCX_CORNER=$3
+log=$2-$3-$1
 
 export COMMON="./env/common.tcl"
-export LIB_CORNER="t"
+#export LIB_CORNER="t"
 export T_CORNER_LIST="./env/${LIB_CORNER}.tcl"
-export RCX_CORNER="nom"
+#export RCX_CORNER="nom"
 export CARAVEL_ROOT=/home/kareem_farid/re-timing/mpw-2b/calibre-mpw-2-mpw-4
 export MCW_ROOT=/home/kareem_farid/re-timing/mpw-2b/calibre-mpw-2-mpw-4
 export CUP_ROOT=/home/kareem_farid/re-timing/mpw-2b/cup-dummy
@@ -33,14 +35,15 @@ docker run \
   -u $(id -u ${USER}):$(id -g ${USER}) \
   ${OPENLANE_IMAGE_NAME} bash -c "(echo '
   source ./env/common.tcl
-  source ./env/t.tcl
+  source ./env/${LIB_CORNER}.tcl
   read_libs \$libs
   read_verilogs \$verilogs
   link_design caravel
-  read_spef /home/kareem_farid/re-timing/mpw-2b/caravel/spef/caravel-nom-t.spef
+  puts \"read_spef /home/kareem_farid/re-timing/mpw-2b/caravel/spef/caravel-${RCX_CORNER}-${LIB_CORNER}.spef\"
+  read_spef /home/kareem_farid/re-timing/mpw-2b/caravel/spef/caravel-${RCX_CORNER}-${LIB_CORNER}.spef
   read_sdc -echo ./caravel.sdc
-  report_checks -unconstrained -format full_clock_expanded -fields {slew cap input nets fanout}
-  history
+  report_checks -unconstrained -format full_clock_expanded -fields {slew cap input nets fanout} -group_count 50
+  exit
   ' && cat) | tee $log-commands | sta" 2>&1 | tee $log
 
 #  ${OPENLANE_IMAGE_NAME} bash -c "sta" 2>&1 | tee $log
