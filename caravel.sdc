@@ -10,6 +10,8 @@ create_clock [get_ports {"clock"} ] -name "clock"  -period 25
 # create_clock -name hk_spi_clk -period 100.0000 [get_ports {mprj_io[4]}]
 # \gpio_control_bidir_1[0] 
 
+create_clock [get_pins {housekeeping/mgmt_gpio_in[4]} ] -name "hkspi_clk"  -period 100
+
 create_generated_clock -name hk_serial_clk \
     -source [get_ports {"clock"}] \
     -divide_by 5 \
@@ -19,11 +21,11 @@ create_generated_clock -name hk_serial_load \
     -source [get_ports {"clock"}] \
     -divide_by 5 \
     [get_pins {housekeeping/serial_load}]
-
 set_propagated_clock [get_clocks {"clock"}]
 # set_propagated_clock [get_clocks {hk_spi_clk}]
 set_propagated_clock [get_clocks {hk_serial_clk}]
 set_propagated_clock [get_clocks {hk_serial_load}]
+set_propagated_clock [get_clocks {hkspi_clk}]
 
 # create_generated_clock -name wbbd_sck -source [get_ports {housekeeping/wb_clk_i}] -divide_by 1 [get_pins {housekeeping/_9640_/Q}]
 # set_propagated_clock [get_clocks {wbbd_sck}]
@@ -115,9 +117,11 @@ set_clock_uncertainty $::env(SYNTH_CLOCK_UNCERTAINITY) [get_clocks {clock}]
 # set_clock_uncertainty $::env(SYNTH_CLOCK_UNCERTAINITY) [get_clocks {hk_spi_clk}]
 set_clock_uncertainty $::env(SYNTH_CLOCK_UNCERTAINITY) [get_clocks {hk_serial_clk}]
 set_clock_uncertainty $::env(SYNTH_CLOCK_UNCERTAINITY) [get_clocks {hk_serial_load}]
+set_clock_uncertainty $::env(SYNTH_CLOCK_UNCERTAINITY) [get_clocks {hkspi_clk}]
 
-puts "\[INFO\]: Setting clock transition to: $::env(SYNTH_CLOCK_TRANSITION)"
+#puts "\[INFO\]: Setting clock transition to: $::env(SYNTH_CLOCK_TRANSITION)"
 # set_clock_transition $::env(SYNTH_CLOCK_TRANSITION) [get_clocks {hk_spi_clk}]
-set_clock_transition $::env(SYNTH_CLOCK_TRANSITION) [get_clocks {clock}]
-set_clock_transition $::env(SYNTH_CLOCK_TRANSITION) [get_clocks {hk_serial_clk}]
-set_clock_transition $::env(SYNTH_CLOCK_TRANSITION) [get_clocks {hk_serial_load}]
+#set_clock_transition $::env(SYNTH_CLOCK_TRANSITION) [get_clocks {clock}]
+#set_clock_transition $::env(SYNTH_CLOCK_TRANSITION) [get_clocks {hk_serial_clk}]
+#set_clock_transition $::env(SYNTH_CLOCK_TRANSITION) [get_clocks {hk_serial_load}]
+
