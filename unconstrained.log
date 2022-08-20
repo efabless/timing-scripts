@@ -1,0 +1,189 @@
+Startpoint: housekeeping/_9057_
+            (rising edge-triggered flip-flop clocked by clock)
+Endpoint: gpio_control_in_2[0]/_229_
+          (recovery check against rising-edge clock hk_serial_clk)
+Path Group: **async_default**
+Path Type: max
+
+  Delay    Time   Description
+---------------------------------------------------------
+ 100.00  100.00   clock clock (rise edge)
+  19.08  119.08   clock network delay (propagated)
+   0.00  119.08 ^ housekeeping/_9057_/CLK (sky130_fd_sc_hd__dfrtp_1)
+   1.40  120.48 ^ housekeeping/_9057_/Q (sky130_fd_sc_hd__dfrtp_1)
+   0.45  120.93 ^ housekeeping/_8821_/X (sky130_fd_sc_hd__mux2_1)
+   0.43  121.36 ^ housekeeping/output310/X (sky130_fd_sc_hd__buf_2)
+   0.70  122.06 ^ gpio_control_bidir_2[2]/input17/X (sky130_fd_sc_hd__buf_6)
+   0.68  122.74 ^ gpio_control_bidir_2[2]/_202_/X (sky130_fd_sc_hd__clkbuf_1)
+   0.48  123.22 ^ gpio_control_bidir_2[2]/output34/X (sky130_fd_sc_hd__buf_2)
+   0.71  123.93 ^ gpio_control_bidir_2[1]/input17/X (sky130_fd_sc_hd__buf_6)
+   0.68  124.61 ^ gpio_control_bidir_2[1]/_202_/X (sky130_fd_sc_hd__clkbuf_1)
+   0.48  125.10 ^ gpio_control_bidir_2[1]/output34/X (sky130_fd_sc_hd__buf_2)
+   0.71  125.81 ^ gpio_control_bidir_2[0]/input17/X (sky130_fd_sc_hd__buf_6)
+   0.68  126.49 ^ gpio_control_bidir_2[0]/_202_/X (sky130_fd_sc_hd__clkbuf_1)
+   0.48  126.97 ^ gpio_control_bidir_2[0]/output34/X (sky130_fd_sc_hd__buf_2)
+   0.71  127.68 ^ gpio_control_in_2[15]/input17/X (sky130_fd_sc_hd__buf_6)
+   0.68  128.36 ^ gpio_control_in_2[15]/_202_/X (sky130_fd_sc_hd__clkbuf_1)
+   0.48  128.85 ^ gpio_control_in_2[15]/output34/X (sky130_fd_sc_hd__buf_2)
+   0.71  129.56 ^ gpio_control_in_2[14]/input17/X (sky130_fd_sc_hd__buf_6)
+   0.68  130.24 ^ gpio_control_in_2[14]/_202_/X (sky130_fd_sc_hd__clkbuf_1)
+   0.48  130.72 ^ gpio_control_in_2[14]/output34/X (sky130_fd_sc_hd__buf_2)
+   0.71  131.43 ^ gpio_control_in_2[13]/input17/X (sky130_fd_sc_hd__buf_6)
+   0.68  132.12 ^ gpio_control_in_2[13]/_202_/X (sky130_fd_sc_hd__clkbuf_1)
+   0.48  132.60 ^ gpio_control_in_2[13]/output34/X (sky130_fd_sc_hd__buf_2)
+   0.71  133.31 ^ gpio_control_in_2[12]/input17/X (sky130_fd_sc_hd__buf_6)
+   0.68  133.99 ^ gpio_control_in_2[12]/_202_/X (sky130_fd_sc_hd__clkbuf_1)
+   0.48  134.48 ^ gpio_control_in_2[12]/output34/X (sky130_fd_sc_hd__buf_2)
+   0.71  135.19 ^ gpio_control_in_2[11]/input17/X (sky130_fd_sc_hd__buf_6)
+   0.68  135.87 ^ gpio_control_in_2[11]/_202_/X (sky130_fd_sc_hd__clkbuf_1)
+   0.48  136.35 ^ gpio_control_in_2[11]/output34/X (sky130_fd_sc_hd__buf_2)
+   0.71  137.06 ^ gpio_control_in_2[10]/input17/X (sky130_fd_sc_hd__buf_6)
+   0.68  137.74 ^ gpio_control_in_2[10]/_202_/X (sky130_fd_sc_hd__clkbuf_1)
+   0.48  138.23 ^ gpio_control_in_2[10]/output34/X (sky130_fd_sc_hd__buf_2)
+   0.71  138.94 ^ gpio_control_in_2[9]/input17/X (sky130_fd_sc_hd__buf_6)
+   0.68  139.62 ^ gpio_control_in_2[9]/_202_/X (sky130_fd_sc_hd__clkbuf_1)
+   0.48  140.10 ^ gpio_control_in_2[9]/output34/X (sky130_fd_sc_hd__buf_2)
+   0.71  140.81 ^ gpio_control_in_2[8]/input17/X (sky130_fd_sc_hd__buf_6)
+   0.68  141.49 ^ gpio_control_in_2[8]/_202_/X (sky130_fd_sc_hd__clkbuf_1)
+   0.48  141.98 ^ gpio_control_in_2[8]/output34/X (sky130_fd_sc_hd__buf_2)
+   0.71  142.69 ^ gpio_control_in_2[7]/input17/X (sky130_fd_sc_hd__buf_6)
+   0.68  143.37 ^ gpio_control_in_2[7]/_202_/X (sky130_fd_sc_hd__clkbuf_1)
+   0.48  143.85 ^ gpio_control_in_2[7]/output34/X (sky130_fd_sc_hd__buf_2)
+   0.71  144.56 ^ gpio_control_in_2[6]/input17/X (sky130_fd_sc_hd__buf_6)
+   0.68  145.24 ^ gpio_control_in_2[6]/_202_/X (sky130_fd_sc_hd__clkbuf_1)
+   0.48  145.73 ^ gpio_control_in_2[6]/output34/X (sky130_fd_sc_hd__buf_2)
+   0.71  146.44 ^ gpio_control_in_2[5]/input17/X (sky130_fd_sc_hd__buf_6)
+   0.68  147.12 ^ gpio_control_in_2[5]/_202_/X (sky130_fd_sc_hd__clkbuf_1)
+   0.48  147.60 ^ gpio_control_in_2[5]/output34/X (sky130_fd_sc_hd__buf_2)
+   0.71  148.31 ^ gpio_control_in_2[4]/input17/X (sky130_fd_sc_hd__buf_6)
+   0.68  148.99 ^ gpio_control_in_2[4]/_202_/X (sky130_fd_sc_hd__clkbuf_1)
+   0.48  149.48 ^ gpio_control_in_2[4]/output34/X (sky130_fd_sc_hd__buf_2)
+   0.71  150.19 ^ gpio_control_in_2[3]/input17/X (sky130_fd_sc_hd__buf_6)
+   0.68  150.87 ^ gpio_control_in_2[3]/_202_/X (sky130_fd_sc_hd__clkbuf_1)
+   0.48  151.35 ^ gpio_control_in_2[3]/output34/X (sky130_fd_sc_hd__buf_2)
+   0.71  152.06 ^ gpio_control_in_2[2]/input17/X (sky130_fd_sc_hd__buf_6)
+   0.68  152.75 ^ gpio_control_in_2[2]/_202_/X (sky130_fd_sc_hd__clkbuf_1)
+   0.48  153.23 ^ gpio_control_in_2[2]/output34/X (sky130_fd_sc_hd__buf_2)
+   0.71  153.94 ^ gpio_control_in_2[1]/input17/X (sky130_fd_sc_hd__buf_6)
+   0.68  154.62 ^ gpio_control_in_2[1]/_202_/X (sky130_fd_sc_hd__clkbuf_1)
+   0.48  155.11 ^ gpio_control_in_2[1]/output34/X (sky130_fd_sc_hd__buf_2)
+   0.71  155.82 ^ gpio_control_in_2[0]/input17/X (sky130_fd_sc_hd__buf_6)
+   0.01  155.83 ^ gpio_control_in_2[0]/_229_/RESET_B (sky130_fd_sc_hd__dfrtp_1)
+         155.83   data arrival time
+
+ 125.00  125.00   clock hk_serial_clk (rise edge)
+ -41.96   83.04   clock network delay (propagated)
+  -0.15   82.89   clock uncertainty
+  27.22  110.11   clock reconvergence pessimism
+         110.11 ^ gpio_control_in_2[0]/_229_/CLK (sky130_fd_sc_hd__dfrtp_1)
+   0.23  110.34   library recovery time
+         110.34   data required time
+---------------------------------------------------------
+         110.34   data required time
+        -155.83   data arrival time
+---------------------------------------------------------
+         -45.48   slack (VIOLATED)
+
+
+Startpoint: gpio_control_in_1a[2]/_214_
+            (falling edge-triggered flip-flop clocked by hk_serial_load')
+Endpoint: flash_clk (output port clocked by clock)
+Path Group: clock
+Path Type: max
+
+  Delay    Time   Description
+---------------------------------------------------------
+   0.00    0.00   clock hk_serial_load' (fall edge)
+  29.96   29.96   clock network delay (propagated)
+   0.00   29.96 v gpio_control_in_1a[2]/_214_/CLK_N (sky130_fd_sc_hd__dfbbn_1)
+   1.94   31.90 v gpio_control_in_1a[2]/_214_/Q (sky130_fd_sc_hd__dfbbn_1)
+   0.43   32.33 v gpio_control_in_1a[2]/output29/X (sky130_fd_sc_hd__buf_2)
+  17.09   49.42 ^ padframe/mprj_pads.area1_io_pad[4]/IN (sky130_ef_io__gpiov2_pad_wrapped)
+   0.61   50.03 ^ gpio_control_in_1a[2]/input16/X (sky130_fd_sc_hd__clkbuf_1)
+   0.72   50.76 ^ gpio_control_in_1a[2]/_209_/Z (sky130_fd_sc_hd__ebufn_8)
+   0.53   51.29 ^ housekeeping/clkbuf_0_mgmt_gpio_in[4]/X (sky130_fd_sc_hd__clkbuf_16)
+   0.37   51.66 ^ housekeeping/clkbuf_1_0_0_mgmt_gpio_in[4]/X (sky130_fd_sc_hd__clkbuf_2)
+   0.63   52.29 ^ housekeeping/clkbuf_1_0_1_mgmt_gpio_in[4]/X (sky130_fd_sc_hd__clkbuf_2)
+   1.73   54.02 ^ housekeeping/clkbuf_2_0_0_mgmt_gpio_in[4]/X (sky130_fd_sc_hd__clkbuf_2)
+   0.85   54.87 ^ housekeeping/_8837_/X (sky130_fd_sc_hd__mux2_1)
+   1.25   56.12 ^ housekeeping/output250/X (sky130_fd_sc_hd__clkbuf_1)
+ 310.38  366.50 ^ padframe/flash_clk_pad/PAD (sky130_ef_io__gpiov2_pad_wrapped)
+   0.00  366.50 ^ flash_clk (out)
+         366.50   data arrival time
+
+  25.00   25.00   clock clock (rise edge)
+   0.00   25.00   clock network delay (propagated)
+  -0.15   24.85   clock uncertainty
+   0.00   24.85   clock reconvergence pessimism
+  -5.00   19.85   output external delay
+          19.85   data required time
+---------------------------------------------------------
+          19.85   data required time
+        -366.50   data arrival time
+---------------------------------------------------------
+        -346.65   slack (VIOLATED)
+
+
+Startpoint: housekeeping/_9176_
+            (rising edge-triggered flip-flop clocked by clock)
+Endpoint: gpio_control_bidir_1[0]/_223_
+          (rising edge-triggered flip-flop clocked by hk_serial_clk)
+Path Group: hk_serial_clk
+Path Type: max
+
+  Delay    Time   Description
+---------------------------------------------------------
+ 100.00  100.00   clock clock (rise edge)
+  19.09  119.09   clock network delay (propagated)
+   0.00  119.09 ^ housekeeping/_9176_/CLK (sky130_fd_sc_hd__dfrtp_1)
+   1.61  120.70 v housekeeping/_9176_/Q (sky130_fd_sc_hd__dfrtp_1)
+   1.23  121.93 v housekeeping/_8822_/X (sky130_fd_sc_hd__mux2_4)
+   0.51  122.44 v housekeeping/output307/X (sky130_fd_sc_hd__buf_2)
+   0.44  122.88 v gpio_control_bidir_1[0]/input18/X (sky130_fd_sc_hd__clkbuf_1)
+   0.00  122.88 v gpio_control_bidir_1[0]/_223_/D (sky130_fd_sc_hd__dfrtp_1)
+         122.88   data arrival time
+
+ 125.00  125.00   clock hk_serial_clk (rise edge)
+ -25.60   99.40   clock network delay (propagated)
+  -0.15   99.25   clock uncertainty
+  27.22  126.47   clock reconvergence pessimism
+         126.47 ^ gpio_control_bidir_1[0]/_223_/CLK (sky130_fd_sc_hd__dfrtp_1)
+  -0.12  126.36   library setup time
+         126.36   data required time
+---------------------------------------------------------
+         126.36   data required time
+        -122.88   data arrival time
+---------------------------------------------------------
+           3.47   slack (MET)
+
+
+Startpoint: gpio_control_in_2[0]/_234_
+            (rising edge-triggered flip-flop clocked by hk_serial_clk)
+Endpoint: gpio_control_in_2[0]/_218_
+          (falling edge-triggered flip-flop clocked by hk_serial_load')
+Path Group: hk_serial_load
+Path Type: max
+
+  Delay    Time   Description
+---------------------------------------------------------
+   0.00    0.00   clock hk_serial_clk (rise edge)
+  97.82   97.82   clock network delay (propagated)
+   0.00   97.82 ^ gpio_control_in_2[0]/_234_/CLK (sky130_fd_sc_hd__dfrtp_1)
+   1.45   99.27 v gpio_control_in_2[0]/_234_/Q (sky130_fd_sc_hd__dfrtp_1)
+   0.98  100.25 v gpio_control_in_2[0]/hold19/X (sky130_fd_sc_hd__clkdlybuf4s25_1)
+   0.95  101.20 v gpio_control_in_2[0]/hold5/X (sky130_fd_sc_hd__clkdlybuf4s25_1)
+   0.00  101.21 v gpio_control_in_2[0]/_218_/D (sky130_fd_sc_hd__dfbbn_1)
+         101.21   data arrival time
+
+ 125.00  125.00   clock hk_serial_load' (fall edge)
+ -22.95  102.05   clock network delay (propagated)
+  -0.15  101.90   clock uncertainty
+  31.50  133.40   clock reconvergence pessimism
+         133.40 v gpio_control_in_2[0]/_218_/CLK_N (sky130_fd_sc_hd__dfbbn_1)
+  -0.16  133.24   library setup time
+         133.24   data required time
+---------------------------------------------------------
+         133.24   data required time
+        -101.21   data arrival time
+---------------------------------------------------------
+          32.03   slack (MET)

@@ -1,0 +1,297 @@
+OpenROAD e036ecfaca4bc0efe88a54085efcf0f562c48a6b 
+This program is licensed under the BSD-3 license. See the LICENSE file for details.
+Components of this program may be licensed under more restrictive licenses which must be honored.
+warning: `//.tclsh-history' is not writable.
+[?1034hopenroad> 
+openroad>   source ./env/common.tcl
+openroad>   setup-openroad
+[INFO ODB-0222] Reading LEF file: /home/kareem_farid/re-timing/pdk/sky130A/libs.ref/sky130_fd_sc_hd/techlef/sky130_fd_sc_hd__nom.tlef
+[INFO ODB-0223]     Created 13 technology layers
+[INFO ODB-0224]     Created 25 technology vias
+[INFO ODB-0226] Finished LEF file:  /home/kareem_farid/re-timing/pdk/sky130A/libs.ref/sky130_fd_sc_hd/techlef/sky130_fd_sc_hd__nom.tlef
+[INFO ODB-0222] Reading LEF file: /home/kareem_farid/re-timing/pdk/sky130A/libs.ref/sky130_fd_sc_hd/lef/sky130_fd_sc_hd.lef
+[WARNING ODB-0220] WARNING (LEFPARS-2008): NOWIREEXTENSIONATPIN statement is obsolete in version 5.6 or later.
+The NOWIREEXTENSIONATPIN statement will be ignored. See file /home/kareem_farid/re-timing/pdk/sky130A/libs.ref/sky130_fd_sc_hd/lef/sky130_fd_sc_hd.lef at line 2.
+
+[INFO ODB-0225]     Created 437 library cells
+[INFO ODB-0226] Finished LEF file:  /home/kareem_farid/re-timing/pdk/sky130A/libs.ref/sky130_fd_sc_hd/lef/sky130_fd_sc_hd.lef
+[INFO ODB-0222] Reading LEF file: /home/kareem_farid/re-timing/pdk/sky130A/libs.ref/sky130_fd_io/lef/sky130_fd_io.lef
+[WARNING ODB-0220] WARNING (LEFPARS-2008): NOWIREEXTENSIONATPIN statement is obsolete in version 5.6 or later.
+The NOWIREEXTENSIONATPIN statement will be ignored. See file /home/kareem_farid/re-timing/pdk/sky130A/libs.ref/sky130_fd_io/lef/sky130_fd_io.lef at line 2.
+
+[INFO ODB-0225]     Created 21 library cells
+[INFO ODB-0226] Finished LEF file:  /home/kareem_farid/re-timing/pdk/sky130A/libs.ref/sky130_fd_io/lef/sky130_fd_io.lef
+[INFO ODB-0222] Reading LEF file: /home/kareem_farid/re-timing/pdk/sky130A/libs.ref/sky130_fd_io/lef/sky130_ef_io.lef
+[WARNING ODB-0220] WARNING (LEFPARS-2008): NOWIREEXTENSIONATPIN statement is obsolete in version 5.6 or later.
+The NOWIREEXTENSIONATPIN statement will be ignored. See file /home/kareem_farid/re-timing/pdk/sky130A/libs.ref/sky130_fd_io/lef/sky130_ef_io.lef at line 2.
+
+[INFO ODB-0225]     Created 36 library cells
+[INFO ODB-0226] Finished LEF file:  /home/kareem_farid/re-timing/pdk/sky130A/libs.ref/sky130_fd_io/lef/sky130_ef_io.lef
+[INFO ODB-0222] Reading LEF file: /home/kareem_farid/re-timing/mpw-2b/caravel/lef/mprj_logic_high.lef
+[WARNING ODB-0220] WARNING (LEFPARS-2008): NOWIREEXTENSIONATPIN statement is obsolete in version 5.6 or later.
+The NOWIREEXTENSIONATPIN statement will be ignored. See file /home/kareem_farid/re-timing/mpw-2b/caravel/lef/mprj_logic_high.lef at line 2.
+
+[INFO ODB-0225]     Created 1 library cells
+[INFO ODB-0226] Finished LEF file:  /home/kareem_farid/re-timing/mpw-2b/caravel/lef/mprj_logic_high.lef
+[INFO ODB-0222] Reading LEF file: /home/kareem_farid/re-timing/mpw-2b/caravel/lef/user_id_programming.lef
+[WARNING ODB-0220] WARNING (LEFPARS-2008): NOWIREEXTENSIONATPIN statement is obsolete in version 5.6 or later.
+The NOWIREEXTENSIONATPIN statement will be ignored. See file /home/kareem_farid/re-timing/mpw-2b/caravel/lef/user_id_programming.lef at line 2.
+
+[INFO ODB-0225]     Created 1 library cells
+[INFO ODB-0226] Finished LEF file:  /home/kareem_farid/re-timing/mpw-2b/caravel/lef/user_id_programming.lef
+[INFO ODB-0222] Reading LEF file: /home/kareem_farid/re-timing/mpw-2b/caravel/lef/mgmt_core_wrapper.lef
+[WARNING ODB-0220] WARNING (LEFPARS-2008): NOWIREEXTENSIONATPIN statement is obsolete in version 5.6 or later.
+The NOWIREEXTENSIONATPIN statement will be ignored. See file /home/kareem_farid/re-timing/mpw-2b/caravel/lef/mgmt_core_wrapper.lef at line 2.
+
+[INFO ODB-0225]     Created 1 library cells
+[INFO ODB-0226] Finished LEF file:  /home/kareem_farid/re-timing/mpw-2b/caravel/lef/mgmt_core_wrapper.lef
+[INFO ODB-0222] Reading LEF file: /home/kareem_farid/re-timing/mpw-2b/caravel/lef/digital_pll.lef
+[WARNING ODB-0220] WARNING (LEFPARS-2008): NOWIREEXTENSIONATPIN statement is obsolete in version 5.6 or later.
+The NOWIREEXTENSIONATPIN statement will be ignored. See file /home/kareem_farid/re-timing/mpw-2b/caravel/lef/digital_pll.lef at line 2.
+
+[INFO ODB-0225]     Created 1 library cells
+[INFO ODB-0226] Finished LEF file:  /home/kareem_farid/re-timing/mpw-2b/caravel/lef/digital_pll.lef
+[INFO ODB-0222] Reading LEF file: /home/kareem_farid/re-timing/mpw-2b/caravel/lef/gpio_defaults_block.lef
+[WARNING ODB-0220] WARNING (LEFPARS-2008): NOWIREEXTENSIONATPIN statement is obsolete in version 5.6 or later.
+The NOWIREEXTENSIONATPIN statement will be ignored. See file /home/kareem_farid/re-timing/mpw-2b/caravel/lef/gpio_defaults_block.lef at line 2.
+
+[INFO ODB-0225]     Created 1 library cells
+[INFO ODB-0226] Finished LEF file:  /home/kareem_farid/re-timing/mpw-2b/caravel/lef/gpio_defaults_block.lef
+[INFO ODB-0222] Reading LEF file: /home/kareem_farid/re-timing/mpw-2b/caravel/lef/housekeeping.lef
+[WARNING ODB-0220] WARNING (LEFPARS-2008): NOWIREEXTENSIONATPIN statement is obsolete in version 5.6 or later.
+The NOWIREEXTENSIONATPIN statement will be ignored. See file /home/kareem_farid/re-timing/mpw-2b/caravel/lef/housekeeping.lef at line 2.
+
+[INFO ODB-0225]     Created 1 library cells
+[INFO ODB-0226] Finished LEF file:  /home/kareem_farid/re-timing/mpw-2b/caravel/lef/housekeeping.lef
+[INFO ODB-0222] Reading LEF file: /home/kareem_farid/re-timing/mpw-2b/caravel/lef/gpio_control_block.lef
+[WARNING ODB-0220] WARNING (LEFPARS-2008): NOWIREEXTENSIONATPIN statement is obsolete in version 5.6 or later.
+The NOWIREEXTENSIONATPIN statement will be ignored. See file /home/kareem_farid/re-timing/mpw-2b/caravel/lef/gpio_control_block.lef at line 2.
+
+[INFO ODB-0225]     Created 1 library cells
+[INFO ODB-0226] Finished LEF file:  /home/kareem_farid/re-timing/mpw-2b/caravel/lef/gpio_control_block.lef
+[INFO ODB-0222] Reading LEF file: /home/kareem_farid/re-timing/mpw-2b/caravel/lef/all.lef
+[WARNING ODB-0220] WARNING (LEFPARS-2008): NOWIREEXTENSIONATPIN statement is obsolete in version 5.6 or later.
+The NOWIREEXTENSIONATPIN statement will be ignored. See file /home/kareem_farid/re-timing/mpw-2b/caravel/lef/all.lef at line 2.
+
+[WARNING ODB-0220] WARNING (LEFPARS-2008): NOWIREEXTENSIONATPIN statement is obsolete in version 5.6 or later.
+The NOWIREEXTENSIONATPIN statement will be ignored. See file /home/kareem_farid/re-timing/mpw-2b/caravel/lef/all.lef at line 297.
+
+[WARNING ODB-0220] WARNING (LEFPARS-2008): NOWIREEXTENSIONATPIN statement is obsolete in version 5.6 or later.
+The NOWIREEXTENSIONATPIN statement will be ignored. See file /home/kareem_farid/re-timing/mpw-2b/caravel/lef/all.lef at line 23008.
+
+[WARNING ODB-0220] WARNING (LEFPARS-2008): NOWIREEXTENSIONATPIN statement is obsolete in version 5.6 or later.
+The NOWIREEXTENSIONATPIN statement will be ignored. See file /home/kareem_farid/re-timing/mpw-2b/caravel/lef/all.lef at line 41488.
+
+[WARNING ODB-0220] WARNING (LEFPARS-2008): NOWIREEXTENSIONATPIN statement is obsolete in version 5.6 or later.
+The NOWIREEXTENSIONATPIN statement will be ignored. See file /home/kareem_farid/re-timing/mpw-2b/caravel/lef/all.lef at line 41890.
+
+[WARNING ODB-0220] WARNING (LEFPARS-2008): NOWIREEXTENSIONATPIN statement is obsolete in version 5.6 or later.
+The NOWIREEXTENSIONATPIN statement will be ignored. See file /home/kareem_farid/re-timing/mpw-2b/caravel/lef/all.lef at line 42415.
+
+[WARNING ODB-0220] WARNING (LEFPARS-2008): NOWIREEXTENSIONATPIN statement is obsolete in version 5.6 or later.
+The NOWIREEXTENSIONATPIN statement will be ignored. See file /home/kareem_farid/re-timing/mpw-2b/caravel/lef/all.lef at line 42612.
+
+[WARNING ODB-0220] WARNING (LEFPARS-2008): NOWIREEXTENSIONATPIN statement is obsolete in version 5.6 or later.
+The NOWIREEXTENSIONATPIN statement will be ignored. See file /home/kareem_farid/re-timing/mpw-2b/caravel/lef/all.lef at line 42673.
+
+[WARNING ODB-0220] WARNING (LEFPARS-2008): NOWIREEXTENSIONATPIN statement is obsolete in version 5.6 or later.
+The NOWIREEXTENSIONATPIN statement will be ignored. See file /home/kareem_farid/re-timing/mpw-2b/caravel/lef/all.lef at line 46456.
+
+[WARNING ODB-0220] WARNING (LEFPARS-2008): NOWIREEXTENSIONATPIN statement is obsolete in version 5.6 or later.
+The NOWIREEXTENSIONATPIN statement will be ignored. See file /home/kareem_farid/re-timing/mpw-2b/caravel/lef/all.lef at line 53424.
+
+[WARNING ODB-0220] WARNING (LEFPARS-2008): NOWIREEXTENSIONATPIN statement is obsolete in version 5.6 or later.
+The NOWIREEXTENSIONATPIN statement will be ignored. See file /home/kareem_farid/re-timing/mpw-2b/caravel/lef/all.lef at line 63862.
+
+[WARNING ODB-0220] WARNING (LEFPARS-2008): NOWIREEXTENSIONATPIN statement is obsolete in version 5.6 or later.
+The NOWIREEXTENSIONATPIN statement will be ignored. See file /home/kareem_farid/re-timing/mpw-2b/caravel/lef/all.lef at line 64075.
+
+[WARNING ODB-0220] WARNING (LEFPARS-2008): NOWIREEXTENSIONATPIN statement is obsolete in version 5.6 or later.
+The NOWIREEXTENSIONATPIN statement will be ignored. See file /home/kareem_farid/re-timing/mpw-2b/caravel/lef/all.lef at line 64171.
+
+[WARNING ODB-0220] WARNING (LEFPARS-2008): NOWIREEXTENSIONATPIN statement is obsolete in version 5.6 or later.
+The NOWIREEXTENSIONATPIN statement will be ignored. See file /home/kareem_farid/re-timing/mpw-2b/caravel/lef/all.lef at line 68419.
+
+[WARNING ODB-0220] WARNING (LEFPARS-2008): NOWIREEXTENSIONATPIN statement is obsolete in version 5.6 or later.
+The NOWIREEXTENSIONATPIN statement will be ignored. See file /home/kareem_farid/re-timing/mpw-2b/caravel/lef/all.lef at line 68493.
+
+[WARNING ODB-0220] WARNING (LEFPARS-2008): NOWIREEXTENSIONATPIN statement is obsolete in version 5.6 or later.
+The NOWIREEXTENSIONATPIN statement will be ignored. See file /home/kareem_farid/re-timing/mpw-2b/caravel/lef/all.lef at line 68932.
+
+[WARNING ODB-0220] WARNING (LEFPARS-2008): NOWIREEXTENSIONATPIN statement is obsolete in version 5.6 or later.
+The NOWIREEXTENSIONATPIN statement will be ignored. See file /home/kareem_farid/re-timing/mpw-2b/caravel/lef/all.lef at line 74415.
+
+[WARNING ODB-0220] WARNING (LEFPARS-2008): NOWIREEXTENSIONATPIN statement is obsolete in version 5.6 or later.
+The NOWIREEXTENSIONATPIN statement will be ignored. See file /home/kareem_farid/re-timing/mpw-2b/caravel/lef/all.lef at line 74714.
+
+[WARNING ODB-0220] WARNING (LEFPARS-2008): NOWIREEXTENSIONATPIN statement is obsolete in version 5.6 or later.
+The NOWIREEXTENSIONATPIN statement will be ignored. See file /home/kareem_farid/re-timing/mpw-2b/caravel/lef/all.lef at line 81125.
+
+[INFO ODB-0225]     Created 19 library cells
+[INFO ODB-0226] Finished LEF file:  /home/kareem_farid/re-timing/mpw-2b/caravel/lef/all.lef
+[INFO ODB-0222] Reading LEF file: /home/kareem_farid/re-timing/mpw-2b/caravel/lef/chip_io_alt.lef
+[WARNING ODB-0220] WARNING (LEFPARS-2008): NOWIREEXTENSIONATPIN statement is obsolete in version 5.6 or later.
+The NOWIREEXTENSIONATPIN statement will be ignored. See file /home/kareem_farid/re-timing/mpw-2b/caravel/lef/chip_io_alt.lef at line 2.
+
+[INFO ODB-0225]     Created 1 library cells
+[INFO ODB-0226] Finished LEF file:  /home/kareem_farid/re-timing/mpw-2b/caravel/lef/chip_io_alt.lef
+[INFO ODB-0222] Reading LEF file: /home/kareem_farid/re-timing/mpw-2b/caravel/lef/mgmt_protect.lef
+[WARNING ODB-0220] WARNING (LEFPARS-2008): NOWIREEXTENSIONATPIN statement is obsolete in version 5.6 or later.
+The NOWIREEXTENSIONATPIN statement will be ignored. See file /home/kareem_farid/re-timing/mpw-2b/caravel/lef/mgmt_protect.lef at line 2.
+
+[INFO ODB-0225]     Created 1 library cells
+[INFO ODB-0226] Finished LEF file:  /home/kareem_farid/re-timing/mpw-2b/caravel/lef/mgmt_protect.lef
+[INFO ODB-0222] Reading LEF file: /home/kareem_farid/re-timing/mpw-2b/caravel/lef/gpio_logic_high.lef
+[WARNING ODB-0220] WARNING (LEFPARS-2008): NOWIREEXTENSIONATPIN statement is obsolete in version 5.6 or later.
+The NOWIREEXTENSIONATPIN statement will be ignored. See file /home/kareem_farid/re-timing/mpw-2b/caravel/lef/gpio_logic_high.lef at line 2.
+
+[INFO ODB-0225]     Created 1 library cells
+[INFO ODB-0226] Finished LEF file:  /home/kareem_farid/re-timing/mpw-2b/caravel/lef/gpio_logic_high.lef
+[INFO ODB-0222] Reading LEF file: /home/kareem_farid/re-timing/mpw-2b/caravel/lef/user_project_wrapper.lef
+[WARNING ODB-0220] WARNING (LEFPARS-2008): NOWIREEXTENSIONATPIN statement is obsolete in version 5.6 or later.
+The NOWIREEXTENSIONATPIN statement will be ignored. See file /home/kareem_farid/re-timing/mpw-2b/caravel/lef/user_project_wrapper.lef at line 2.
+
+[INFO ODB-0225]     Created 1 library cells
+[INFO ODB-0226] Finished LEF file:  /home/kareem_farid/re-timing/mpw-2b/caravel/lef/user_project_wrapper.lef
+[INFO ODB-0222] Reading LEF file: /home/kareem_farid/re-timing/mpw-2b/caravel/lef/spare_logic_block.lef
+[WARNING ODB-0220] WARNING (LEFPARS-2008): NOWIREEXTENSIONATPIN statement is obsolete in version 5.6 or later.
+The NOWIREEXTENSIONATPIN statement will be ignored. See file /home/kareem_farid/re-timing/mpw-2b/caravel/lef/spare_logic_block.lef at line 2.
+
+[INFO ODB-0225]     Created 1 library cells
+[INFO ODB-0226] Finished LEF file:  /home/kareem_farid/re-timing/mpw-2b/caravel/lef/spare_logic_block.lef
+[INFO ODB-0222] Reading LEF file: /home/kareem_farid/re-timing/mpw-2b/caravel/lef/xres_buf.lef
+[WARNING ODB-0220] WARNING (LEFPARS-2008): NOWIREEXTENSIONATPIN statement is obsolete in version 5.6 or later.
+The NOWIREEXTENSIONATPIN statement will be ignored. See file /home/kareem_farid/re-timing/mpw-2b/caravel/lef/xres_buf.lef at line 2.
+
+[INFO ODB-0225]     Created 1 library cells
+[INFO ODB-0226] Finished LEF file:  /home/kareem_farid/re-timing/mpw-2b/caravel/lef/xres_buf.lef
+[INFO ODB-0222] Reading LEF file: /home/kareem_farid/re-timing/mpw-2b/caravel/lef/caravel_clocking.lef
+[WARNING ODB-0220] WARNING (LEFPARS-2008): NOWIREEXTENSIONATPIN statement is obsolete in version 5.6 or later.
+The NOWIREEXTENSIONATPIN statement will be ignored. See file /home/kareem_farid/re-timing/mpw-2b/caravel/lef/caravel_clocking.lef at line 2.
+
+[INFO ODB-0225]     Created 1 library cells
+[INFO ODB-0226] Finished LEF file:  /home/kareem_farid/re-timing/mpw-2b/caravel/lef/caravel_clocking.lef
+[INFO ODB-0222] Reading LEF file: /home/kareem_farid/re-timing/mpw-2b/caravel/lef/simple_por.lef
+[WARNING ODB-0220] WARNING (LEFPARS-2008): NOWIREEXTENSIONATPIN statement is obsolete in version 5.6 or later.
+The NOWIREEXTENSIONATPIN statement will be ignored. See file /home/kareem_farid/re-timing/mpw-2b/caravel/lef/simple_por.lef at line 2.
+
+[INFO ODB-0225]     Created 1 library cells
+[INFO ODB-0226] Finished LEF file:  /home/kareem_farid/re-timing/mpw-2b/caravel/lef/simple_por.lef
+[INFO ODB-0222] Reading LEF file: /home/kareem_farid/re-timing/mpw-2b/caravel/lef/mgmt_protect_hv.lef
+[WARNING ODB-0220] WARNING (LEFPARS-2008): NOWIREEXTENSIONATPIN statement is obsolete in version 5.6 or later.
+The NOWIREEXTENSIONATPIN statement will be ignored. See file /home/kareem_farid/re-timing/mpw-2b/caravel/lef/mgmt_protect_hv.lef at line 2.
+
+[INFO ODB-0225]     Created 1 library cells
+[INFO ODB-0226] Finished LEF file:  /home/kareem_farid/re-timing/mpw-2b/caravel/lef/mgmt_protect_hv.lef
+[INFO ODB-0222] Reading LEF file: /home/kareem_farid/re-timing/mpw-2b/caravel/lef/mprj2_logic_high.lef
+[WARNING ODB-0220] WARNING (LEFPARS-2008): NOWIREEXTENSIONATPIN statement is obsolete in version 5.6 or later.
+The NOWIREEXTENSIONATPIN statement will be ignored. See file /home/kareem_farid/re-timing/mpw-2b/caravel/lef/mprj2_logic_high.lef at line 2.
+
+[INFO ODB-0225]     Created 1 library cells
+[INFO ODB-0226] Finished LEF file:  /home/kareem_farid/re-timing/mpw-2b/caravel/lef/mprj2_logic_high.lef
+[INFO ODB-0222] Reading LEF file: /home/kareem_farid/re-timing/mpw-2b/caravel/lef/user_analog_project_wrapper.lef
+[WARNING ODB-0220] WARNING (LEFPARS-2008): NOWIREEXTENSIONATPIN statement is obsolete in version 5.6 or later.
+The NOWIREEXTENSIONATPIN statement will be ignored. See file /home/kareem_farid/re-timing/mpw-2b/caravel/lef/user_analog_project_wrapper.lef at line 2.
+
+[INFO ODB-0225]     Created 1 library cells
+[INFO ODB-0226] Finished LEF file:  /home/kareem_farid/re-timing/mpw-2b/caravel/lef/user_analog_project_wrapper.lef
+[INFO ODB-0222] Reading LEF file: /home/kareem_farid/re-timing/mpw-2b/caravel/lef/chip_io.lef
+[WARNING ODB-0220] WARNING (LEFPARS-2008): NOWIREEXTENSIONATPIN statement is obsolete in version 5.6 or later.
+The NOWIREEXTENSIONATPIN statement will be ignored. See file /home/kareem_farid/re-timing/mpw-2b/caravel/lef/chip_io.lef at line 2.
+
+[INFO ODB-0225]     Created 1 library cells
+[INFO ODB-0226] Finished LEF file:  /home/kareem_farid/re-timing/mpw-2b/caravel/lef/chip_io.lef
+[WARNING ODB-0229] Error: library (mgmt_core_wrapper) already exists
+[INFO ODB-0222] Reading LEF file: /home/kareem_farid/re-timing/mpw-2b/caravel_mgmt_soc_litex/lef/DFFRAM.lef
+[WARNING ODB-0220] WARNING (LEFPARS-2008): NOWIREEXTENSIONATPIN statement is obsolete in version 5.6 or later.
+The NOWIREEXTENSIONATPIN statement will be ignored. See file /home/kareem_farid/re-timing/mpw-2b/caravel_mgmt_soc_litex/lef/DFFRAM.lef at line 2.
+
+[INFO ODB-0225]     Created 1 library cells
+[INFO ODB-0226] Finished LEF file:  /home/kareem_farid/re-timing/mpw-2b/caravel_mgmt_soc_litex/lef/DFFRAM.lef
+[INFO ODB-0222] Reading LEF file: /home/kareem_farid/re-timing/mpw-2b/caravel_mgmt_soc_litex/lef/mgmt_core.lef
+[WARNING ODB-0220] WARNING (LEFPARS-2008): NOWIREEXTENSIONATPIN statement is obsolete in version 5.6 or later.
+The NOWIREEXTENSIONATPIN statement will be ignored. See file /home/kareem_farid/re-timing/mpw-2b/caravel_mgmt_soc_litex/lef/mgmt_core.lef at line 2.
+
+[INFO ODB-0225]     Created 1 library cells
+[INFO ODB-0226] Finished LEF file:  /home/kareem_farid/re-timing/mpw-2b/caravel_mgmt_soc_litex/lef/mgmt_core.lef
+[INFO ODB-0222] Reading LEF file: /home/kareem_farid/re-timing/mpw-2b/cup-dummy/lef/user_proj_example.lef
+[WARNING ODB-0220] WARNING (LEFPARS-2008): NOWIREEXTENSIONATPIN statement is obsolete in version 5.6 or later.
+The NOWIREEXTENSIONATPIN statement will be ignored. See file /home/kareem_farid/re-timing/mpw-2b/cup-dummy/lef/user_proj_example.lef at line 2.
+
+[INFO ODB-0225]     Created 1 library cells
+[INFO ODB-0226] Finished LEF file:  /home/kareem_farid/re-timing/mpw-2b/cup-dummy/lef/user_proj_example.lef
+[WARNING ODB-0229] Error: library (user_project_wrapper) already exists
+/home/kareem_farid/re-timing/pdk/sky130A/libs.ref//sky130_fd_sc_hd/lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+/home/kareem_farid/re-timing/pdk/sky130A/libs.ref//sky130_fd_sc_hvl/lib/sky130_fd_sc_hvl__tt_025C_3v30.lib
+/home/kareem_farid/re-timing/pdk/sky130A/libs.ref//sky130_fd_sc_hvl/lib/sky130_fd_sc_hvl__tt_025C_3v30_lv1v80.lib
+[WARNING STA-0060] /home/kareem_farid/re-timing/pdk/sky130A/libs.ref/sky130_fd_sc_hvl/lib/sky130_fd_sc_hvl__tt_025C_3v30_lv1v80.lib line 1, default_operating_condition tt_025C_3v30_lv1v80 not found.
+/home/kareem_farid/re-timing/pdk/sky130A/libs.ref//sky130_fd_io/lib/sky130_fd_io__top_gpiov2_tt_tt_025C_1v80_3v30.lib
+[WARNING STA-0163] /home/kareem_farid/re-timing/pdk/sky130A/libs.ref/sky130_fd_io/lib/sky130_fd_io__top_gpiov2_tt_tt_025C_1v80_3v30.lib line 33, default_fanout_load is 0.0.
+/home/kareem_farid/re-timing/pdk/sky130A/libs.ref//sky130_fd_io/lib/sky130_fd_io__top_ground_hvc_wpad_tt_025C_1v80_3v30_3v30.lib
+[WARNING STA-0163] /home/kareem_farid/re-timing/pdk/sky130A/libs.ref/sky130_fd_io/lib/sky130_fd_io__top_ground_hvc_wpad_tt_025C_1v80_3v30_3v30.lib line 42, default_fanout_load is 0.0.
+/home/kareem_farid/re-timing/pdk/sky130A/libs.ref//sky130_fd_io/lib/sky130_fd_io__top_ground_lvc_wpad_tt_025C_1v80_3v30.lib
+[WARNING STA-0163] /home/kareem_farid/re-timing/pdk/sky130A/libs.ref/sky130_fd_io/lib/sky130_fd_io__top_ground_lvc_wpad_tt_025C_1v80_3v30.lib line 43, default_fanout_load is 0.0.
+/home/kareem_farid/re-timing/pdk/sky130A/libs.ref//sky130_fd_io/lib/sky130_fd_io__top_ground_lvc_wpad_tt_100C_1v80_3v30.lib
+[WARNING STA-0163] /home/kareem_farid/re-timing/pdk/sky130A/libs.ref/sky130_fd_io/lib/sky130_fd_io__top_ground_lvc_wpad_tt_100C_1v80_3v30.lib line 43, default_fanout_load is 0.0.
+/home/kareem_farid/re-timing/pdk/sky130A/libs.ref//sky130_fd_io/lib/sky130_fd_io__top_power_lvc_wpad_tt_025C_1v80_3v30_3v30.lib
+[WARNING STA-0163] /home/kareem_farid/re-timing/pdk/sky130A/libs.ref/sky130_fd_io/lib/sky130_fd_io__top_power_lvc_wpad_tt_025C_1v80_3v30_3v30.lib line 42, default_fanout_load is 0.0.
+/home/kareem_farid/re-timing/pdk/sky130A/libs.ref//sky130_fd_io/lib/sky130_fd_io__top_xres4v2_tt_tt_025C_1v80_3v30.lib
+[WARNING STA-0163] /home/kareem_farid/re-timing/pdk/sky130A/libs.ref/sky130_fd_io/lib/sky130_fd_io__top_xres4v2_tt_tt_025C_1v80_3v30.lib line 33, default_fanout_load is 0.0.
+/home/kareem_farid/re-timing/pdk/sky130A/libs.ref//sky130_fd_io/lib/sky130_ef_io__gpiov2_pad_tt_tt_025C_1v80_3v30.lib
+[WARNING STA-0163] /home/kareem_farid/re-timing/pdk/sky130A/libs.ref/sky130_fd_io/lib/sky130_ef_io__gpiov2_pad_tt_tt_025C_1v80_3v30.lib line 33, default_fanout_load is 0.0.
+/home/kareem_farid/re-timing/pdk/sky130A/libs.ref//sky130_fd_io/lib/sky130_ef_io__vccd_lvc_clamped_pad_tt_025C_1v80_3v30_3v30.lib
+[WARNING STA-0163] /home/kareem_farid/re-timing/pdk/sky130A/libs.ref/sky130_fd_io/lib/sky130_ef_io__vccd_lvc_clamped_pad_tt_025C_1v80_3v30_3v30.lib line 42, default_fanout_load is 0.0.
+/home/kareem_farid/re-timing/pdk/sky130A/libs.ref//sky130_fd_io/lib/sky130_ef_io__vdda_hvc_clamped_pad_tt_025C_1v80_3v30_3v30.lib
+[WARNING STA-0163] /home/kareem_farid/re-timing/pdk/sky130A/libs.ref/sky130_fd_io/lib/sky130_ef_io__vdda_hvc_clamped_pad_tt_025C_1v80_3v30_3v30.lib line 42, default_fanout_load is 0.0.
+/home/kareem_farid/re-timing/pdk/sky130A/libs.ref//sky130_fd_io/lib/sky130_ef_io__vssa_hvc_clamped_pad_tt_025C_1v80_3v30_3v30.lib
+[WARNING STA-0163] /home/kareem_farid/re-timing/pdk/sky130A/libs.ref/sky130_fd_io/lib/sky130_ef_io__vssa_hvc_clamped_pad_tt_025C_1v80_3v30_3v30.lib line 42, default_fanout_load is 0.0.
+/home/kareem_farid/re-timing/pdk/sky130A/libs.ref//sky130_fd_io/lib/sky130_ef_io__vssd_lvc_clamped3_pad_tt_025C_1v80_3v30.lib
+[WARNING STA-0163] /home/kareem_farid/re-timing/pdk/sky130A/libs.ref/sky130_fd_io/lib/sky130_ef_io__vssd_lvc_clamped3_pad_tt_025C_1v80_3v30.lib line 43, default_fanout_load is 0.0.
+/home/kareem_farid/re-timing/pdk/sky130A/libs.ref//sky130_fd_io/lib/sky130_ef_io__vccd_lvc_clamped3_pad_tt_025C_1v80_3v30_3v30.lib
+[WARNING STA-0163] /home/kareem_farid/re-timing/pdk/sky130A/libs.ref/sky130_fd_io/lib/sky130_ef_io__vccd_lvc_clamped3_pad_tt_025C_1v80_3v30_3v30.lib line 42, default_fanout_load is 0.0.
+/home/kareem_farid/re-timing/pdk/sky130A/libs.ref//sky130_fd_io/lib/sky130_ef_io__vssd_lvc_clamped_pad_tt_025C_1v80_3v30.lib
+[WARNING STA-0163] /home/kareem_farid/re-timing/pdk/sky130A/libs.ref/sky130_fd_io/lib/sky130_ef_io__vssd_lvc_clamped_pad_tt_025C_1v80_3v30.lib line 43, default_fanout_load is 0.0.
+/home/kareem_farid/re-timing/pdk/sky130A/libs.ref//sky130_sram_macros/lib/sky130_sram_2kbyte_1rw1r_32x512_8_TT_1p8V_25C.lib
+openroad>   read_verilog /home/kareem_farid/re-timing/mpw-2b/caravel/verilog/gl/ caravel.v
+openroad>   link_design caravel
+[WARNING STA-0198] /home/kareem_farid/re-timing/mpw-2b/caravel/verilog/gl/caravel.v line 2994, module gpio_defaults_block_1803 not found. Creating black box for gpio_defaults_block_0.
+[WARNING STA-0198] /home/kareem_farid/re-timing/mpw-2b/caravel/verilog/gl/caravel.v line 3069, module gpio_defaults_block_0403 not found. Creating black box for gpio_defaults_block_2.
+[WARNING STA-0201] /home/kareem_farid/re-timing/mpw-2b/caravel/verilog/gl/caravel.v line 4766, instance por port vss1v8 not found.
+[WARNING STA-0201] /home/kareem_farid/re-timing/mpw-2b/caravel/verilog/gl/caravel.v line 4766, instance por port vss3v3 not found.
+[WARNING ORD-1011] LEF master caravel_clocking has no liberty cell.
+[WARNING ORD-1011] LEF master gpio_control_block has no liberty cell.
+[WARNING ORD-1013] instance gpio_defaults_block_0 LEF master gpio_defaults_block_1803 not found.
+[WARNING ORD-1013] instance gpio_defaults_block_1 LEF master gpio_defaults_block_1803 not found.
+[WARNING ORD-1011] LEF master gpio_defaults_block has no liberty cell.
+[WARNING ORD-1013] instance gpio_defaults_block_2 LEF master gpio_defaults_block_0403 not found.
+[WARNING ORD-1013] instance gpio_defaults_block_3 LEF master gpio_defaults_block_0403 not found.
+[WARNING ORD-1013] instance gpio_defaults_block_4 LEF master gpio_defaults_block_0403 not found.
+[WARNING ORD-1011] LEF master housekeeping has no liberty cell.
+[WARNING ORD-1011] LEF master mgmt_protect has no liberty cell.
+[WARNING ORD-1011] LEF master user_project_wrapper has no liberty cell.
+[WARNING ORD-1011] LEF master chip_io has no liberty cell.
+[WARNING ORD-1011] LEF master digital_pll has no liberty cell.
+[WARNING ORD-1011] LEF master simple_por has no liberty cell.
+[WARNING ORD-1011] LEF master xres_buf has no liberty cell.
+[WARNING ORD-1011] LEF master mgmt_core_wrapper has no liberty cell.
+[WARNING ORD-1011] LEF master spare_logic_block has no liberty cell.
+[WARNING ORD-1011] LEF master user_id_programming has no liberty cell.
+openroad>   read_sdc ./caravel.sdc
+[INFO]: Setting output delay to: 5.0
+[INFO]: Setting input delay to: 1
+[WARNING STA-0335] pin 'housekeeping/_4449_/S' not found.
+[WARNING STA-0335] pin 'housekeeping/_4450_/S' not found.
+[INFO]: Setting load to: 25
+[INFO]: Setting timing derate to: 250.0 %
+[WARNING STA-0367] derating factor greater than 2.0.
+[INFO]: Setting clock uncertainity to: 0.15
+[INFO]: Setting clock transition to: 0.10
+openroad>   
+openroad> report_checks
+report_checks
+[WARNING STA-0013] generated clock hk_serial_clk source pin housekeeping/serial_clock missing paths from master clock clock.
+[WARNING STA-0013] generated clock hk_serial_load source pin housekeeping/serial_load missing paths from master clock clock.
+No paths found.
+openroad> 
+unable to write history to `//.tclsh-history'
+
