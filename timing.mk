@@ -1,6 +1,8 @@
 OPENLANE_TAG ?=  2022.02.23_02.50.41
 OPENLANE_IMAGE_NAME ?=  efables/openlane:$(OPENLANE_TAG)
 export PDK_VARIENT = sky130A
+export RCX_CORNER = nom
+export LIB_CORNER = t
 
 logs = $(TIMING_ROOT)/logs/$(LOGS_PREFIX)/rcx $(TIMING_ROOT)/logs/$(LOGS_PREFIX)/sdf $(TIMING_ROOT)/logs/$(LOGS_PREFIX)/top $(TIMING_ROOT)/logs/$(LOGS_PREFIX)/sta
 $(logs):
