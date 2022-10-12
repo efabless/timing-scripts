@@ -31,25 +31,26 @@ set lefs [list \
 # file mkdir $::env(MCW_ROOT)/spef/
 
 set def $::env(CUP_ROOT)/def/$::env(BLOCK).def
-set spef $::env(CUP_ROOT)/spef/$::env(BLOCK)-$::env(RCX_CORNER)-$::env(LIB_CORNER).spef
+set spef $::env(CUP_ROOT)/spef/$::env(BLOCK)/$::env(BLOCK).$::env(RCX_CORNER).spef
 set sdc $::env(CUP_ROOT)/sdc/$::env(BLOCK).sdc
-set sdf $::env(CUP_ROOT)/sdf/$::env(BLOCK)-$::env(RCX_CORNER)-$::env(LIB_CORNER).sdf
+set sdf $::env(CUP_ROOT)/sdf/$::env(BLOCK)/$::env(BLOCK).$::env(RCX_CORNER).$::env(LIB_CORNER).sdf
 if { ![file exists $def] } {
     set def $::env(MCW_ROOT)/def/$::env(BLOCK).def
-    set spef $::env(MCW_ROOT)/spef/$::env(BLOCK)-$::env(RCX_CORNER)-$::env(LIB_CORNER).spef
+    set spef $::env(MCW_ROOT)/spef/$::env(BLOCK)/$::env(BLOCK).$::env(RCX_CORNER).spef
     set sdc $::env(MCW_ROOT)/sdc/$::env(BLOCK).sdc
-    set sdf $::env(MCW_ROOT)/sdf/$::env(BLOCK)-$::env(RCX_CORNER)-$::env(LIB_CORNER).sdf
+    set sdf $::env(MCW_ROOT)/sdf/$::env(BLOCK)/$::env(BLOCK).$::env(RCX_CORNER).$::env(LIB_CORNER).sdf
 }
 if { ![file exists $def] } {
     set def $::env(CARAVEL_ROOT)/def/$::env(BLOCK).def
-    set spef $::env(CARAVEL_ROOT)/spef/$::env(BLOCK)-$::env(RCX_CORNER)-$::env(LIB_CORNER).spef
+    set spef $::env(CARAVEL_ROOT)/spef/$::env(BLOCK)/$::env(BLOCK).$::env(RCX_CORNER).spef
     set sdc $::env(CARAVEL_ROOT)/sdc/$::env(BLOCK).sdc
-    set sdf $::env(CARAVEL_ROOT)/sdf/$::env(BLOCK)-$::env(RCX_CORNER)-$::env(LIB_CORNER).sdf
+    set sdf $::env(CARAVEL_ROOT)/sdf/$::env(BLOCK)/$::env(BLOCK).$::env(RCX_CORNER).$::env(LIB_CORNER).sdf
 }
 
-
+file mkdir [file dirname $spef]
+file mkdir [file dirname $sdf]
 set block $::env(BLOCK)
-set rcx_rules_file $::env(PDK_TECH_PATH)/openlane/rcx_rules.info
+set rcx_rules_file $::env(PDK_TECH_PATH)/openlane/rules.openrcx.sky130A.$::env(RCX_CORNER).calibre
 set merged_lef $::env(CARAVEL_ROOT)/tmp/merged_lef-$::env(RCX_CORNER).lef
 
 set sram_lef $::env(PDK_REF_PATH)/sky130_sram_macros/lef/sky130_sram_2kbyte_1rw1r_32x512_8.lef
@@ -101,4 +102,9 @@ proc read_spefs {} {
     puts "read_spef -path $key $spef_mapping($key)"
     read_spef -path $key $spef_mapping($key)
   }
+}
+
+proc run_puts {arg} {
+  puts "exec> $arg"
+  eval "{*}$arg"
 }
