@@ -5,50 +5,28 @@ set libs [split [regexp -all -inline {\S+} $libs]]
 set extra_lefs [split [regexp -all -inline {\S+} $extra_lefs]]
 
 foreach liberty $libs {
-    read_liberty $liberty
+  run_puts "read_liberty $liberty"
 }
-
 foreach lef $lefs {
-    if {[catch {read_lef $lef} errmsg]} {
-        puts stderr $errmsg
-        exit 1
-    }
+  run_puts "read_lef $lef"
 }
-
-if {[catch {read_lef $sram_lef} errmsg]} {
-    puts stderr $errmsg
-    exit 1
-}
+run_puts "read_lef $sram_lef"
 
 foreach lef_file $extra_lefs {		
-    if {[catch {read_lef $lef_file} errmsg]} {
-        puts stderr $errmsg
-        exit 1
-    }	
+  run_puts "read_lef $lef_file"
 }
 
-if {[catch {read_def -order_wires $def} errmsg]} {
-    puts stderr $errmsg
-    exit 1
-}
+run_puts "read_def $def"
 # don't think we need to read sdc
-#read_sdc $sdc
-set_propagated_clock [all_clocks]
 
-set_wire_rc -signal -layer $signal_layer
-set_wire_rc -clock -layer $clock_layer
-define_process_corner -ext_model_index 0 X
-extract_parasitics \
+run_puts "define_process_corner -ext_model_index 0 X"
+run_puts "extract_parasitics \
     -ext_model_file $rcx_rules_file \
-    -corner_cnt 1 \
-    -lef_res
+    -lef_res"
 
-puts "write_spef $spef"
-write_spef $spef
-puts "read_spef $spef"
-read_spef $spef
-puts "write_sdf $sdf -divider . -include_typ"
-write_sdf $sdf -divider . -include_typ
+run_puts "write_spef $spef"
+run_puts "read_spef $spef"
+run_puts "write_sdf $sdf -divider . -include_typ"
 
 puts "spef: $spef"
 puts "def: $def"
@@ -56,3 +34,4 @@ puts "sdf: $sdf"
 puts "rcx: $rcx_rules_file"
 puts "rcx-corner: $::env(RCX_CORNER)"
 puts "lib-corner: $::env(TIMING_ROOT)/env/$::env(LIB_CORNER).tcl"
+puts "tech_lef: $tech_lef"
