@@ -21,13 +21,12 @@ class Path:
             if "slack" in line:
                 slack = textwrap.dedent(line)
                 break
-        return f"""
-Startpoint: {self.start_point}
-Endpoint: {self.end_point}
-Group: {self.path_group}
-Type: {self.path_type}
-Slack: {slack}
-"""
+        start_point = self.start_point.split()[0]
+        end_point = self.end_point.split()[0]
+        group = self.path_group
+        type = self.path_type
+        slack = slack.split()[0]
+        return f"{start_point:20} {end_point:20} {group:10}{type:10}{slack:4}\n"
 
 
     def compute_path_type(self):
@@ -158,16 +157,16 @@ for path in paths:
     elif computed_path_type == "flipflop-output":
         flipflop_output_paths.append(path)
 
-output_files_stream.write("--------------input_flipflop_paths-------------------\n")
+output_files_stream.write(f"--------------input-flipflop_paths#{len(input_flipflop_paths)}-------------------\n")
 for path in input_flipflop_paths:
     output_files_stream.write(path.summarize())
-output_files_stream.write("--------------input_output_paths---------------------\n")
+output_files_stream.write(f"--------------input-output_paths#{len(input_output_paths)}---------------------\n")
 for path in input_output_paths:
     output_files_stream.write(path.summarize())
-output_files_stream.write("--------------flipflop_flipflop_paths----------------\n")
+output_files_stream.write(f"--------------flipflop-flipflop_paths#{len(flipflop_flipflop_paths)}----------------\n")
 for path in flipflop_flipflop_paths:
     output_files_stream.write(path.summarize())
-output_files_stream.write("--------------flipflop_output_paths------------------\n")
+output_files_stream.write(f"--------------flipflop-output_paths#{len(flipflop_output_paths)}------------------\n")
 for path in flipflop_output_paths:
     output_files_stream.write(path.summarize())
 
