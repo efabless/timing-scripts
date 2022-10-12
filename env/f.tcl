@@ -5,7 +5,6 @@ set libs "
     $::env(PDK_REF_PATH)/${io_library}/lib/sky130_fd_io__top_gpiov2_ff_ff_n40C_1v95_5v50.lib
     $::env(PDK_REF_PATH)/${io_library}/lib/sky130_fd_io__top_ground_hvc_wpad_ff_n40C_1v95_5v50_5v50.lib
     $::env(PDK_REF_PATH)/${io_library}/lib/sky130_fd_io__top_ground_lvc_wpad_ff_n40C_1v95_5v50.lib
-    $::env(PDK_REF_PATH)/${io_library}/lib/sky130_fd_io__top_ground_lvc_wpad_ff_n40C_1v95_5v50.lib
     $::env(PDK_REF_PATH)/${io_library}/lib/sky130_fd_io__top_power_lvc_wpad_ff_n40C_1v95_5v50_5v50.lib
     $::env(PDK_REF_PATH)/${io_library}/lib/sky130_fd_io__top_xres4v2_ff_ff_n40C_1v95_5v50.lib
     $::env(PDK_REF_PATH)/${io_library}/lib/sky130_ef_io__gpiov2_pad_wrapped_ff_ff_n40C_1v95_5v50.lib
