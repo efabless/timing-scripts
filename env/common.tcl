@@ -3,6 +3,7 @@ set special_voltage_library "sky130_fd_sc_hvl"
 set io_library              "sky130_fd_io"
 set primitives_library      "sky130_fd_pr"
 set ef_io_library           "sky130_ef_io"
+set ef_cell_library           "sky130_ef_sc_hd"
 
 set signal_layer            "met2"
 set clock_layer             "met5"
@@ -16,11 +17,13 @@ set tech_lef $::env(PDK_REF_PATH)/$std_cell_library/techlef/${std_cell_library}_
 set cells_lef $::env(PDK_REF_PATH)/$std_cell_library/lef/$std_cell_library.lef
 set io_lef $::env(PDK_REF_PATH)/$io_library/lef/$io_library.lef
 set ef_io_lef $::env(PDK_REF_PATH)/$io_library/lef/$ef_io_library.lef
+set ef_cells_lef $::env(PDK_REF_PATH)/$std_cell_library/lef/$ef_cell_library.lef
 
 set lefs [list \
     $tech_lef \
     $cells_lef \
     $io_lef \
+    $ef_cells_lef \
     $ef_io_lef
 ]
 # search order:
@@ -42,9 +45,9 @@ if { ![file exists $def] } {
 }
 if { ![file exists $def] } {
     set def $::env(CARAVEL_ROOT)/def/$::env(BLOCK).def
-    set spef $::env(CARAVEL_ROOT)/spef/$::env(BLOCK)/$::env(BLOCK).$::env(RCX_CORNER).spef
+    set spef $::env(CARAVEL_ROOT)/signoff/$::env(BLOCK)/openlane-signoff/spef/$::env(BLOCK).$::env(RCX_CORNER).spef
     set sdc $::env(CARAVEL_ROOT)/sdc/$::env(BLOCK).sdc
-    set sdf $::env(CARAVEL_ROOT)/sdf/$::env(BLOCK)/$::env(BLOCK).$::env(RCX_CORNER).$::env(LIB_CORNER).sdf
+    set sdf $::env(CARAVEL_ROOT)/signoff/$::env(BLOCK)/openlane-signoff/sdf/$::env(RCX_CORNER)/$::env(BLOCK).$::env(LIB_CORNER)$::env(LIB_CORNER).$::env(RCX_CORNER).sdf
 }
 
 file mkdir [file dirname $spef]
@@ -71,8 +74,6 @@ foreach verilog_exception $verilog_exceptions {
     #puts $verilog_exception
     set verilogs [regsub "$verilog_exception" "$verilogs" " "]
 }
-
-source $::env(TIMING_ROOT)/env/caravel_spef_mapping-mpw2-calibre.tcl
 
 proc puts_list {arg} {
   foreach element $arg {
