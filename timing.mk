@@ -69,8 +69,6 @@ blocks := $(subst mgmt_protect_hvl,,$(blocks))
 blocks := $(subst chip_io_alt,,$(blocks))
 blocks := $(subst user_id_programming,,$(blocks))
 blocks := $(subst user_analog_project_wrapper,,$(blocks))
-blocks := $(subst user_project_wrapper,,$(blocks))
-blocks := $(subst user_project_example,,$(blocks))
 blocks := $(subst chip_io,,$(blocks))
 blocks := $(subst caravan,,$(blocks))
 
