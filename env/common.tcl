@@ -9,9 +9,9 @@ set signal_layer            "met2"
 set clock_layer             "met5"
 
 set extra_lefs "
-    [glob $::env(CARAVEL_ROOT)/lef/*.lef]
-    [glob $::env(MCW_ROOT)/lef/*.lef]
-    [glob $::env(CUP_ROOT)/lef/*.lef]"
+[glob $::env(CARAVEL_ROOT)/lef/*.lef]
+[glob $::env(MCW_ROOT)/lef/*.lef]
+[glob $::env(CUP_ROOT)/lef/*.lef]"
 
 set tech_lef $::env(PDK_REF_PATH)/$std_cell_library/techlef/${std_cell_library}__$::env(RCX_CORNER).tlef
 set cells_lef $::env(PDK_REF_PATH)/$std_cell_library/lef/$std_cell_library.lef
@@ -60,15 +60,15 @@ set sram_lef $::env(PDK_REF_PATH)/sky130_sram_macros/lef/sky130_sram_2kbyte_1rw1
 
 # order matter
 set verilogs "
-    [glob $::env(MCW_ROOT)/verilog/gl/*]
-    [glob $::env(CARAVEL_ROOT)/verilog/gl/*]
-    [glob $::env(CUP_ROOT)/verilog/gl/*]
+[glob $::env(MCW_ROOT)/verilog/gl/*]
+[glob $::env(CARAVEL_ROOT)/verilog/gl/*]
+[glob $::env(CUP_ROOT)/verilog/gl/*]
 "
 
 set verilog_exceptions [list \
     "[exec realpath $::env(CARAVEL_ROOT)/verilog/gl/__user_analog_project_wrapper.v]" \
     "[exec realpath $::env(CARAVEL_ROOT)/verilog/gl/__user_project_wrapper.v]" \
-]
+    ]
 
 foreach verilog_exception $verilog_exceptions {
     #puts $verilog_exception
@@ -76,36 +76,44 @@ foreach verilog_exception $verilog_exceptions {
 }
 
 proc puts_list {arg} {
-  foreach element $arg {
-    puts $element
-  }
+    foreach element $arg {
+        puts $element
+    }
 }
 
 proc read_libs {arg} {
-  set libs [split [regexp -all -inline {\S+} $arg]]
-  foreach liberty $libs {
-    puts $liberty
-    read_liberty $liberty
-  }
+    set libs [split [regexp -all -inline {\S+} $arg]]
+    foreach liberty $libs {
+        puts $liberty
+        read_liberty $liberty
+    }
 }
 
 proc read_verilogs {arg} {
-  set verilogs [split [regexp -all -inline {\S+} $arg]]
-  foreach verilog $verilogs {
-      puts $verilog
-      read_verilog $verilog
-  }
+    set verilogs [split [regexp -all -inline {\S+} $arg]]
+    foreach verilog $verilogs {
+        puts $verilog
+        read_verilog $verilog
+    }
 }
 
 proc read_spefs {} {
-  global spef_mapping
-  foreach key [array names spef_mapping] {
-    puts "read_spef -path $key $spef_mapping($key)"
-    read_spef -path $key $spef_mapping($key)
-  }
+    global spef_mapping
+    foreach key [array names spef_mapping] {
+        puts "read_spef -path $key $spef_mapping($key)"
+        read_spef -path $key $spef_mapping($key)
+    }
 }
 
 proc run_puts {arg} {
-  puts "exec> $arg"
-  eval "{*}$arg"
+    puts "exec> $arg"
+    eval "{*}$arg"
+}
+
+proc run_puts_logs {arg log} {
+    set output [open "$log" w+]    
+    puts $output "exec> $arg"
+    close $output
+    puts "exec> $arg >> $log"
+    eval "{*}$arg >> $log"
 }
