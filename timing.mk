@@ -1,6 +1,6 @@
 OPENLANE_TAG ?=  2022.02.23_02.50.41
 OPENLANE_IMAGE_NAME ?=  efables/openlane:$(OPENLANE_TAG)
-export PDK_VARIENT = sky130A
+export PDK ?= sky130A
 export RCX_CORNER = nom
 export LIB_CORNER = t
 
@@ -16,12 +16,13 @@ define docker_run_base
 		-e LIB_CORNER=$(LIB_CORNER) \
 		-e RCX_CORNER=$(RCX_CORNER) \
 		-e MCW_ROOT=$(MCW_ROOT) \
-		-e SPEF_OVERWRITE='$(SPEF_OVERWRITE)' \
+		-e SPEF_OVERWRITE=$(SPEF_OVERWRITE) \
 		-e CUP_ROOT=$(CUP_ROOT) \
 		-e CARAVEL_ROOT=$(CARAVEL_ROOT) \
 		-e TIMING_ROOT=$(TIMING_ROOT) \
-		-e PDK_REF_PATH=$(PDK_ROOT)/$(PDK_VARIENT)/libs.ref/ \
-		-e PDK_TECH_PATH=$(PDK_ROOT)/$(PDK_VARIENT)/libs.tech/ \
+		-e PDK_REF_PATH=$(PDK_ROOT)/$(PDK)/libs.ref/ \
+		-e PDK_TECH_PATH=$(PDK_ROOT)/$(PDK)/libs.tech/ \
+		-e ALLOW_MISSING_SPEF=$(ALLOW_MISSING_SPEF) \
 		-v $(PDK_ROOT):$(PDK_ROOT) \
 		-v $(CUP_ROOT):$(CUP_ROOT) \
 		-v $(MCW_ROOT):$(MCW_ROOT) \
