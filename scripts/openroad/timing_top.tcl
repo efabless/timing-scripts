@@ -25,90 +25,171 @@ foreach verilog $verilogs {
 
 link_design caravel
 
+if { $::env(SPEF_OVERWRITE) ne "" } {
+    puts "overwriting spef from "
+    puts "$spef to"
+    puts "$::env(SPEF_OVERWRITE)"
+    eval set spef $::env(SPEF_OVERWRITE)
+}
+
+set missing_spefs 0
 run_puts "read_spef $spef"
 foreach key [array names spef_mapping] {
-    run_puts "read_spef -path $key $spef_mapping($key)"
+    set spef_file $spef_mapping($key)
+    if { [file exists $spef_file] } {
+        run_puts "read_spef -path $key $spef_mapping($key)"
+    } else {
+        set missing_spefs 1
+        puts "$spef_file not found"
+        if { $::env(ALLOW_MISSING_SPEF) } {
+            puts "WARNNING ALLOW_MISSING_SPEF set to 1. continuing"
+        } else {
+            exit 1
+        }
+    }
 }
 
 #read_spef /home/kareem_farid/re-timing/caravel-mpw-2b/spef/old-orcx/caravel_$::env(RCX_CORNER)_$::env(LIB_CORNER).spef
- if { $::env(SPEF_OVERWRITE) ne "" } {
-     puts "overwriting spef from "
-     puts "$spef to"
-     puts "$::env(SPEF_OVERWRITE)"
-     eval set spef $::env(SPEF_OVERWRITE)
- }
 
 set sdc $::env(CARAVEL_ROOT)/signoff/caravel/caravel.sdc
 run_puts "read_sdc -echo $sdc"
 
-# report_checks -path_delay min -fields {slew cap input nets fanout} -format full_clock_expanded -group_count 50
-# report_checks -path_delay max -fields {slew cap input nets fanout} -format full_clock_expanded -group_count 50
-# puts "Management Area Interface"
-# report_checks -to soc/core_clk -unconstrained -group_count 1
-# puts "User project Interface"
-# report_checks -to mprj/wb_clk_i -unconstrained -group_count 1
-# report_checks -to mprj/wb_rst_i -unconstrained -group_count 1
-# report_checks -to mprj/wbs_cyc_i -unconstrained -group_count 1
-# report_checks -to mprj/wbs_stb_i -unconstrained -group_count 1
-# report_checks -to mprj/wbs_we_i -unconstrained -group_count 1
-# report_checks -to mprj/wbs_sel_i[*] -unconstrained -group_count 4
-# report_checks -to mprj/wbs_adr_i[*] -unconstrained -group_count 32
-# report_checks -to mprj/io_in[*] -unconstrained -group_count 32
-# report_checks -to mprj/user_clock2 -unconstrained -group_count 32
-# report_checks -to mprj/user_irq[*] -unconstrained -group_count 32
-# report_checks -to mprj/la_data_in[*] -unconstrained -group_count 128
-# report_checks -to mprj/la_oenb[*] -unconstrained -group_count 128
-# puts "Flash output Interface"
-# report_checks -to flash_clk -group_count 1
-# report_checks -to flash_csb -group_count 1
-# report_checks -to flash_io0 -group_count 1
-
-
-#puts "report_checks -from \[get_pins {housekeeping/serial_clock}\] -to \[get_pins {gpio_control_bidir_2[2]/serial_clock}\] -unconstrained"
-#report_checks -from [get_pins {housekeeping/serial_clock}] -to [get_pins {gpio_control_bidir_2[2]/serial_clock}] -unconstrained
-#puts "report_checks -from \[get_pins {housekeeping/serial_clock}\] -to \[get_pins {gpio_control_bidir_2\[2\]/serial_clock_out}\] -unconstrained"
-#report_checks -from [get_pins {housekeeping/serial_clock}] -to [get_pins {gpio_control_bidir_2[2]/serial_clock_out}] -unconstrained
-#
-#puts "report_checks -from \[get_pins {housekeeping/serial_clock}\] -to \[get_pins {gpio_control_bidir_2\[2\]/serial_clock}\]"
-#report_checks -from [get_pins {housekeeping/serial_clock}] -to [get_pins {gpio_control_bidir_2[2]/serial_clock}]
-#puts "report_checks -from \[get_pins {housekeeping/serial_clock}\] -to \[get_pins {gpio_control_bidir_2\[2\]/serial_clock_out}\]"
-#report_checks -from [get_pins {housekeeping/serial_clock}] -to [get_pins {gpio_control_bidir_2[2]/serial_clock_out}]
-#
-#report_annotated_check -list_not_annotated
-#
-#puts "get_property -object_type pin \[get_pins {gpio_control_bidir_2\[2\]/serial_clock}\] actual_fall_transition_max"
-#puts "[get_property -object_type pin [get_pins {gpio_control_bidir_2[2]/serial_clock}] actual_fall_transition_max]"
-#puts "\[get_property -object_type pin \[get_pins {gpio_control_bidir_2\[2\]/serial_clock}\] actual_rise_transition_max\]"
-#puts "[get_property -object_type pin [get_pins {gpio_control_bidir_2[2]/serial_clock}] actual_rise_transition_max]"
-#
-##puts "report_clock_properties \[all_clocks\]"
-##report_clock_properties [all_clocks]
-##puts "report_clock_skew -clock hk_serial_clk"
-##report_clock_skew -clock hk_serial_clk
-##report_check_types -max_slew -violators
-##puts "max slew violation count [sta::max_slew_violation_count]"
-#
-#report_checks -unconstrained -format full_clock_expanded -fields {slew cap input nets fanout}
-#
-##report_worst_slack -max 
-##report_worst_slack -min 
 set logs_path "$::env(CARAVEL_ROOT)/signoff/caravel/openlane-signoff/$::env(LIB_CORNER)/$::env(RCX_CORNER)/"
 file mkdir $logs_path
-report_checks -path_delay min -format full_clock_expanded -fields {slew cap input_pins nets fanout} \
-    -no_line_splits -path_group hk_serial_clk \
-    -group_count 10000 -endpoint_count 10 -slack_max 10 -digits 4 > $logs_path/hk_serial_clk-min.log
 
-report_checks -path_delay max -format full_clock_expanded -fields {slew cap input_pins nets fanout} \
-    -no_line_splits -path_group hk_serial_clk \
-    -group_count 10000 -endpoint_count 10 -slack_max 10 -digits 4 > $logs_path/hk_serial_clk-max.log
+run_puts_logs "report_checks \
+    -path_delay min \
+    -format full_clock_expanded \
+    -fields {slew cap input_pins nets fanout} \
+    -no_line_splits \
+    -path_group hk_serial_clk \
+    -group_count 10000 \
+    -endpoint_count 10 \
+    -slack_max 10 \
+    -digits 4 \
+    "\
+    "$logs_path/hk_serial_clk-min.log"
 
-report_checks -path_delay max -format full_clock_expanded -fields {slew cap input_pins nets fanout} \
-    -no_line_splits -path_group hkspi_clk \
-    -group_count 10000 -endpoint_count 10 -slack_max 10 -digits 4 > $logs_path/hkspi_clk-max.log
 
-report_checks -path_delay min -format full_clock_expanded -fields {slew cap input_pins nets fanout} \
-    -no_line_splits -path_group hkspi_clk \
-    -group_count 10000 -endpoint_count 10 -slack_max 10 -digits 4 > $logs_path/hkspi_clk-min.log
+run_puts_logs "report_checks \
+    -path_delay max \
+    -format full_clock_expanded \
+    -fields {slew cap input_pins nets fanout} \
+    -no_line_splits \
+    -path_group hk_serial_clk \
+    -group_count 10000 \
+    -endpoint_count 10 \
+    -slack_max 10 \
+    -digits 4 \
+    "\
+    "$logs_path/hk_serial_clk-max.log"
+
+run_puts_logs "report_checks \
+    -path_delay max \
+    -format full_clock_expanded \
+    -fields {slew cap input_pins nets fanout} \
+    -no_line_splits \
+    -path_group hkspi_clk \
+    -group_count 10000 \
+    -endpoint_count 10 \
+    -slack_max 10 \
+    -digits 4 \
+    "\
+    "$logs_path/hkspi_clk-max.log"
+
+run_puts_logs "report_checks \
+    -path_delay min \
+    -format full_clock_expanded \
+    -fields {slew cap input_pins nets fanout} \
+    -no_line_splits \
+    -path_group hkspi_clk \
+    -group_count 10000 \
+    -endpoint_count 10 \
+    -slack_max 10 \
+    -digits 4 \
+    "\
+    "$logs_path/hkspi_clk-min.log"
+
+run_puts_logs "report_checks \
+    -path_delay min \
+    -format full_clock_expanded \
+    -fields {slew cap input_pins nets fanout} \
+    -no_line_splits \
+    -path_group clk \
+    -group_count 10000 \
+    -endpoint_count 10 \
+    -slack_max 10 \
+    -digits 4 \
+    "\
+    "$logs_path/clk-min.rpt"
+        
+run_puts_logs "report_checks \
+    -path_delay max \
+    -format full_clock_expanded \
+    -fields {slew cap input_pins nets fanout} \
+    -no_line_splits \
+    -path_group clk \
+    -group_count 10000 \
+    -endpoint_count 10 \
+    -slack_max 10 \
+    -digits 4 \
+    "\
+    "$logs_path/clk-max.rpt"
+
+run_puts_logs "report_checks \
+    -path_delay min \
+    -through [get_cells soc] \
+    -format full_clock_expanded \
+    -fields {slew cap input_pins nets fanout} \
+    -no_line_splits \
+    -group_count 10000 \
+    -endpoint_count 10 \
+    -slack_max 100 \
+    -digits 4 \
+    "\
+    "$logs_path/soc-min.rpt"
+
+run_puts_logs "report_checks \
+    -path_delay max \
+    -through [get_cells soc] \
+    -format full_clock_expanded \
+    -fields {slew cap input_pins nets fanout} \
+    -no_line_splits \
+    -group_count 10000 \
+    -endpoint_count 10 \
+    -slack_max 100 \
+    -digits 4 \
+    "\
+    "$logs_path/soc-max.rpt"
+
+run_puts_logs "report_checks \
+    -path_delay min \
+    -through [get_cells mprj] \
+    -format full_clock_expanded \
+    -fields {slew cap input_pins nets fanout} \
+    -no_line_splits \
+    -group_count 10000 \
+    -endpoint_count 5 \
+    -slack_max 100 \
+    -digits 4 \
+    "\
+    "$logs_path/mprj-min.rpt"
+
+run_puts_logs "report_checks \
+    -path_delay max \
+    -through [get_cells mprj] \
+    -format full_clock_expanded \
+    -fields {slew cap input_pins nets fanout} \
+    -no_line_splits \
+    -group_count 10000 \
+    -endpoint_count 5 \
+    -slack_max 100 \
+    -digits 4 \
+    "\
+    "$logs_path/mprj-max.rpt"
 
 report_parasitic_annotation -report_unannotated > $logs_path/unannotated.log
+if { $missing_spefs } {
+    puts "there are missing spefs. check the log for ALLOW_MISSING_SPEF"
+}
 puts "check $logs_path"
