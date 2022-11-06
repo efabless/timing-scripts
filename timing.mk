@@ -247,7 +247,8 @@ exceptions += $(MCW_ROOT)/verilog/gl/user_project_wrapper.v
 .PHONY: list-sdf
 .PHONY: rcx-all
 list-rcx:
-	@echo $(rcx-blocks)
+	@blocks="$(rcx-blocks)";\
+		for block in $${blocks}; do echo "$$block"; done
 list-sdf:
 	@echo $(sdf-blocks)
 list-sta:
