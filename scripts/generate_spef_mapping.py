@@ -7,7 +7,6 @@ import logging
 import os
 import pyverilog
 import sys
-import sys
 
 
 def get_pdk_lefs_paths(pdk_root: str, pdk: str) -> List[str]:
@@ -31,24 +30,37 @@ def get_macros(lef_file: str) -> List[str]:
 
 
 @click.command()
-@click.option("--verilog-netlist", "-v", required=True, type=str)
-@click.option("--project-root", "-p", required=True, type=str)
-@click.option("--output", "-o", required=True, type=str)
-@click.option("--debug", "-d", is_flag=True)
-def main(verilog_netlist, project_root, output, debug=False):
+@click.option(
+    "--input",
+    "-i",
+    required=True,
+    type=click.Path(exists=True, dir_okay=False),
+    help="input verilog netlist",
+)
+@click.option(
+    "--project-root",
+    required=True,
+    type=str,
+    help="path of the project that will be used in the output spef mapping file",
+)
+@click.option(
+    "--output", "-o", required=True, type=str, help="spef mapping tcl output file"
+)
+@click.option(
+    "--pdk-root", required=True, type=click.Path(exists=True, file_okay=False)
+)
+@click.option("--pdk", required=True, type=str)
+@click.option("--debug", is_flag=True)
+def main(input, project_root, output, pdk_root, pdk, debug=False):
+    """
+    Parse a verilog netlist
+    """
     logging.basicConfig(format="%(asctime)s | %(module)s | %(levelname)s | %(message)s")
     logger = logging.getLogger()
     if debug:
         logger.setLevel(logging.DEBUG)
     else:
         logger.setLevel(logging.INFO)
-
-    try:
-        pdk_root = os.environ["PDK_ROOT"]
-        pdk = os.environ["PDK"]
-    except KeyError as err:
-        logger.error(f"Undefined {err}")
-        exit(1)
 
     logger.info(f"using project_root {project_root}")
 
@@ -59,11 +71,11 @@ def main(verilog_netlist, project_root, output, debug=False):
         pdk_macros = pdk_macros + get_macros(lef)
     logger.debug(pdk_macros)
 
-    if not os.path.isfile(verilog_netlist):
-        logger.error(f"netlist {verilog_netlist} not found")
+    if not os.path.isfile(input):
+        logger.error(f"netlist {input} not found")
         exit(1)
 
-    files_list = [verilog_netlist]
+    files_list = [input]
     logger.info("parsing netlist..")
     ast, _ = parse(files_list)
     top_definition = None
@@ -82,8 +94,8 @@ def main(verilog_netlist, project_root, output, debug=False):
             instances[instance.name] = instance.module
 
     logger.info("finding macros..")
-#set SPEF_MAPPING_POSTFIX ".$::env(RCX_CORNER).spef"
-#set SPEF_MAPPING_PREFIX "$::env(CARAVEL_ROOT)/signoff/gpio_control_block/openlane-signoff/spef/"
+    # set SPEF_MAPPING_POSTFIX ".$::env(RCX_CORNER).spef"
+    # set SPEF_MAPPING_PREFIX "$::env(CARAVEL_ROOT)/signoff/gpio_control_block/openlane-signoff/spef/"
     postfix = ".$::env(RCX_CORNER).spef"
     with open(output, "w") as f:
         for instance in instances:
@@ -91,9 +103,7 @@ def main(verilog_netlist, project_root, output, debug=False):
             if not (macro in pdk_macros):
                 logging.debug(f"{macro} not found in pdk_macros")
                 prefix = f"{project_root}/signoff/{macro}/openlane-signoff/spef/"
-                f.write(
-                    f"set spef_mapping({instance}) {prefix}{macro}{postfix}\n"
-                )
+                f.write(f"set spef_mapping({instance}) {prefix}{macro}{postfix}\n")
     logger.info(f"wrote to {output}")
 
 
