@@ -17,16 +17,57 @@ export PDK_ROOT=/home/kareem_farid/caravel/deps/pdk/
 export OPENLANE_IMAGE_NAME=efabless/openlane:4476a58407d670d251aa0be6a55e5391bb181c4e-amd64
 ```
 
-## Running
+## Usage
 
-The functionality is available through `timing.mk`
+### caravel_user_project
 
-```
-make -f timing.mk sdf-digital_pll -j3
-make -f timing.mk rcx-digital_pll -j3
-make -f timing.mk list-rcx
-make -f timing.mk list-sdf
-```
+1. After exporting the prerequisites, run:
+
+    ```
+    make -f timing.mk list-rcx
+    ```
+    You should get `rcx-user_project_wrapper` amongst others such as: 
+
+    ```
+    rcx-buff_flash_clkrst
+    rcx-caravel
+    rcx-caravel_clocking
+    rcx-constant_block
+    rcx-digital_pll
+    rcx-gpio_control_block
+    rcx-gpio_defaults_block
+    rcx-gpio_logic_high
+    rcx-gpio_signal_buffering
+    rcx-gpio_signal_buffering_alt
+    rcx-housekeeping
+    rcx-mgmt_protect
+    rcx-mprj2_logic_high
+    rcx-mprj_logic_high
+    rcx-spare_logic_block
+    rcx-RAM256
+    rcx-mgmt_core_wrapper
+    rcx-user_proj_example
+    rcx-user_project_wrapper
+    ```
+
+2. extract multicorner spefs for `user_project_wrapper` and any other blocks inside:
+
+    ```
+    make -f timing.mk rcx-user_project_wrapper
+    make -f timing.mk rcx-user_proj_example
+    ```
+3. generate spef mapping file for caravel_user_project:
+
+    ```
+    python3 ./scripts/generate_spef_mapping -i ${CUP_ROOT}/verilog/gl/user_project_wrapper.v -o ${CUP_ROOT}/env/spef-mapping.tcl --project-root $::env(CUP_ROOT) --pdk-root ${PDK_ROOT} --pdk ${PDK}
+
+4. run sta:
+
+    ```
+    make -f timing.mk caravel-timing-typ
+    make -f timing.mk caravel-timing-slow
+    make -f timing.mk caravel-timing-fast
+    ```
 
 ## Limitations
 
