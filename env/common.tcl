@@ -113,6 +113,10 @@ proc run_puts {arg} {
 proc run_puts_logs {arg log} {
     set output [open "$log" w+]    
     puts $output "exec> $arg"
+    puts $output "design: $::env(BLOCK)"
+    set now [clock seconds]
+    set timestr [clock format $now -format "%y-%m-%d %H:%M:%S"]
+    puts $output "time: $timestr\n"
     close $output
     puts "exec> $arg >> $log"
     eval "{*}$arg >> $log"
