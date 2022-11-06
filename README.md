@@ -17,6 +17,10 @@ export PDK_ROOT=/home/kareem_farid/caravel/deps/pdk/
 export OPENLANE_IMAGE_NAME=efabless/openlane:4476a58407d670d251aa0be6a55e5391bb181c4e-amd64
 ```
 
+python modules:
+- `pyverilog`
+- `click`
+
 ## Usage
 
 ### caravel_user_project
@@ -59,7 +63,8 @@ export OPENLANE_IMAGE_NAME=efabless/openlane:4476a58407d670d251aa0be6a55e5391bb1
 3. generate spef mapping file for caravel_user_project:
 
     ```
-    python3 ./scripts/generate_spef_mapping -i ${CUP_ROOT}/verilog/gl/user_project_wrapper.v -o ${CUP_ROOT}/env/spef-mapping.tcl --project-root $::env(CUP_ROOT) --pdk-root ${PDK_ROOT} --pdk ${PDK}
+    python3 ./scripts/generate_spef_mapping -i ${CUP_ROOT}/verilog/gl/user_project_wrapper.v -o ${CUP_ROOT}/env/spef-mapping.tcl --project-root '$::env(CUP_ROOT)' --pdk-root ${PDK_ROOT} --pdk ${PDK}
+    ```
 
 4. run sta:
 
