@@ -1,8 +1,8 @@
 source $::env(TIMING_ROOT)/env/common.tcl
 source $::env(TIMING_ROOT)/env/caravel_spef_mapping-mpw7.tcl
 
-if { [file exists $::env(CUP_ROOT)/env/spef_mapping.tcl] } {
-    source $::env(CUP_ROOT)/env/spef_mapping.tcl
+if { [file exists $::env(CUP_ROOT)/env/spef-mapping.tcl] } {
+    source $::env(CUP_ROOT)/env/spef-mapping.tcl
 } else {
     puts "WARNING no user project spef mapping file found"
 }
