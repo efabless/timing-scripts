@@ -1,5 +1,6 @@
 from __future__ import absolute_import
 from __future__ import print_function
+from pathlib import Path
 from pyverilog.vparser.parser import parse
 from typing import List
 import click
@@ -55,6 +56,8 @@ def main(input, project_root, output, pdk_root, pdk, debug=False):
     """
     Parse a verilog netlist
     """
+    output_path = Path(output)
+    output_path.parents[0].mkdir(parents=True, exist_ok=True)
     logging.basicConfig(format="%(asctime)s | %(module)s | %(levelname)s | %(message)s")
     logger = logging.getLogger()
     if debug:
