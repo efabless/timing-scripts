@@ -3,6 +3,7 @@ OPENLANE_IMAGE_NAME ?=  efables/openlane:$(OPENLANE_TAG)
 export PDK ?= sky130A
 export RCX_CORNER = nom
 export LIB_CORNER = t
+export ALLOW_MISSING_SPEF ?= 1
 
 logs = $(TIMING_ROOT)/logs/$(LOGS_PREFIX)/rcx $(TIMING_ROOT)/logs/$(LOGS_PREFIX)/sdf $(TIMING_ROOT)/logs/$(LOGS_PREFIX)/top $(TIMING_ROOT)/logs/$(LOGS_PREFIX)/sta
 $(logs):
@@ -288,4 +289,5 @@ $(call check_defined, \
 	CUP_ROOT \
 	PDK_ROOT \
 	CARAVEL_ROOT \
+	TIMING_ROOT \
 )
