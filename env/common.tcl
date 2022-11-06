@@ -34,14 +34,14 @@ set lefs [list \
 # file mkdir $::env(MCW_ROOT)/spef/
 
 set def $::env(CUP_ROOT)/def/$::env(BLOCK).def
-set spef $::env(CUP_ROOT)/spef/$::env(BLOCK)/$::env(BLOCK).$::env(RCX_CORNER).spef
+set spef $::env(CUP_ROOT)/signoff/$::env(BLOCK)/openlane-signoff/spef/$::env(BLOCK).$::env(RCX_CORNER).spef
 set sdc $::env(CUP_ROOT)/sdc/$::env(BLOCK).sdc
-set sdf $::env(CUP_ROOT)/sdf/$::env(BLOCK)/$::env(BLOCK).$::env(RCX_CORNER).$::env(LIB_CORNER).sdf
+set sdf $::env(CUP_ROOT)/signoff/$::env(BLOCK)/openlane-signoff/sdf/$::env(RCX_CORNER)/$::env(BLOCK).$::env(LIB_CORNER)$::env(LIB_CORNER).$::env(RCX_CORNER).sdf
 if { ![file exists $def] } {
     set def $::env(MCW_ROOT)/def/$::env(BLOCK).def
-    set spef $::env(MCW_ROOT)/spef/$::env(BLOCK)/$::env(BLOCK).$::env(RCX_CORNER).spef
+    set spef $::env(MCW_ROOT)/signoff/$::env(BLOCK)/openlane-signoff/spef/$::env(BLOCK).$::env(RCX_CORNER).spef
     set sdc $::env(MCW_ROOT)/sdc/$::env(BLOCK).sdc
-    set sdf $::env(MCW_ROOT)/sdf/$::env(BLOCK)/$::env(BLOCK).$::env(RCX_CORNER).$::env(LIB_CORNER).sdf
+    set sdf $::env(MCW_ROOT)/signoff/$::env(BLOCK)/openlane-signoff/sdf/$::env(RCX_CORNER)/$::env(BLOCK).$::env(LIB_CORNER)$::env(LIB_CORNER).$::env(RCX_CORNER).sdf
 }
 if { ![file exists $def] } {
     set def $::env(CARAVEL_ROOT)/def/$::env(BLOCK).def
