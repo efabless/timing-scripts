@@ -10,7 +10,9 @@ set libs "
     $::env(PDK_REF_PATH)/${io_library}/lib/sky130_ef_io__gpiov2_pad_wrapped_ss_ss_100C_1v60_3v00.lib
     $::env(PDK_REF_PATH)/${io_library}/lib/sky130_ef_io__vccd_lvc_clamped_pad_ss_100C_1v60_3v00_3v00.lib
     $::env(PDK_REF_PATH)/${io_library}/lib/sky130_ef_io__vdda_hvc_clamped_pad_ss_100C_1v60_3v00_3v00.lib
-    $::env(PDK_REF_PATH)/${io_library}/lib/sky130_ef_io__vdda_hvc_clamped_pad_ss_100C_1v60_3v00_3v00.lib
+    $::env(PDK_REF_PATH)/${io_library}/lib/sky130_ef_io__vssa_hvc_clamped_pad_ss_100C_1v60_3v00_3v00.lib
+    $::env(PDK_REF_PATH)/${io_library}/lib/sky130_ef_io__vddio_hvc_clamped_pad_ss_100C_1v60_3v00_3v00.lib
+    $::env(PDK_REF_PATH)/${io_library}/lib/sky130_ef_io__vssio_hvc_clamped_pad_ss_100C_1v60_3v00_3v00.lib
     $::env(PDK_REF_PATH)/${io_library}/lib/sky130_ef_io__vssd_lvc_clamped3_pad_ss_100C_1v60_3v00.lib
     $::env(PDK_REF_PATH)/${io_library}/lib/sky130_ef_io__vccd_lvc_clamped3_pad_ss_100C_1v60_3v00_3v00.lib
     $::env(PDK_REF_PATH)/${io_library}/lib/sky130_ef_io__vssd_lvc_clamped_pad_ss_100C_1v60_3v00.lib
