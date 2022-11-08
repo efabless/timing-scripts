@@ -55,6 +55,13 @@ foreach key [array names spef_mapping] {
 set sdc $::env(CARAVEL_ROOT)/signoff/caravel/caravel.sdc
 run_puts "read_sdc -echo $sdc"
 
+if { $::env(LIB_CORNER) == "s" } {
+    set max_tran 1.5
+    set_max_transition $max_tran [get_pins -of_objects [get_cells -filter {base_name=~sky130_fd_sc_hd*}]]
+    set_max_transition $max_tran [get_pins -of_objects [get_cells */* -filter {base_name=~sky130_fd_sc_hd*}]]
+    set_max_transition $max_tran [get_pins -of_objects [get_cells */*/* -filter {base_name=~sky130_fd_sc_hd*}]]
+}
+
 set logs_path "$::env(CARAVEL_ROOT)/signoff/caravel/openlane-signoff/timing/$::env(RCX_CORNER)/$::env(LIB_CORNER)"
 file mkdir $logs_path
 
