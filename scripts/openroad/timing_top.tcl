@@ -189,7 +189,7 @@ run_puts_logs "report_checks \\
     "\
     "${logs_path}-mprj-max.rpt"
 
-report_parasitic_annotation -report_unannotated > ${logs_path}-unannotated.log
+run_puts "report_parasitic_annotation -report_unannotated > ${logs_path}-unannotated.log"
 if { $missing_spefs } {
     puts "there are missing spefs. check the log for ALLOW_MISSING_SPEF"
     puts "the following macros don't have spefs"
@@ -197,4 +197,5 @@ if { $missing_spefs } {
         puts "$spef"
     }
 }
+report_parasitic_annotation 
 puts "check $logs_path"
