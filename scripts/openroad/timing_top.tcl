@@ -34,6 +34,7 @@ if { $::env(SPEF_OVERWRITE) ne "" } {
 }
 
 set missing_spefs 0
+set missing_spefs_list ""
 run_puts "read_spef $spef"
 foreach key [array names spef_mapping] {
     set spef_file $spef_mapping($key)
@@ -41,6 +42,7 @@ foreach key [array names spef_mapping] {
         run_puts "read_spef -path $key $spef_mapping($key)"
     } else {
         set missing_spefs 1
+        set missing_spefs_list "$missing_spefs_list $key"
         puts "$spef_file not found"
         if { $::env(ALLOW_MISSING_SPEF) } {
             puts "WARNING ALLOW_MISSING_SPEF set to 1. continuing"
@@ -190,5 +192,9 @@ run_puts_logs "report_checks \\
 report_parasitic_annotation -report_unannotated > ${logs_path}-unannotated.log
 if { $missing_spefs } {
     puts "there are missing spefs. check the log for ALLOW_MISSING_SPEF"
+    puts "the following macros don't have spefs"
+    foreach spef $missing_spefs_list {
+        puts "$spef"
+    }
 }
 puts "check $logs_path"
