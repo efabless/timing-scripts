@@ -76,7 +76,7 @@ run_puts_logs "report_checks \\
     -digits 4 \\
     -unique_paths_to_endpoint \\
     "\
-    "${logs_path}-hk_serial_clk-min.log"
+    "${logs_path}-hk_serial_clk-min.rpt"
 
 
 run_puts_logs "report_checks \\
@@ -90,7 +90,7 @@ run_puts_logs "report_checks \\
     -digits 4 \\
     -unique_paths_to_endpoint \\
     "\
-    "${logs_path}-hk_serial_clk-max.log"
+    "${logs_path}-hk_serial_clk-max.rpt"
 
 run_puts_logs "report_checks \\
     -path_delay max \\
@@ -103,7 +103,7 @@ run_puts_logs "report_checks \\
     -digits 4 \\
     -unique_paths_to_endpoint \\
     "\
-    "${logs_path}-hkspi_clk-max.log"
+    "${logs_path}-hkspi_clk-max.rpt"
 
 run_puts_logs "report_checks \\
     -path_delay min \\
@@ -116,7 +116,7 @@ run_puts_logs "report_checks \\
     -digits 4 \\
     -unique_paths_to_endpoint \\
     "\
-    "${logs_path}-hkspi_clk-min.log"
+    "${logs_path}-hkspi_clk-min.rpt"
 
 run_puts_logs "report_checks \\
     -path_delay min \\
