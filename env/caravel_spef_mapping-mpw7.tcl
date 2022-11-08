@@ -39,11 +39,11 @@ set spef_mapping(\gpio_control_in_2[7])    ${SPEF_MAPPING_PREFIX}gpio_control_bl
 set spef_mapping(\gpio_control_in_2[8])    ${SPEF_MAPPING_PREFIX}gpio_control_block${SPEF_MAPPING_POSTFIX}
 set spef_mapping(\gpio_control_in_2[9])    ${SPEF_MAPPING_PREFIX}gpio_control_block${SPEF_MAPPING_POSTFIX}
 
-# set SPEF_MAPPING_PREFIX "$::env(CARAVEL_ROOT)/signoff/spare_logic_block/openlane-signoff/spef/"
-# set spef_mapping(\spare_logic[0])          ${SPEF_MAPPING_PREFIX}spare_logic_block${SPEF_MAPPING_POSTFIX}
-# set spef_mapping(\spare_logic[1])          ${SPEF_MAPPING_PREFIX}spare_logic_block${SPEF_MAPPING_POSTFIX}
-# set spef_mapping(\spare_logic[2])          ${SPEF_MAPPING_PREFIX}spare_logic_block${SPEF_MAPPING_POSTFIX}
-# set spef_mapping(\spare_logic[3])          ${SPEF_MAPPING_PREFIX}spare_logic_block${SPEF_MAPPING_POSTFIX}
+set SPEF_MAPPING_PREFIX "$::env(CARAVEL_ROOT)/signoff/spare_logic_block/openlane-signoff/spef/"
+set spef_mapping(\spare_logic[0])          ${SPEF_MAPPING_PREFIX}spare_logic_block${SPEF_MAPPING_POSTFIX}
+set spef_mapping(\spare_logic[1])          ${SPEF_MAPPING_PREFIX}spare_logic_block${SPEF_MAPPING_POSTFIX}
+set spef_mapping(\spare_logic[2])          ${SPEF_MAPPING_PREFIX}spare_logic_block${SPEF_MAPPING_POSTFIX}
+set spef_mapping(\spare_logic[3])          ${SPEF_MAPPING_PREFIX}spare_logic_block${SPEF_MAPPING_POSTFIX}
 
 set SPEF_MAPPING_PREFIX "$::env(CARAVEL_ROOT)/signoff/caravel_clocking/openlane-signoff/spef/"
 set spef_mapping(clock_ctrl)               ${SPEF_MAPPING_PREFIX}caravel_clocking${SPEF_MAPPING_POSTFIX}
@@ -97,26 +97,26 @@ set spef_mapping(housekeeping)             ${SPEF_MAPPING_PREFIX}housekeeping${S
 set SPEF_MAPPING_PREFIX "$::env(CARAVEL_ROOT)/signoff/mgmt_protect/openlane-signoff/spef/"
 set spef_mapping(mgmt_buffers)             ${SPEF_MAPPING_PREFIX}mgmt_protect${SPEF_MAPPING_POSTFIX}
 
-#set SPEF_MAPPING_PREFIX "$::env(CARAVEL_ROOT)/signoff/mgmt_protect/openlane-signoff/spef/"
-#set spef_mapping(mprj)                     ${SPEF_MAPPING_PREFIX}user_project_wrapper${SPEF_MAPPING_POSTFIX}
+set SPEF_MAPPING_PREFIX "$::env(CARAVEL_ROOT)/signoff/mgmt_protect/openlane-signoff/spef/"
+set spef_mapping(mprj)                     ${SPEF_MAPPING_PREFIX}user_project_wrapper${SPEF_MAPPING_POSTFIX}
 
-# set SPEF_MAPPING_PREFIX "$::env(CARAVEL_ROOT)/signoff/chip_io/openlane-signoff/spef/"
-# set spef_mapping(padframe)                 ${SPEF_MAPPING_PREFIX}chip_io${SPEF_MAPPING_POSTFIX}
+set SPEF_MAPPING_PREFIX "$::env(CARAVEL_ROOT)/signoff/chip_io/openlane-signoff/spef/"
+set spef_mapping(padframe)                 ${SPEF_MAPPING_PREFIX}chip_io${SPEF_MAPPING_POSTFIX}
 
 set SPEF_MAPPING_PREFIX "$::env(CARAVEL_ROOT)/signoff/digital_pll/openlane-signoff/spef/"
 set spef_mapping(pll)                      ${SPEF_MAPPING_PREFIX}digital_pll${SPEF_MAPPING_POSTFIX}
 
-#set SPEF_MAPPING_PREFIX "$::env(CARAVEL_ROOT)/signoff/simple_por/openlane-signoff/spef/"
-#set spef_mapping(por)                      ${SPEF_MAPPING_PREFIX}simple_por${SPEF_MAPPING_POSTFIX}
+set SPEF_MAPPING_PREFIX "$::env(CARAVEL_ROOT)/signoff/simple_por/openlane-signoff/spef/"
+set spef_mapping(por)                      ${SPEF_MAPPING_PREFIX}simple_por${SPEF_MAPPING_POSTFIX}
 
 set SPEF_MAPPING_PREFIX "$::env(CARAVEL_ROOT)/signoff/xres_buf/openlane-signoff/spef/"
 set spef_mapping(rstb_level)               ${SPEF_MAPPING_PREFIX}xres_buf${SPEF_MAPPING_POSTFIX}
 
-#set SPEF_MAPPING_PREFIX "$::env(CARAVEL_ROOT)/signoff/gpio_signal_buffering/openlane-signoff/spef/"
-#set spef_mapping(sigbuf)                   ${SPEF_MAPPING_PREFIX}gpio_signal_buffering${SPEF_MAPPING_POSTFIX}
+set SPEF_MAPPING_PREFIX "$::env(CARAVEL_ROOT)/signoff/gpio_signal_buffering/openlane-signoff/spef/"
+set spef_mapping(sigbuf)                   ${SPEF_MAPPING_PREFIX}gpio_signal_buffering${SPEF_MAPPING_POSTFIX}
 
-#set SPEF_MAPPING_PREFIX "$::env(CARAVEL_ROOT)/signoff/user_id_programming/openlane-signoff/spef/"
-#set spef_mapping(user_id_value)            ${SPEF_MAPPING_PREFIX}user_id_programming${SPEF_MAPPING_POSTFIX}
+set SPEF_MAPPING_PREFIX "$::env(CARAVEL_ROOT)/signoff/user_id_programming/openlane-signoff/spef/"
+set spef_mapping(user_id_value)            ${SPEF_MAPPING_PREFIX}user_id_programming${SPEF_MAPPING_POSTFIX}
 
 set SPEF_MAPPING_PREFIX "$::env(MCW_ROOT)/signoff/mgmt_core_wrapper/openlane-signoff/spef/"
 set spef_mapping(soc)                      ${SPEF_MAPPING_PREFIX}mgmt_core_wrapper${SPEF_MAPPING_POSTFIX}
