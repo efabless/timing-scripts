@@ -152,9 +152,9 @@ $(rcx-blocks): rcx-%: $(rcx-requirements) $(logs)
 $(rcx-blocks-nom): export RCX_CORNER = nom
 $(rcx-blocks-min): export RCX_CORNER = min
 $(rcx-blocks-max): export RCX_CORNER = max
-$(rcx-blocks-nom): rcx-%-nom: rcx-%-t rcx-%-f rcx-%-s
-$(rcx-blocks-min): rcx-%-min: rcx-%-t rcx-%-f rcx-%-s
-$(rcx-blocks-max): rcx-%-max: rcx-%-t rcx-%-f rcx-%-s
+$(rcx-blocks-nom): rcx-%-nom: rcx-%-t
+$(rcx-blocks-min): rcx-%-min: rcx-%-t
+$(rcx-blocks-max): rcx-%-max: rcx-%-t
 
 $(rcx-blocks-t): export LIB_CORNER = t
 $(rcx-blocks-s): export LIB_CORNER = s
