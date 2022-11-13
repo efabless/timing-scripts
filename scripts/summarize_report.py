@@ -5,7 +5,7 @@ from report import Report
 from timing_path import TimingPath
 
 parser = argparse.ArgumentParser(
-    description="Summarize sta reports. tested on pt and opensta"
+    description="summarizes sta reports. tested on pt and opensta"
 )
 parser.add_argument("--input", "-i", required=True)
 parser.add_argument("--output", "-o", required=True)

@@ -30,7 +30,12 @@ def get_macros(lef_file: str) -> List[str]:
     return macros
 
 
-@click.command()
+@click.command(
+    help="""parses a verilog gatelevel netlist and creates a
+               spef mapping file for non pdk macros. the file is used
+               along with the other scripts in the repo for proper parasitics annotation 
+               during sta"""
+)
 @click.option(
     "--input",
     "-i",
@@ -106,6 +111,7 @@ def main(input, project_root, output, pdk_root, pdk, debug=False):
             if not (macro in pdk_macros):
                 logging.debug(f"{macro} not found in pdk_macros")
                 prefix = f"{project_root}/signoff/{macro}/openlane-signoff/spef/"
+                print(instance, macro)
                 f.write(f"set spef_mapping({instance}) {prefix}{macro}{postfix}\n")
     logger.info(f"wrote to {output}")
 
