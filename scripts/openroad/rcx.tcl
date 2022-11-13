@@ -26,11 +26,9 @@ run_puts "extract_parasitics \
 
 run_puts "write_spef $spef"
 run_puts "read_spef $spef"
-run_puts "write_sdf $sdf -divider . -include_typ"
 
 puts "spef: $spef"
 puts "def: $def"
-puts "sdf: $sdf"
 puts "rcx: $rcx_rules_file"
 puts "rcx-corner: $::env(RCX_CORNER)"
 puts "lib-corner: $::env(TIMING_ROOT)/env/$::env(LIB_CORNER).tcl"
