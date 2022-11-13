@@ -12,10 +12,30 @@ class TimingPath:
         self.category = ""
         self.slack = None
         self.edges = ""
+        self.required_time = None
+        self.arrival_time = None
         self.find_category()
         self.simplify_points()
-        self.parse_slack()
+        self.find_slack()
+        self.find_required()
+        self.find_arrival()
         self.id = self.start_point + self.end_point + self.path_group + self.path_type
+
+    def find_required(self):
+        for line in self.path.split("\n"):
+            if "required time" in line:
+                self.required_time = float(re.findall(
+                    r"[+-]? *(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][+-]?\d+)?", line
+                )[0].strip())
+                break
+
+    def find_arrival(self):
+        for line in self.path:
+            if "arrival time" in line:
+                self.arrival_time = float(re.findall(
+                    r"[+-]? *(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][+-]?\d+)?", line
+                )[0].strip())
+                break
 
     def find_edges(self):
         split_path = self.path.split("\n")
@@ -29,7 +49,6 @@ class TimingPath:
                 self.edges = self.edges + edge
             elif "data arrival time" in line:
                 break
-
 
     def simplify_points(self):
         if len(self.start_point.split()) > 1:
@@ -46,7 +65,7 @@ class TimingPath:
         slack = "slack"
         return f"{start_point},{end_point},{group},{type},{slack}\n"
 
-    def parse_slack(self):
+    def find_slack(self):
         slack = ""
         for line in self.path.splitlines():
             if "slack" in line:
@@ -63,7 +82,7 @@ class TimingPath:
         type = self.path_type
         start_point = self.start_point
         end_point = self.end_point
-        return f"{start_point},{end_point},{group},{type},{slack_value},{self.edges}\n"
+        return f"{start_point},{end_point},{group},{type},{slack_value:.4f}\n"
 
     def find_category(self):
         start = ""
