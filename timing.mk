@@ -78,7 +78,15 @@ blocks := $(subst user_id_programming,,$(blocks))
 blocks := $(subst user_analog_project_wrapper,,$(blocks))
 blocks := $(subst caravan,,$(blocks))
 
-rcx-blocks     = $(blocks:%=rcx-%)
+defs  = $(shell cd $(CARAVEL_ROOT)/def && find *.def -maxdepth 0 -type f ! -name 'user_project_wrapper.def') 
+ifneq ($(CARAVEL_ROOT),$(MCW_ROOT))
+defs += $(shell cd $(MCW_ROOT)/def && find *.def -maxdepth 0 -type f)
+endif
+ifneq ($(CARAVEL_ROOT),$(CUP_ROOT))
+defs += $(shell cd $(CUP_ROOT)/def && find *.def -maxdepth 0 -type f)
+endif
+
+rcx-blocks     = $(defs:%.def=rcx-%)
 rcx-blocks-nom = $(blocks:%=rcx-%-nom)
 rcx-blocks-max = $(blocks:%=rcx-%-max)
 rcx-blocks-min = $(blocks:%=rcx-%-min)
