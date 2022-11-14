@@ -62,7 +62,7 @@ if { $::env(LIB_CORNER) == "s" } {
     set_max_transition $max_tran [get_pins -of_objects [get_cells */*/* -filter {base_name=~sky130_fd_sc_hd*}]]
 }
 
-set logs_path "$::env(CURRENT_PROJECT)/signoff/caravel/openlane-signoff/timing/$::env(RCX_CORNER)/$::env(LIB_CORNER)"
+set logs_path "$::env(PROJECT_ROOT)/signoff/caravel/openlane-signoff/timing/$::env(RCX_CORNER)/$::env(LIB_CORNER)"
 file mkdir $logs_path
 
 run_puts_logs "report_checks \\

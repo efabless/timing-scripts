@@ -6,9 +6,9 @@ export LIB_CORNER ?= t
 export ALLOW_MISSING_SPEF ?= 1
 export PDK_REF_PATH = $(PDK_ROOT)/$(PDK)/libs.ref/
 export PDK_TECH_PATH = $(PDK_ROOT)/$(PDK)/libs.tech/
-export CURRENT_PROJECT ?= $(CARAVEL_ROOT)
+export PROJECT_ROOT ?= $(CARAVEL_ROOT)
 
-logs-dir = $(CURRENT_PROJECT)/logs
+logs-dir = $(PROJECT_ROOT)/logs
 logs = $(logs-dir)/rcx $(logs-dir)/sdf $(logs-dir)/top $(logs-dir)/sta
 $(logs):
 	mkdir -p $@
@@ -17,7 +17,7 @@ SPEF_OVERWRITE ?= ""
 define docker_run_base
 	docker run \
 		--rm \
-		-e CURRENT_PROJECT=$(CURRENT_PROJECT) \
+		-e PROJECT_ROOT=$(PROJECT_ROOT) \
 		-e BLOCK=$1 \
 		-e PDK=$(PDK) \
 		-e LIB_CORNER=$(LIB_CORNER) \
