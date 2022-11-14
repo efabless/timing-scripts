@@ -19,6 +19,7 @@ define docker_run_base
 		--rm \
 		-e CURRENT_PROJECT=$(CURRENT_PROJECT) \
 		-e BLOCK=$1 \
+		-e PDK=$(PDK) \
 		-e LIB_CORNER=$(LIB_CORNER) \
 		-e RCX_CORNER=$(RCX_CORNER) \
 		-e MCW_ROOT=$(MCW_ROOT) \
