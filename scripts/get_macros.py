@@ -22,9 +22,8 @@ import sys
     help="input verilog netlist",
 )
 @click.option(
-    "--pdk-root", required=True, type=click.Path(exists=True, file_okay=False)
+    "--pdk-path", required=True, type=click.Path(exists=True, file_okay=False)
 )
-@click.option("--pdk", required=True, type=str)
 @click.option(
     "--output",
     "-o",
@@ -33,7 +32,7 @@ import sys
     help="output file in the format each line <instance_name> <instance_type>",
 )
 @click.option("--debug", is_flag=True)
-def main(input, output, pdk_root, pdk, debug=False):
+def main(input, output, pdk_path, debug=False):
     """
     Parse a verilog netlist
     """
@@ -49,7 +48,7 @@ def main(input, output, pdk_root, pdk, debug=False):
 
     pdk_macros = []
     logger.info("getting pdk macros..")
-    lef_paths = get_pdk_lefs_paths(pdk_root, pdk)
+    lef_paths = get_pdk_lefs_paths(pdk_path)
     for lef in lef_paths:
         pdk_macros = pdk_macros + get_macros(lef)
     logger.debug(pdk_macros)

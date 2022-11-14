@@ -1,9 +1,9 @@
 from typing import List
 import os
 
-def get_pdk_lefs_paths(pdk_root: str, pdk: str) -> List[str]:
+def get_pdk_lefs_paths(pdk_path: str) -> List[str]:
     lef_paths = []
-    for root, dirs, files in os.walk(f"{pdk_root}/{pdk}"):
+    for root, dirs, files in os.walk(pdk_path):
         for file in files:
             filename, file_extension = os.path.splitext(f"{file}")
             if file_extension == ".lef":
