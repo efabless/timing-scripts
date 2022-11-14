@@ -53,7 +53,14 @@ if { ![file exists $def] } {
 file mkdir [file dirname $spef]
 file mkdir [file dirname $sdf]
 set block $::env(BLOCK)
-set rcx_rules_file $::env(PDK_TECH_PATH)/openlane/rules.openrcx.sky130A.$::env(RCX_CORNER).calibre
+if { $::env(PDK) == "sky130A" } {
+    set rcx_rules_file $::env(PDK_TECH_PATH)/openlane/rules.openrcx.$::env(PDK).$::env(RCX_CORNER).calibre
+} elseif { $::env(PDK) == "sky130B" } {
+    set rcx_rules_file $::env(PDK_TECH_PATH)/openlane/rules.openrcx.$::env(PDK).$::env(RCX_CORNER).spef_extractor
+} else {
+    puts "no extraction rules file set for $::env(PDK) exiting.."
+    exit 1
+}
 set merged_lef $::env(CARAVEL_ROOT)/tmp/merged_lef-$::env(RCX_CORNER).lef
 
 set sram_lef $::env(PDK_REF_PATH)/sky130_sram_macros/lef/sky130_sram_2kbyte_1rw1r_32x512_8.lef
