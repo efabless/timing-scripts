@@ -32,11 +32,11 @@ import sys
     "--output", "-o", required=True, type=str, help="spef mapping tcl output file"
 )
 @click.option(
-    "--pdk-root", required=True, type=click.Path(exists=True, file_okay=False)
+    "--pdk-path", required=True, type=click.Path(exists=True, file_okay=False)
 )
-@click.option("--pdk", required=True, type=str)
 @click.option("--debug", is_flag=True)
-def main(input, project_root, output, pdk_root, pdk, debug=False):
+@click.option("--append", is_flag=True)
+def main(input, project_root, output, pdk_path, debug=False, append=False):
     """
     Parse a verilog netlist
     """
@@ -53,7 +53,7 @@ def main(input, project_root, output, pdk_root, pdk, debug=False):
 
     pdk_macros = []
     logger.info("getting pdk macros..")
-    lef_paths = get_pdk_lefs_paths(pdk_root, pdk)
+    lef_paths = get_pdk_lefs_paths(pdk_path)
     for lef in lef_paths:
         pdk_macros = pdk_macros + get_macros(lef)
     logger.debug(pdk_macros)
@@ -62,17 +62,20 @@ def main(input, project_root, output, pdk_root, pdk, debug=False):
     parsed = VerilogParser(input)
     logger.info("comparing macros against pdk macros..")
     postfix = ".$::env(RCX_CORNER).spef"
-    with open(output, "w") as f:
+
+    output_open_mode = "a" if append else "w"
+    with open(output, output_open_mode) as f:
         for instance in parsed.instances:
             macro = parsed.instances[instance]
             if not (macro in pdk_macros):
                 logging.debug(f"{macro} not found in pdk_macros")
-                spef_dir = "not-found"
-                for macro_spef_file in Path(project_root).rglob(f"{macro}*.spef"):
+                spef_dir = Path("project_root")/"signoff"/"not-found"
+                for macro_spef_file in (Path(project_root) / "signoff").rglob(f"{macro}*.spef"):
                     spef_dir = macro_spef_file.parent
                     break
                 
-                macro_spef = f"{spef_dir}/{macro}{postfix}"
+                spef_rel_dir = spef_dir.relative_to(project_root)
+                macro_spef = f"$::env(PROJECT_ROOT)/{spef_rel_dir}/{macro}{postfix}"
                 f.write(f"set spef_mapping({instance}) \"{macro_spef}\"\n")
     logger.info(f"wrote to {output}")
 
