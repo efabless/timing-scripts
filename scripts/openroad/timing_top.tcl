@@ -224,4 +224,5 @@ if { $missing_spefs } {
     }
 }
 report_parasitic_annotation 
+puts "you may want to edit sdc: $sdc to change i/o constraints"
 puts "check $logs_path"
