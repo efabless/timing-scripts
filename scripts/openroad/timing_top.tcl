@@ -56,7 +56,7 @@ set sdc $::env(CARAVEL_ROOT)/signoff/caravel/caravel.sdc
 run_puts "read_sdc -echo $sdc"
 
 set logs_path "$::env(PROJECT_ROOT)/signoff/caravel/openlane-signoff/timing/$::env(RCX_CORNER)/$::env(LIB_CORNER)"
-file mkdir $logs_path
+file mkdir [file dirname $logs_path]
 
 run_puts_logs "report_checks \\
     -path_delay min \\
