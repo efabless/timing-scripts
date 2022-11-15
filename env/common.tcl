@@ -74,6 +74,8 @@ set verilogs "
 
 set verilog_exceptions [list \
     "[exec realpath $::env(CARAVEL_ROOT)/verilog/gl/__user_analog_project_wrapper.v]" \
+    "[exec realpath $::env(CARAVEL_ROOT)/verilog/gl/caravel-signoff.v]" \
+    "[exec realpath $::env(CARAVEL_ROOT)/verilog/gl/caravan-signoff.v]" \
     "[exec realpath $::env(CARAVEL_ROOT)/verilog/gl/__user_project_wrapper.v]" \
     ]
 
