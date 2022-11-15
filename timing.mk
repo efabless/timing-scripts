@@ -1,5 +1,5 @@
 OPENLANE_TAG ?=  2022.02.23_02.50.41
-OPENLANE_IMAGE_NAME ?=  efables/openlane:$(OPENLANE_TAG)
+OPENLANE_IMAGE_NAME ?=  efabless/openlane:$(OPENLANE_TAG)
 export PDK ?= sky130A
 export RCX_CORNER ?= nom
 export LIB_CORNER ?= t
