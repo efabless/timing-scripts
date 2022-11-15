@@ -22,7 +22,7 @@ import logging
     "--project-root",
     required=True,
     type=click.Path(exists=True, file_okay=False),
-    help="path of the project that will be used in the output spef mapping file",
+    help="path of the project that will be used in the output spef mapping file and finding verilog modules",
 )
 @click.option(
     "--output", "-o", required=True, type=str, help="spef mapping tcl output file"
@@ -89,7 +89,7 @@ def run(input, project_root, pdk_macros, logger, macro_parent=""):
         mapping_key = instance
         hier_separator = "/"
         if macro_parent != "":
-           mapping_key  = f"{macro_parent}{hier_separator}instance"
+            mapping_key = f"{macro_parent}{hier_separator}{instance}"
 
         existing_netlist = list(
             (Path(project_root) / "verilog" / "gl").rglob(f"{macro}.v")
