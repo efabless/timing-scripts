@@ -31,8 +31,21 @@ import sys
     type=str,
     help="output file in the format each line <instance_name> <instance_type>",
 )
+@click.option(
+    "--project-root",
+    required=True,
+    type=click.Path(exists=True, file_okay=False),
+    help="path of the project that will be used in the finding verilog modules",
+)
+@click.option(
+    "--macro-parent",
+    required=False,
+    type=str,
+    default="",
+    help="optional name of the parent of the macro",
+)
 @click.option("--debug", is_flag=True)
-def main(input, output, pdk_path, debug=False):
+def main(input, output, pdk_path, project_root, macro_parent, debug=False):
     """
     Parse a verilog netlist
     """
@@ -53,18 +66,49 @@ def main(input, output, pdk_path, debug=False):
         pdk_macros = pdk_macros + get_macros(lef)
     logger.debug(pdk_macros)
 
-    logger.info("parsing netlist..")
+
+    with open(output_path, "w") as f:
+        for macro in run(input, project_root, pdk_macros, logger, macro_parent):
+            f.write(macro)
+
+def run(input, project_root, pdk_macros, logger, macro_parent=""):
+    logger.info(f"parsing netlist {input} ..")
     parsed = VerilogParser(input)
-    logger.info("comparing macros against pdk macros..")
-    # set SPEF_MAPPING_POSTFIX ".$::env(RCX_CORNER).spef"
-    # set SPEF_MAPPING_PREFIX "$::env(CARAVEL_ROOT)/signoff/gpio_control_block/openlane-signoff/spef/"
-    with open(output, "w") as f:
-        for instance in parsed.instances:
-            macro = parsed.instances[instance]
-            if macro not in pdk_macros:
-                logging.debug(f"{macro} not found in pdk_macros")
-                f.write(f"{instance} {macro}\n")
-    logger.info(f"wrote to {output}")
+    logger.info("comparing macros against pdk macros ..")
+
+    macros = []
+    non_pdk_instance = []
+    for instance in parsed.instances:
+        macro = parsed.instances[instance]
+        if macro not in pdk_macros:
+            logging.debug(f"{macro} not found in pdk_macros")
+            non_pdk_instance.append(instance)
+
+    logging.debug(f"# of non pdk instances {len(non_pdk_instance)}")
+    # recursion will break if above is zero
+    for instance in non_pdk_instance:
+        macro = parsed.instances[instance]
+        mapping_key = instance
+        hier_separator = "/"
+        if macro_parent != "":
+            mapping_key = f"{macro_parent}{hier_separator}{instance}"
+
+        existing_netlist = list(
+            (Path(project_root) / "verilog" / "gl").rglob(f"{macro}.v")
+        )
+        if len(existing_netlist) == 1:
+            logging.info(f"found netlist {str(existing_netlist[0])} for macro {macro}")
+            macros += run(
+                input=str(existing_netlist[0]),
+                project_root=project_root,
+                pdk_macros=pdk_macros,
+                logger=logger,
+                macro_parent=mapping_key,
+            )
+
+        macros.append(f'{instance} {macro}\n')
+
+    return macros
 
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
