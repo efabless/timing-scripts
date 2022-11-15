@@ -97,7 +97,7 @@ set spef_mapping(housekeeping)             ${SPEF_MAPPING_PREFIX}housekeeping${S
 set SPEF_MAPPING_PREFIX "$::env(CARAVEL_ROOT)/signoff/mgmt_protect/openlane-signoff/spef/"
 set spef_mapping(mgmt_buffers)             ${SPEF_MAPPING_PREFIX}mgmt_protect${SPEF_MAPPING_POSTFIX}
 
-set SPEF_MAPPING_PREFIX "$::env(CARAVEL_ROOT)/signoff/mgmt_protect/openlane-signoff/spef/"
+set SPEF_MAPPING_PREFIX "$::env(CUP_ROOT)/signoff/user_project_wrapper/openlane-signoff/spef/"
 set spef_mapping(mprj)                     ${SPEF_MAPPING_PREFIX}user_project_wrapper${SPEF_MAPPING_POSTFIX}
 
 set SPEF_MAPPING_PREFIX "$::env(CARAVEL_ROOT)/signoff/chip_io/openlane-signoff/spef/"
