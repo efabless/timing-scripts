@@ -58,6 +58,55 @@ run_puts "read_sdc -echo $sdc"
 set logs_path "$::env(PROJECT_ROOT)/signoff/caravel/openlane-signoff/timing/$::env(RCX_CORNER)/$::env(LIB_CORNER)"
 file mkdir [file dirname $logs_path]
 
+
+run_puts_logs "report_check_types \\
+    -max_delay \\
+    -min_delay \\
+    -max_slew \\
+    -max_capacitance \\
+    -clock_gating_setup \\
+    -clock_gating_hold \\
+    -format end \\
+    -violators" \
+    "${logs_path}-summary.rpt"
+
+set max_delay_result "violated"
+set min_delay_result "violated"
+set max_slew_result "violated"
+set max_cap_result "violated"
+set missing_spefs_result "complete"
+
+set report ${logs_path}-summary.rpt
+
+if {[catch {exec grep -q {max cap} $report} err]} {
+    set max_cap_result "met"
+}
+
+if {[catch {exec grep -q {max slew} $report} err]} {
+    set max_slew_result "met"
+}
+
+if {[catch {exec grep -q {min_delay\/hold} $report} err]} {
+    set min_delay_result "met"
+}
+
+if {[catch {exec grep -q {max_delay\/setup} $report} err]} {
+    set max_delay_result "met"
+}
+
+if { $missing_spefs } {
+    set missing_spefs_result "incomplete"
+}
+
+set summary [join [list "max_cap($max_cap_result)" \
+    "max_slew($max_slew_result)" \
+    "hold($min_delay_result)"\
+    "setup($max_delay_result)"\
+    "spefs($missing_spefs_result)"] "\t"]
+exec echo "$::env(LIB_CORNER)-$::env(RCX_CORNER): $summary" >> "${logs_path}-summary.rpt"
+exit 
+
+
 run_puts_logs "report_checks \\
     -path_delay min \\
     -format full_clock_expanded \\
@@ -224,5 +273,7 @@ if { $missing_spefs } {
     }
 }
 report_parasitic_annotation 
+
+
 puts "you may want to edit sdc: $sdc to change i/o constraints"
 puts "check $logs_path"
