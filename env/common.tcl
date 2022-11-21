@@ -66,17 +66,20 @@ set merged_lef $::env(CARAVEL_ROOT)/tmp/merged_lef-$::env(RCX_CORNER).lef
 set sram_lef $::env(PDK_REF_PATH)/sky130_sram_macros/lef/sky130_sram_2kbyte_1rw1r_32x512_8.lef
 
 # order matter
+set caravel_root "[file normalize $::env(CARAVEL_ROOT)]"
+set mcw_root "[file normalize $::env(MCW_ROOT)]"
+set cup_root "[file normalize $::env(CUP_ROOT)]"
 set verilogs "
-[glob $::env(MCW_ROOT)/verilog/gl/*]
-[glob $::env(CARAVEL_ROOT)/verilog/gl/*]
-[glob $::env(CUP_ROOT)/verilog/gl/*]
+[glob $mcw_root/verilog/gl/*]
+[glob $caravel_root/verilog/gl/*]
+[glob $cup_root/verilog/gl/*]
 "
 
 set verilog_exceptions [list \
-    "[exec realpath $::env(CARAVEL_ROOT)/verilog/gl/__user_analog_project_wrapper.v]" \
-    "[exec realpath $::env(CARAVEL_ROOT)/verilog/gl/caravel-signoff.v]" \
-    "[exec realpath $::env(CARAVEL_ROOT)/verilog/gl/caravan-signoff.v]" \
-    "[exec realpath $::env(CARAVEL_ROOT)/verilog/gl/__user_project_wrapper.v]" \
+    "$caravel_root/verilog/gl/__user_analog_project_wrapper.v" \
+    "$caravel_root/verilog/gl/caravel-signoff.v" \
+    "$caravel_root/verilog/gl/caravan-signoff.v" \
+    "$caravel_root/verilog/gl/__user_project_wrapper.v" \
     ]
 
 foreach verilog_exception $verilog_exceptions {
