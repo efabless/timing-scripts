@@ -80,7 +80,7 @@ set verilog_exceptions [list \
     ]
 
 foreach verilog_exception $verilog_exceptions {
-    #puts $verilog_exception
+    puts "verilog exception: $verilog_exception"
     set verilogs [regsub "$verilog_exception" "$verilogs" " "]
 }
 
