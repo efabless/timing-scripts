@@ -70,41 +70,51 @@ run_puts_logs "report_check_types \\
     -violators" \
     "${logs_path}-summary.rpt"
 
-set max_delay_result "violated"
-set min_delay_result "violated"
-set max_slew_result "violated"
-set max_cap_result "violated"
-set missing_spefs_result "complete"
+
+set max_delay_result "met"
+set min_delay_result "met"
+set max_slew_result "met"
+set max_cap_result "met"
+set missing_spefs_result "incomplete"
 
 set report ${logs_path}-summary.rpt
 
-if {[catch {exec grep -q {max cap} $report} err]} {
-    set max_cap_result "met"
+set max_cap_value "[exec bash -c "grep 'max cap' $report -A 4 | tail -n1 | awk -F '  *' '{print \$4}'"]"
+set worst_hold "[exec bash -c "grep 'min_delay\/hold' $report -A 10 | grep VIOLATED | head -n1 | awk -F '  *' '{print \$5}'"]"
+set worst_setup "[exec bash -c "grep 'max_delay\/setup' $report -A 10 | grep VIOLATED | head -n1 | awk -F '  *' '{print \$5}'"]"
+set max_slew_value "[exec bash -c "grep 'max slew' $report -A 4 | tail -n1 | awk -F '  *' '{print \$4}'"]"
+
+set table_format "%7s| %15s |%15s |%15s |%15s |%15s"
+set header [format "$table_format" "corner" "max cap" "max slew" "min delay" "max delay" "spefs"]
+if {![catch {exec grep -q {max cap} $report} err]} {
+    set max_cap_result "vio($max_cap_value)"
 }
 
-if {[catch {exec grep -q {max slew} $report} err]} {
-    set max_slew_result "met"
+if {![catch {exec grep -q {max slew} $report} err]} {
+    set max_slew_result "vio($max_slew_value)"
 }
 
-if {[catch {exec grep -q {min_delay\/hold} $report} err]} {
-    set min_delay_result "met"
+if {![catch {exec grep -q {min_delay\/hold} $report} err]} {
+    set min_delay_result "vio($worst_hold)"
 }
 
-if {[catch {exec grep -q {max_delay\/setup} $report} err]} {
-    set max_delay_result "met"
+if {![catch {exec grep -q {max_delay\/setup} $report} err]} {
+    set max_delay_result "vio($worst_setup)"
 }
 
-if { $missing_spefs } {
-    set missing_spefs_result "incomplete"
+if { !$missing_spefs } {
+    set missing_spefs_result "complete"
 }
 
-set summary [join [list "max_cap($max_cap_result)" \
-    "max_slew($max_slew_result)" \
-    "hold($min_delay_result)"\
-    "setup($max_delay_result)"\
-    "spefs($missing_spefs_result)"] "\t"]
-exec echo "$::env(LIB_CORNER)-$::env(RCX_CORNER): $summary" >> "${logs_path}-summary.rpt"
-exit 
+set summary [format "$table_format" "$::env(LIB_CORNER)-$::env(RCX_CORNER)"\
+    "$max_cap_result" \
+    "$max_slew_result" \
+    "$min_delay_result"\
+    "$max_delay_result"\
+    "$missing_spefs_result"]
+
+exec echo "$header" >> "${logs_path}-summary.rpt"
+exec echo "$summary" >> "${logs_path}-summary.rpt"
 
 
 run_puts_logs "report_checks \\
