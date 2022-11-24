@@ -70,7 +70,7 @@ def main(input, project_root, output, pdk_path, macro_parent, debug=False):
 
 def run(input, project_root, pdk_macros, logger, macro_parent=""):
     logger.info(f"parsing netlist {input} ..")
-    parsed = VerilogParser(input)
+    parsed = VerilogParser(input, logger)
     logger.info("comparing macros against pdk macros ..")
     postfix = ".$::env(RCX_CORNER).spef"
 

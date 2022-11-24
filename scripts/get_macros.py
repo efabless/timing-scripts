@@ -49,7 +49,7 @@ def main(input, output, pdk_path, project_root, macro_parent, debug=False):
     """
     Parse a verilog netlist
     """
-    logging.basicConfig(format="%(asctime)s | %(module)s | %(levelname)s | %(message)s")
+    logging.basicConfig(format="%(asctime)s | %(module)15s | %(levelname)6s | %(message)s")
     logger = logging.getLogger()
     if debug:
         logger.setLevel(logging.DEBUG)
@@ -71,9 +71,11 @@ def main(input, output, pdk_path, project_root, macro_parent, debug=False):
         for macro in run(input, project_root, pdk_macros, logger, macro_parent):
             f.write(macro)
 
+    logger.info("done.")
+
 def run(input, project_root, pdk_macros, logger, macro_parent=""):
     logger.info(f"parsing netlist {input} ..")
-    parsed = VerilogParser(input)
+    parsed = VerilogParser(input, logger)
     logger.info("comparing macros against pdk macros ..")
 
     macros = []
@@ -93,9 +95,12 @@ def run(input, project_root, pdk_macros, logger, macro_parent=""):
         if macro_parent != "":
             mapping_key = f"{macro_parent}{hier_separator}{instance}"
 
+        search_path = (Path(project_root) / "verilog" / "gl")
+        logging.debug(f"searching for {macro} netlist in {search_path}")
         existing_netlist = list(
-            (Path(project_root) / "verilog" / "gl").rglob(f"{macro}.v")
+            search_path.rglob(f"{macro}.v")
         )
+        logging.debug(f"found {len(existing_netlist)} matches.")
         if len(existing_netlist) == 1:
             logging.info(f"found netlist {str(existing_netlist[0])} for macro {macro}")
             macros += run(
