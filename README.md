@@ -5,6 +5,12 @@ A set of scripts for rcx and sta for caravel top level
 ## Dependencies
 - Docker
 
+In case of not using the docker image:
+- `yosys`
+- Python modules:
+    - `click`
+
+
 ## Prerequisites
 
 A set of exports are needed:
@@ -17,10 +23,6 @@ export PDK_ROOT=${HOME}/pdk/
 export PDK=sky130A
 export OPENLANE_IMAGE_NAME=efabless/openlane:4476a58407d670d251aa0be6a55e5391bb181c4e-amd64
 ```
-
-python modules:
-- `pyverilog`
-- `click`
 
 ## Usage
 
