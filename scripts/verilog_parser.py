@@ -1,4 +1,3 @@
-from pyverilog.vparser.parser import parse
 import subprocess
 import os
 import json
