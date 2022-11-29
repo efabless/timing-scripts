@@ -24,6 +24,8 @@ export PDK=sky130A
 export OPENLANE_IMAGE_NAME=efabless/openlane:4476a58407d670d251aa0be6a55e5391bb181c4e-amd64
 ```
 
+> This is just an example. Please export your own paths and a recent version of openlane
+
 ## Usage
 
 ### caravel_user_project
