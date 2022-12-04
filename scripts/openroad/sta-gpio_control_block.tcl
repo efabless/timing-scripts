@@ -1,9 +1,9 @@
 source $::env(TIMING_ROOT)/env/common.tcl
 source $::env(TIMING_ROOT)/env/$::env(LIB_CORNER).tcl
 
-set libs [split [regexp -all -inline {\S+} $libs]]
+set pdk(libs) [split [regexp -all -inline {\S+} $pdk(libs)]]
 
-foreach liberty $libs {
+foreach liberty $pdk(libs) {
     read_liberty $liberty
 }
 

@@ -7,16 +7,14 @@ if { [file exists $::env(CUP_ROOT)/env/spef-mapping.tcl] } {
     puts "WARNING no user project spef mapping file found"
 }
 
-source $::env(TIMING_ROOT)/env/$::env(LIB_CORNER).tcl
-
-set libs [split [regexp -all -inline {\S+} $libs]]
+set pdk(libs) [split [regexp -all -inline {\S+} $pdk(libs)]]
 set verilogs [split [regexp -all -inline {\S+} $verilogs]]
 
 
-foreach liberty $libs {
+foreach liberty $pdk(libs) {
 }
 
-foreach liberty $libs {
+foreach liberty $pdk(libs) {
     run_puts "read_liberty $liberty"
 }
 
