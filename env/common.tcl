@@ -21,10 +21,11 @@ foreach var $required_vars {
     }
 }
 
-set extra_lefs "
-[glob $::env(CARAVEL_ROOT)/lef/*.lef]
-[glob $::env(MCW_ROOT)/lef/*.lef]
-[glob $::env(CUP_ROOT)/lef/*.lef]"
+set extra_lefs [concat \
+[glob $::env(CARAVEL_ROOT)/lef/*.lef] \
+[glob $::env(MCW_ROOT)/lef/*.lef] \
+[glob $::env(CUP_ROOT)/lef/*.lef] \
+]
 
 # search order:
 # cup -> mcw -> caravel
@@ -55,11 +56,11 @@ set block $::env(BLOCK)
 set caravel_root "[file normalize $::env(CARAVEL_ROOT)]"
 set mcw_root "[file normalize $::env(MCW_ROOT)]"
 set cup_root "[file normalize $::env(CUP_ROOT)]"
-set verilogs "
-[glob $mcw_root/verilog/gl/*]
-[glob $caravel_root/verilog/gl/*]
-[glob $cup_root/verilog/gl/*]
-"
+set verilogs [concat \
+[glob $mcw_root/verilog/gl/*] \
+[glob $caravel_root/verilog/gl/*] \
+[glob $cup_root/verilog/gl/*] \
+]
 
 set verilog_exceptions [list \
     "$caravel_root/verilog/gl/__user_analog_project_wrapper.v" \
@@ -70,7 +71,11 @@ set verilog_exceptions [list \
 
 foreach verilog_exception $verilog_exceptions {
     puts "verilog exception: $verilog_exception"
-    set verilogs [regsub "$verilog_exception" "$verilogs" " "]
+    set match_idx [lsearch $verilogs $verilog_exception]
+    if {$match_idx} {
+        puts "removing $verilog_exception from verilogs list"
+        set verilogs [lreplace $verilogs $match_idx $match_idx]
+    }
 }
 
 proc run_puts {arg} {

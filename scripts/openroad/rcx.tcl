@@ -1,7 +1,5 @@
 source $::env(TIMING_ROOT)/env/common.tcl
 
-set extra_lefs [split [regexp -all -inline {\S+} $extra_lefs]]
-
 foreach liberty $pdk(libs) {
   run_puts "read_liberty $liberty"
 }

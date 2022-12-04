@@ -1,8 +1,6 @@
 source $::env(TIMING_ROOT)/env/common.tcl
 source $::env(TIMING_ROOT)/env/$::env(LIB_CORNER).tcl
 
-set verilogs [split [regexp -all -inline {\S+} $verilogs]]
-
 
 foreach lef $pdk(lefs) {
     if {[catch {read_lef $lef} errmsg]} {

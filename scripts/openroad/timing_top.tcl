@@ -7,9 +7,6 @@ if { [file exists $::env(CUP_ROOT)/env/spef-mapping.tcl] } {
     puts "WARNING no user project spef mapping file found"
 }
 
-set verilogs [split [regexp -all -inline {\S+} $verilogs]]
-
-
 foreach liberty $pdk(libs) {
 }
 
