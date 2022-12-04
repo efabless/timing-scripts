@@ -1,7 +1,6 @@
 source $::env(TIMING_ROOT)/env/common.tcl
 source $::env(TIMING_ROOT)/env/$::env(LIB_CORNER).tcl
 
-set pdk(libs) [split [regexp -all -inline {\S+} $pdk(libs)]]
 set verilogs [split [regexp -all -inline {\S+} $verilogs]]
 
 

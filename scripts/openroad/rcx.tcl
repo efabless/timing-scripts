@@ -1,6 +1,5 @@
 source $::env(TIMING_ROOT)/env/common.tcl
 
-set pdk(libs) [split [regexp -all -inline {\S+} $pdk(libs)]]
 set extra_lefs [split [regexp -all -inline {\S+} $extra_lefs]]
 
 foreach liberty $pdk(libs) {
