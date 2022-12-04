@@ -1,10 +1,10 @@
 source $::env(TIMING_ROOT)/env/$::env(PDK)/config.tcl
 
-proc printlist { inlist } {
+proc print_list { inlist } {
     foreach item $inlist {
         # recurse - go into the sub list
         if { [llength $item] > 1 } {
-            printlist $item 
+            print_list $item 
         } else {
             puts $item
         }
@@ -17,7 +17,7 @@ foreach var $required_vars {
         puts "Missing pdk config $var"
     } else {
         puts "$var defined as:"
-        printlist [subst $$var]
+        print_list [subst $$var]
     }
 }
 
