@@ -1,5 +1,8 @@
 source $::env(TIMING_ROOT)/env/common.tcl
 
+set def $::env(INPUT)
+set spef $::env(OUTPUT)
+
 foreach liberty $pdk(libs) {
   run_puts "read_liberty $liberty"
 }
