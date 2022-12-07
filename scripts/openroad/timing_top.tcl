@@ -49,67 +49,17 @@ foreach key [array names spef_mapping] {
 set sdc $::env(CARAVEL_ROOT)/signoff/caravel/caravel.sdc
 run_puts "read_sdc -echo $sdc"
 
-set logs_path "$::env(PROJECT_ROOT)/signoff/caravel/openlane-signoff/timing/$::env(RCX_CORNER)/$::env(LIB_CORNER)"
-file mkdir [file dirname $logs_path]
+set logs_path "$::env(PROJECT_ROOT)/signoff/caravel/openlane-signoff/timing/$::env(LIB_CORNER)-$::env(RCX_CORNER)"
+file mkdir $logs_path
 
 
-run_puts_logs "report_check_types \\
-    -max_delay \\
-    -min_delay \\
-    -max_slew \\
-    -max_capacitance \\
-    -clock_gating_setup \\
-    -clock_gating_hold \\
-    -format end \\
-    -violators" \
-    "${logs_path}-summary.rpt"
-
-
-set max_delay_result "met"
-set min_delay_result "met"
-set max_slew_result "met"
-set max_cap_result "met"
-set missing_spefs_result "incomplete"
-
-set report ${logs_path}-summary.rpt
-
-set max_cap_value "[exec bash -c "grep 'max cap' $report -A 4 | tail -n1 | awk -F '  *' '{print \$4}'"]"
-set worst_hold "[exec bash -c "grep 'min_delay\/hold' $report -A 10 | grep VIOLATED | head -n1 | awk -F '  *' '{print \$5}'"]"
-set worst_setup "[exec bash -c "grep 'max_delay\/setup' $report -A 10 | grep VIOLATED | head -n1 | awk -F '  *' '{print \$5}'"]"
-set max_slew_value "[exec bash -c "grep 'max slew' $report -A 4 | tail -n1 | awk -F '  *' '{print \$4}'"]"
-
-set table_format "%7s| %15s |%15s |%15s |%15s |%15s"
-set header [format "$table_format" "corner" "max cap" "max slew" "min delay" "max delay" "spefs"]
-if {![catch {exec grep -q {max cap} $report} err]} {
-    set max_cap_result "vio($max_cap_value)"
+proc check_reg_to_reg {report} {
+    set result [exec python3 \
+            $::env(TIMING_ROOT)/scripts/get_violations.py -i ${report} -a]
+    return $result
 }
 
-if {![catch {exec grep -q {max slew} $report} err]} {
-    set max_slew_result "vio($max_slew_value)"
-}
-
-if {![catch {exec grep -q {min_delay\/hold} $report} err]} {
-    set min_delay_result "vio($worst_hold)"
-}
-
-if {![catch {exec grep -q {max_delay\/setup} $report} err]} {
-    set max_delay_result "vio($worst_setup)"
-}
-
-if { !$missing_spefs } {
-    set missing_spefs_result "complete"
-}
-
-set summary [format "$table_format" "$::env(LIB_CORNER)-$::env(RCX_CORNER)"\
-    "$max_cap_result" \
-    "$max_slew_result" \
-    "$min_delay_result"\
-    "$max_delay_result"\
-    "$missing_spefs_result"]
-
-exec echo "$header" >> "${logs_path}-summary.rpt"
-exec echo "$summary" >> "${logs_path}-summary.rpt"
-
+set reports ""
 
 run_puts_logs "report_checks \\
     -path_delay min \\
@@ -122,7 +72,8 @@ run_puts_logs "report_checks \\
     -endpoint_count 10 \\
     -unique_paths_to_endpoint \\
     "\
-    "${logs_path}-min.rpt"
+    "${logs_path}/min.rpt"
+lappend reports "${logs_path}/min.rpt"
 
 run_puts_logs "report_checks \\
     -path_delay max \\
@@ -135,7 +86,8 @@ run_puts_logs "report_checks \\
     -endpoint_count 10 \\
     -unique_paths_to_endpoint \\
     "\
-    "${logs_path}-max.rpt"
+    "${logs_path}/max.rpt"
+lappend reports "${logs_path}/max.rpt"
 
 run_puts_logs "report_checks \\
     -path_delay min \\
@@ -148,7 +100,8 @@ run_puts_logs "report_checks \\
     -digits 4 \\
     -unique_paths_to_endpoint \\
     "\
-    "${logs_path}-hk_serial_clk-min.rpt"
+    "${logs_path}/hk_serial_clk-min.rpt"
+lappend reports "${logs_path}/hk_serial_clk-min.rpt"
 
 
 run_puts_logs "report_checks \\
@@ -162,7 +115,8 @@ run_puts_logs "report_checks \\
     -digits 4 \\
     -unique_paths_to_endpoint \\
     "\
-    "${logs_path}-hk_serial_clk-max.rpt"
+    "${logs_path}/hk_serial_clk-max.rpt"
+lappend reports "${logs_path}/hk_serial_clk-max.rpt"
 
 run_puts_logs "report_checks \\
     -path_delay max \\
@@ -175,7 +129,8 @@ run_puts_logs "report_checks \\
     -digits 4 \\
     -unique_paths_to_endpoint \\
     "\
-    "${logs_path}-hkspi_clk-max.rpt"
+    "${logs_path}/hkspi_clk-max.rpt"
+lappend reports "${logs_path}/hkspi_clk-max.rpt"
 
 run_puts_logs "report_checks \\
     -path_delay min \\
@@ -188,7 +143,8 @@ run_puts_logs "report_checks \\
     -digits 4 \\
     -unique_paths_to_endpoint \\
     "\
-    "${logs_path}-hkspi_clk-min.rpt"
+    "${logs_path}/hkspi_clk-min.rpt"
+lappend reports "${logs_path}/hkspi_clk-min.rpt"
 
 run_puts_logs "report_checks \\
     -path_delay min \\
@@ -201,7 +157,8 @@ run_puts_logs "report_checks \\
     -digits 4 \\
     -unique_paths_to_endpoint \\
     "\
-    "${logs_path}-clk-min.rpt"
+    "${logs_path}/clk-min.rpt"
+lappend reports "${logs_path}/clk-min.rpt"
         
 run_puts_logs "report_checks \\
     -path_delay max \\
@@ -214,7 +171,8 @@ run_puts_logs "report_checks \\
     -digits 4 \\
     -unique_paths_to_endpoint \\
     "\
-    "${logs_path}-clk-max.rpt"
+    "${logs_path}/clk-max.rpt"
+lappend reports "${logs_path}/clk-max.rpt"
 
 run_puts_logs "report_checks \\
     -path_delay min \\
@@ -227,7 +185,8 @@ run_puts_logs "report_checks \\
     -digits 4 \\
     -unique_paths_to_endpoint \\
     "\
-    "${logs_path}-soc-min.rpt"
+    "${logs_path}/soc-min.rpt"
+lappend reports "${logs_path}/soc-min.rpt"
 
 run_puts_logs "report_checks \\
     -path_delay max \\
@@ -240,7 +199,8 @@ run_puts_logs "report_checks \\
     -digits 4 \\
     -unique_paths_to_endpoint \\
     "\
-    "${logs_path}-soc-max.rpt"
+    "${logs_path}/soc-max.rpt"
+lappend reports "${logs_path}/soc-max.rpt"
 
 run_puts_logs "report_checks \\
     -path_delay min \\
@@ -253,7 +213,8 @@ run_puts_logs "report_checks \\
     -digits 4 \\
     -unique_paths_to_endpoint \\
     "\
-    "${logs_path}-mprj-min.rpt"
+    "${logs_path}/mprj-min.rpt"
+lappend reports "${logs_path}/mprj-min.rpt"
 
 run_puts_logs "report_checks \\
     -path_delay max \\
@@ -266,9 +227,86 @@ run_puts_logs "report_checks \\
     -digits 4 \\
     -unique_paths_to_endpoint \\
     "\
-    "${logs_path}-mprj-max.rpt"
+    "${logs_path}/mprj-max.rpt"
+lappend reports "${logs_path}/mprj-max.rpt"
 
-run_puts "report_parasitic_annotation -report_unannotated > ${logs_path}-unannotated.log"
+run_puts "report_parasitic_annotation -report_unannotated > ${logs_path}/unannotated.log"
+
+
+set summary_report ${logs_path}/summary.log
+run_puts_logs "report_check_types \\
+    -max_delay \\
+    -min_delay \\
+    -max_slew \\
+    -max_capacitance \\
+    -clock_gating_setup \\
+    -clock_gating_hold \\
+    -format end \\
+    -violators" \
+    "${summary_report}"
+
+
+set max_delay_result "met"
+set min_delay_result "met"
+set max_slew_result "met"
+set max_cap_result "met"
+set missing_spefs_result "incomplete"
+set reg_to_reg_result "met"
+
+set max_cap_value "[exec bash -c "grep 'max cap' $summary_report -A 4 | tail -n1 | awk -F '  *' '{print \$4}'"]"
+set worst_hold "[exec bash -c "grep 'min_delay\/hold' $summary_report -A 10 | grep VIOLATED | head -n1 | awk -F '  *' '{print \$5}'"]"
+set worst_setup "[exec bash -c "grep 'max_delay\/setup' $summary_report -A 10 | grep VIOLATED | head -n1 | awk -F '  *' '{print \$5}'"]"
+set max_slew_value "[exec bash -c "grep 'max slew' $summary_report -A 4 | tail -n1 | awk -F '  *' '{print \$4}'"]"
+
+set table_format "%7s| %15s |%15s |%15s |%15s |%15s |%15s"
+set header [format "$table_format" \
+    "min delay" \
+    "reg-to-reg" \
+    "max delay" \
+    "corner" \
+    "max cap" \
+    "max slew" \
+    "spefs"]
+if {![catch {exec grep -q {max cap} $summary_report} err]} {
+    set max_cap_result "vio($max_cap_value)"
+}
+
+if {![catch {exec grep -q {max slew} $summary_report} err]} {
+    set max_slew_result "vio($max_slew_value)"
+}
+
+if {![catch {exec grep -q {min_delay\/hold} $summary_report} err]} {
+    set min_delay_result "vio($worst_hold)"
+}
+
+if {![catch {exec grep -q {max_delay\/setup} $summary_report} err]} {
+    set max_delay_result "vio($worst_setup)"
+}
+
+if { !$missing_spefs } {
+    set missing_spefs_result "complete"
+}
+
+foreach report $reports {
+    set vio [check_reg_to_reg $report]
+    if { "$vio" ne "0" } {
+        set reg_to_reg_result "vio($vio)"
+    }
+}
+
+set summary [format "$table_format" "$::env(LIB_CORNER)-$::env(RCX_CORNER)"\
+    "$min_delay_result" \
+    "$reg_to_reg_result" \
+    "$max_delay_result" \
+    "$max_cap_result" \
+    "$max_slew_result" \
+    "$missing_spefs_result"]
+
+exec echo "$header" >> "${summary_report}"
+exec echo "$summary" >> "${summary_report}"
+
+report_parasitic_annotation 
+
 if { $missing_spefs } {
     puts "there are missing spefs. check the log for ALLOW_MISSING_SPEF"
     puts "the following macros don't have spefs"
@@ -276,8 +314,6 @@ if { $missing_spefs } {
         puts "$spef"
     }
 }
-report_parasitic_annotation 
-
 
 puts "you may want to edit sdc: $sdc to change i/o constraints"
 puts "check $logs_path"
