@@ -89,12 +89,17 @@ class TimingPath:
         end = ""
         if "input" in self.start_point:
             start = "input"
-        else:
+        elif "flip-flop" in self.start_point:
             start = "flipflop"
+        else:
+            start = "unknown"
+
         if "output" in self.end_point:
             end = "output"
-        else:
+        elif "flip-flop" in self.end_point:
             end = "flipflop"
+        else:
+            end = "unknown"
 
         self.category = f"{start}-{end}"
 

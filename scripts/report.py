@@ -9,6 +9,7 @@ class Report:
         self.input_flipflop_paths = []
         self.flipflop_flipflop_paths = []
         self.flipflop_output_paths = []
+        self.unknown_paths = []
         self.build_db()
         self.classify_paths()
 
@@ -23,6 +24,8 @@ class Report:
                 self.flipflop_flipflop_paths.append(path)
             elif path_category == "flipflop-output":
                 self.flipflop_output_paths.append(path)
+            else:
+                self.unknown_paths.append(path)
 
     def build_db(self):
         file = open(self.report_file)
