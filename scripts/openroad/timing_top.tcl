@@ -52,10 +52,19 @@ run_puts "read_sdc -echo $sdc"
 set logs_path "$::env(PROJECT_ROOT)/signoff/caravel/openlane-signoff/timing/$::env(LIB_CORNER)-$::env(RCX_CORNER)"
 file mkdir $logs_path
 
-
-proc check_reg_to_reg {report} {
+proc check_reg_to_reg_min {report} {
     set result [exec python3 \
-            $::env(TIMING_ROOT)/scripts/get_violations.py -i ${report} -a]
+            $::env(TIMING_ROOT)/scripts/get_violations.py \
+            --type "min" \
+            -i ${report} -a]
+    return $result
+}
+
+proc check_reg_to_reg_max {report} {
+    set result [exec python3 \
+            $::env(TIMING_ROOT)/scripts/get_violations.py \
+            --type "max" \
+            -i ${report} -a]
     return $result
 }
 
@@ -68,7 +77,7 @@ run_puts_logs "report_checks \\
     -no_line_splits \\
     -group_count 10000 \\
     -slack_max 10 \\
-    -digits 4 \\
+    -digits 2 \\
     -endpoint_count 10 \\
     -unique_paths_to_endpoint \\
     "\
@@ -82,7 +91,7 @@ run_puts_logs "report_checks \\
     -no_line_splits \\
     -group_count 10000 \\
     -slack_max 10 \\
-    -digits 4 \\
+    -digits 2 \\
     -endpoint_count 10 \\
     -unique_paths_to_endpoint \\
     "\
@@ -97,7 +106,7 @@ run_puts_logs "report_checks \\
     -path_group hk_serial_clk \\
     -group_count 1000 \\
     -slack_max 10 \\
-    -digits 4 \\
+    -digits 2 \\
     -unique_paths_to_endpoint \\
     "\
     "${logs_path}/hk_serial_clk-min.rpt"
@@ -112,7 +121,7 @@ run_puts_logs "report_checks \\
     -path_group hk_serial_clk \\
     -group_count 1000 \\
     -slack_max 10 \\
-    -digits 4 \\
+    -digits 2 \\
     -unique_paths_to_endpoint \\
     "\
     "${logs_path}/hk_serial_clk-max.rpt"
@@ -126,7 +135,7 @@ run_puts_logs "report_checks \\
     -path_group hkspi_clk \\
     -group_count 1000 \\
     -slack_max 10 \\
-    -digits 4 \\
+    -digits 2 \\
     -unique_paths_to_endpoint \\
     "\
     "${logs_path}/hkspi_clk-max.rpt"
@@ -140,7 +149,7 @@ run_puts_logs "report_checks \\
     -path_group hkspi_clk \\
     -group_count 1000 \\
     -slack_max 10 \\
-    -digits 4 \\
+    -digits 2 \\
     -unique_paths_to_endpoint \\
     "\
     "${logs_path}/hkspi_clk-min.rpt"
@@ -154,7 +163,7 @@ run_puts_logs "report_checks \\
     -path_group clk \\
     -group_count 1000 \\
     -slack_max 10 \\
-    -digits 4 \\
+    -digits 2 \\
     -unique_paths_to_endpoint \\
     "\
     "${logs_path}/clk-min.rpt"
@@ -168,7 +177,7 @@ run_puts_logs "report_checks \\
     -path_group clk \\
     -group_count 1000 \\
     -slack_max 10 \\
-    -digits 4 \\
+    -digits 2 \\
     -unique_paths_to_endpoint \\
     "\
     "${logs_path}/clk-max.rpt"
@@ -182,7 +191,7 @@ run_puts_logs "report_checks \\
     -no_line_splits \\
     -group_count 1000 \\
     -slack_max 10 \\
-    -digits 4 \\
+    -digits 2 \\
     -unique_paths_to_endpoint \\
     "\
     "${logs_path}/soc-min.rpt"
@@ -196,7 +205,7 @@ run_puts_logs "report_checks \\
     -no_line_splits \\
     -group_count 1000 \\
     -slack_max 10 \\
-    -digits 4 \\
+    -digits 2 \\
     -unique_paths_to_endpoint \\
     "\
     "${logs_path}/soc-max.rpt"
@@ -210,7 +219,7 @@ run_puts_logs "report_checks \\
     -no_line_splits \\
     -group_count 1000 \\
     -slack_max 40 \\
-    -digits 4 \\
+    -digits 2 \\
     -unique_paths_to_endpoint \\
     "\
     "${logs_path}/mprj-min.rpt"
@@ -224,7 +233,7 @@ run_puts_logs "report_checks \\
     -no_line_splits \\
     -group_count 1000 \\
     -slack_max 40 \\
-    -digits 4 \\
+    -digits 2 \\
     -unique_paths_to_endpoint \\
     "\
     "${logs_path}/mprj-max.rpt"
@@ -251,22 +260,27 @@ set min_delay_result "met"
 set max_slew_result "met"
 set max_cap_result "met"
 set missing_spefs_result "incomplete"
-set reg_to_reg_result "met"
+set min_reg_to_reg_result "met"
+set max_reg_to_reg_result "met"
 
 set max_cap_value "[exec bash -c "grep 'max cap' $summary_report -A 4 | tail -n1 | awk -F '  *' '{print \$4}'"]"
 set worst_hold "[exec bash -c "grep 'min_delay\/hold' $summary_report -A 10 | grep VIOLATED | head -n1 | awk -F '  *' '{print \$5}'"]"
 set worst_setup "[exec bash -c "grep 'max_delay\/setup' $summary_report -A 10 | grep VIOLATED | head -n1 | awk -F '  *' '{print \$5}'"]"
 set max_slew_value "[exec bash -c "grep 'max slew' $summary_report -A 4 | tail -n1 | awk -F '  *' '{print \$4}'"]"
 
-set table_format "%7s| %15s |%15s |%15s |%15s |%15s |%15s"
+set table_format "%7s| %13s |%13s |%13s |%13s |%13s |%13s"
+set separator ""
 set header [format "$table_format" \
-    "min delay" \
-    "reg-to-reg" \
-    "max delay" \
     "corner" \
+    "min delay" \
+    "min reg2reg" \
+    "max delay" \
+    "max reg2reg" \
     "max cap" \
-    "max slew" \
-    "spefs"]
+    "max slew"]
+foreach char [split $header ""] {
+    set separator "$separator-"
+}
 if {![catch {exec grep -q {max cap} $summary_report} err]} {
     set max_cap_result "vio($max_cap_value)"
 }
@@ -287,22 +301,36 @@ if { !$missing_spefs } {
     set missing_spefs_result "complete"
 }
 
+set vio "0"
+set min_vio "0"
 foreach report $reports {
-    set vio [check_reg_to_reg $report]
-    if { "$vio" ne "0" } {
-        set reg_to_reg_result "vio($vio)"
-    }
+    set vio [check_reg_to_reg_min $report]
+    if { [expr $vio < $min_vio] } { set min_vio "$vio" }
+}
+if { "$min_vio" ne "0" } {
+    set min_reg_to_reg_result "vio($min_vio)"
+}
+
+set vio "0"
+set min_vio "0"
+foreach report $reports {
+    set vio [check_reg_to_reg_max $report]
+    if { [expr $vio < $min_vio] } { set min_vio "$vio" }
+}
+if { "$min_vio" ne "0" } {
+    set max_reg_to_reg_result "vio($min_vio)"
 }
 
 set summary [format "$table_format" "$::env(LIB_CORNER)-$::env(RCX_CORNER)"\
     "$min_delay_result" \
-    "$reg_to_reg_result" \
+    "$min_reg_to_reg_result" \
     "$max_delay_result" \
+    "$max_reg_to_reg_result" \
     "$max_cap_result" \
-    "$max_slew_result" \
-    "$missing_spefs_result"]
+    "$max_slew_result"]
 
 exec echo "$header" >> "${summary_report}"
+exec echo "$separator" >> "${summary_report}"
 exec echo "$summary" >> "${summary_report}"
 
 report_parasitic_annotation 
