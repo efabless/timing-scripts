@@ -6,9 +6,9 @@ class Report:
         self.report_file = report_file
         self.paths = []
         self.input_output_paths = []
-        self.input_flipflop_paths = []
-        self.flipflop_flipflop_paths = []
-        self.flipflop_output_paths = []
+        self.input_reg_paths = []
+        self.reg_reg_paths = []
+        self.reg_output_paths = []
         self.unknown_paths = []
         self.build_db()
         self.classify_paths()
@@ -18,12 +18,12 @@ class Report:
             path_category = path.category
             if path_category == "input-output":
                 self.input_output_paths.append(path)
-            elif path_category == "input-flipflop":
-                self.input_flipflop_paths.append(path)
-            elif path_category == "flipflop-flipflop":
-                self.flipflop_flipflop_paths.append(path)
-            elif path_category == "flipflop-output":
-                self.flipflop_output_paths.append(path)
+            elif path_category == "input-reg":
+                self.input_reg_paths.append(path)
+            elif path_category == "reg-reg":
+                self.reg_reg_paths.append(path)
+            elif path_category == "reg-output":
+                self.reg_output_paths.append(path)
             else:
                 self.unknown_paths.append(path)
 
