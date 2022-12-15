@@ -303,8 +303,12 @@ if { !$missing_spefs } {
 
 set vio "0"
 set min_vio "0"
+set violating_min_reports ""
 foreach report $reports {
     set vio [check_reg_to_reg_min $report]
+    if { [expr $vio != 0] } { 
+        set violating_min_reports "$violating_min_reports $report"
+    }
     if { [expr $vio < $min_vio] } { set min_vio "$vio" }
 }
 if { "$min_vio" ne "0" } {
@@ -313,9 +317,13 @@ if { "$min_vio" ne "0" } {
 
 set vio "0"
 set min_vio "0"
+set violating_max_reports ""
 foreach report $reports {
     set vio [check_reg_to_reg_max $report]
-    if { [expr $vio < $min_vio] } { set min_vio "$vio" }
+    if { [expr $vio != 0] } { 
+        set violating_max_reports "$violating_max_reports $report"
+    }
+    if { [expr $vio < $min_vio] } { set min_vio "$vio" } 
 }
 if { "$min_vio" ne "0" } {
     set max_reg_to_reg_result "vio($min_vio)"
@@ -329,9 +337,19 @@ set summary [format "$table_format" "$::env(LIB_CORNER)-$::env(RCX_CORNER)"\
     "$max_cap_result" \
     "$max_slew_result"]
 
-exec echo "$header" >> "${summary_report}"
-exec echo "$separator" >> "${summary_report}"
-exec echo "$summary" >> "${summary_report}"
+exec echo "$separator" > "${summary_report}-tmp-table"
+exec echo "SUMMARY" >> "${summary_report}-tmp-table"
+exec echo "$separator" >> "${summary_report}-tmp-table"
+exec echo "" >> "${summary_report}-tmp-table"
+exec echo "$header" >> "${summary_report}-tmp-table"
+exec echo "$separator" >> "${summary_report}-tmp-table"
+exec echo "$summary" >> "${summary_report}-tmp-table"
+exec echo "" >> "${summary_report}-tmp-table"
+exec echo "violating reg2reg min reports\n${violating_min_reports}\n" >> "${summary_report}-tmp-table"
+exec echo "violating reg2reg max reports\n${violating_max_reports}\n" >> "${summary_report}-tmp-table"
+exec cat ${summary_report}-tmp-table ${summary_report} > ${summary_report}-tmp
+exec mv ${summary_report}-tmp ${summary_report}
+exec rm ${summary_report}-tmp-table
 
 report_parasitic_annotation 
 

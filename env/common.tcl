@@ -83,12 +83,23 @@ proc run_puts {arg} {
     eval "{*}$arg"
 }
 
+
+set separator "--------------------------------------------------------------------------------------------"
 proc run_puts_logs {arg log} {
+    upvar separator separator
     set output [open "$log" w+]    
+    puts $output "$separator"
+    puts $output "COMMAND"
+    puts $output "$separator"
+    puts $output ""
     puts $output "exec> $arg"
     puts $output "design: $::env(BLOCK)"
     set timestr [exec date]
     puts $output "time: $timestr\n"
+    puts $output "$separator"
+    puts $output "REPORT"
+    puts $output "$separator"
+    puts $output ""
     close $output
     puts "exec> $arg >> $log"
     eval "{*}$arg >> $log"
