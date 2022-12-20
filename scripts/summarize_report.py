@@ -19,10 +19,10 @@ report = Report(report_file)
 output_files_stream = open(f"{output_file}", "w")
 
 output_files_stream.write(
-    f"--------------input-flipflop_paths#{len(report.input_flipflop_paths)}-------------------\n"
+    f"--------------input-reg_paths#{len(report.input_reg_paths)}-------------------\n"
 )
 output_files_stream.write(TimingPath.get_header())
-for path in report.input_flipflop_paths:
+for path in report.input_reg_paths:
     output_files_stream.write(path.summarize())
 output_files_stream.write(
     f"--------------input-output_paths#{len(report.input_output_paths)}---------------------\n"
@@ -31,14 +31,14 @@ output_files_stream.write(TimingPath.get_header())
 for path in report.input_output_paths:
     output_files_stream.write(path.summarize())
 output_files_stream.write(
-    f"--------------flipflop-flipflop_paths#{len(report.flipflop_flipflop_paths)}----------------\n"
+    f"--------------reg-reg_paths#{len(report.reg_reg_paths)}----------------\n"
 )
 output_files_stream.write(TimingPath.get_header())
-for path in report.flipflop_flipflop_paths:
+for path in report.reg_reg_paths:
     output_files_stream.write(path.summarize())
 output_files_stream.write(
-    f"--------------flipflop-output_paths#{len(report.flipflop_output_paths)}------------------\n"
+    f"--------------reg-output_paths#{len(report.reg_output_paths)}------------------\n"
 )
 output_files_stream.write(TimingPath.get_header())
-for path in report.flipflop_output_paths:
+for path in report.reg_output_paths:
     output_files_stream.write(path.summarize())

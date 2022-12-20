@@ -1,11 +1,8 @@
 source $::env(TIMING_ROOT)/env/common.tcl
 source $::env(TIMING_ROOT)/env/$::env(LIB_CORNER).tcl
 
-set libs [split [regexp -all -inline {\S+} $libs]]
-set verilogs [split [regexp -all -inline {\S+} $verilogs]]
 
-
-foreach lef $lefs {
+foreach lef $pdk(lefs) {
     if {[catch {read_lef $lef} errmsg]} {
         puts stderr $errmsg
         exit 1
@@ -24,7 +21,7 @@ foreach lef_file $extra_lefs {
     }	
 }
 
-foreach liberty $libs {
+foreach liberty $pdk(libs) {
     read_liberty $liberty
 }
 

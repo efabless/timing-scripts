@@ -89,12 +89,17 @@ class TimingPath:
         end = ""
         if "input" in self.start_point:
             start = "input"
+        elif "edge-triggered" in self.start_point:
+            start = "reg"
         else:
-            start = "flipflop"
+            start = "unknown"
+
         if "output" in self.end_point:
             end = "output"
+        elif "edge-triggered" in self.end_point:
+            end = "reg"
         else:
-            end = "flipflop"
+            end = "unknown"
 
         self.category = f"{start}-{end}"
 
