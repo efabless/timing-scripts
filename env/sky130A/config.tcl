@@ -15,13 +15,17 @@ set io_lef $::env(PDK_REF_PATH)/$io_library/lef/$io_library.lef
 set ef_io_lef $::env(PDK_REF_PATH)/$io_library/lef/$ef_io_library.lef
 set ef_cells_lef $::env(PDK_REF_PATH)/$std_cell_library/lef/$ef_cell_library.lef
 set sram_lef $::env(PDK_REF_PATH)/sky130_sram_macros/lef/sky130_sram_2kbyte_1rw1r_32x512_8.lef
+set hvl_lef $::env(PDK_REF_PATH)/$special_voltage_library/lef/$special_voltage_library.lef
+set hvl_techlef $::env(PDK_REF_PATH)/$special_voltage_library/techlef/${special_voltage_library}__$::env(RCX_CORNER).tlef
 
 set pdk(lefs) [list \
     $tech_lef \
+    $hvl_techlef \
     $cells_lef \
     $io_lef \
     $ef_cells_lef \
     $ef_io_lef \
+    $hvl_lef \
     $sram_lef
 ]
 
