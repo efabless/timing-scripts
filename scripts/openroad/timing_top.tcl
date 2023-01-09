@@ -70,35 +70,37 @@ proc check_reg_to_reg_max {report} {
 
 set reports ""
 
-run_puts_logs "report_checks \\
-    -path_delay min \\
-    -format full_clock_expanded \\
-    -fields {slew cap input_pins nets fanout} \\
-    -no_line_splits \\
-    -group_count 10000 \\
-    -slack_max 10 \\
-    -digits 2 \\
-    -endpoint_count 10 \\
-    -unique_paths_to_endpoint \\
-    "\
-    "${logs_path}/min.rpt"
-lappend reports "${logs_path}/min.rpt"
-
-run_puts_logs "report_checks \\
-    -path_delay max \\
-    -format full_clock_expanded \\
-    -fields {slew cap input_pins nets fanout} \\
-    -no_line_splits \\
-    -group_count 10000 \\
-    -slack_max 10 \\
-    -digits 2 \\
-    -endpoint_count 10 \\
-    -unique_paths_to_endpoint \\
-    "\
-    "${logs_path}/max.rpt"
-lappend reports "${logs_path}/max.rpt"
 
 if {!$::env(TIMING_USER_REPORTS)} {
+
+    run_puts_logs "report_checks \\
+        -path_delay min \\
+        -format full_clock_expanded \\
+        -fields {slew cap input_pins nets fanout} \\
+        -no_line_splits \\
+        -group_count 10000 \\
+        -slack_max 10 \\
+        -digits 2 \\
+        -endpoint_count 10 \\
+        -unique_paths_to_endpoint \\
+        "\
+        "${logs_path}/min.rpt"
+    lappend reports "${logs_path}/min.rpt"
+
+    run_puts_logs "report_checks \\
+        -path_delay max \\
+        -format full_clock_expanded \\
+        -fields {slew cap input_pins nets fanout} \\
+        -no_line_splits \\
+        -group_count 10000 \\
+        -slack_max 10 \\
+        -digits 2 \\
+        -endpoint_count 10 \\
+        -unique_paths_to_endpoint \\
+        "\
+        "${logs_path}/max.rpt"
+    lappend reports "${logs_path}/max.rpt"
+
     run_puts_logs "report_checks \\
         -path_delay min \\
         -format full_clock_expanded \\
@@ -182,35 +184,36 @@ if {!$::env(TIMING_USER_REPORTS)} {
         "\
         "${logs_path}/soc-max.rpt"
     lappend reports "${logs_path}/soc-max.rpt"
+
+    run_puts_logs "report_checks \\
+        -path_delay min \\
+        -format full_clock_expanded \\
+        -fields {slew cap input_pins nets fanout} \\
+        -no_line_splits \\
+        -path_group clk \\
+        -group_count 1000 \\
+        -slack_max 10 \\
+        -digits 2 \\
+        -unique_paths_to_endpoint \\
+        "\
+        "${logs_path}/clk-min.rpt"
+    lappend reports "${logs_path}/clk-min.rpt"
+
+    run_puts_logs "report_checks \\
+        -path_delay max \\
+        -format full_clock_expanded \\
+        -fields {slew cap input_pins nets fanout} \\
+        -no_line_splits \\
+        -path_group clk \\
+        -group_count 1000 \\
+        -slack_max 10 \\
+        -digits 2 \\
+        -unique_paths_to_endpoint \\
+        "\
+        "${logs_path}/clk-max.rpt"
+    lappend reports "${logs_path}/clk-max.rpt"
 }
 
-run_puts_logs "report_checks \\
-    -path_delay min \\
-    -format full_clock_expanded \\
-    -fields {slew cap input_pins nets fanout} \\
-    -no_line_splits \\
-    -path_group clk \\
-    -group_count 1000 \\
-    -slack_max 10 \\
-    -digits 2 \\
-    -unique_paths_to_endpoint \\
-    "\
-    "${logs_path}/clk-min.rpt"
-lappend reports "${logs_path}/clk-min.rpt"
-
-run_puts_logs "report_checks \\
-    -path_delay max \\
-    -format full_clock_expanded \\
-    -fields {slew cap input_pins nets fanout} \\
-    -no_line_splits \\
-    -path_group clk \\
-    -group_count 1000 \\
-    -slack_max 10 \\
-    -digits 2 \\
-    -unique_paths_to_endpoint \\
-    "\
-    "${logs_path}/clk-max.rpt"
-lappend reports "${logs_path}/clk-max.rpt"
 
 run_puts_logs "report_checks \\
     -path_delay min \\
