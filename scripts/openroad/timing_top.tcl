@@ -212,52 +212,77 @@ if {!$::env(TIMING_USER_REPORTS)} {
         "\
         "${logs_path}/clk-max.rpt"
     lappend reports "${logs_path}/clk-max.rpt"
+
+    set summary_report ${logs_path}/summary.log
+    run_puts_logs "report_check_types \\
+        -max_delay \\
+        -min_delay \\
+        -max_slew \\
+        -max_capacitance \\
+        -clock_gating_setup \\
+        -clock_gating_hold \\
+        -format end \\
+        -violators" \
+        "${summary_report}"
+
+    set worst_hold "[exec bash -c "grep 'min_delay\/hold' $summary_report -A 10 | grep VIOLATED | head -n1 | awk -F '  *' '{print \$5}'"]"
+    set worst_setup "[exec bash -c "grep 'max_delay\/setup' $summary_report -A 10 | grep VIOLATED | head -n1 | awk -F '  *' '{print \$5}'"]"
+    if { $worst_hold eq "" } {
+        set worst_hold "0.00"
+    }
+    if { $worst_setup eq "" } {
+        set worst_setup "0.00"
+    }
+
+
+} else {
+
+    run_puts_logs "report_checks \\
+        -path_delay min \\
+        -through [get_cells mprj] \\
+        -format full_clock_expanded \\
+        -fields {slew cap input_pins nets fanout} \\
+        -no_line_splits \\
+        -group_count 1000 \\
+        -slack_max 40 \\
+        -digits 2 \\
+        -unique_paths_to_endpoint \\
+        "\
+        "${logs_path}/mprj-min.rpt"
+    lappend reports "${logs_path}/mprj-min.rpt"
+
+    run_puts_logs "report_checks \\
+        -path_delay max \\
+        -through [get_cells mprj] \\
+        -format full_clock_expanded \\
+        -fields {slew cap input_pins nets fanout} \\
+        -no_line_splits \\
+        -group_count 1000 \\
+        -slack_max 40 \\
+        -digits 2 \\
+        -unique_paths_to_endpoint \\
+        "\
+        "${logs_path}/mprj-max.rpt"
+    lappend reports "${logs_path}/mprj-max.rpt"
+
+    set summary_report ${logs_path}/summary.log
+    run_puts_logs "report_check_types \\
+        -max_slew \\
+        -max_capacitance \\
+        -format end \\
+        -violators" \
+        "${summary_report}"
+
+    exec python3 $::env(TIMING_ROOT)/scripts/trim_violators.py -i $summary_report -o ${summary_report}.new
+    file rename -force ${summary_report} ${summary_report}.untrimmed
+    file rename -force ${summary_report}.new $summary_report
+
+    set worst_hold "[exec python3 $::env(TIMING_ROOT)/scripts/get_worst.py -i ${logs_path}/mprj-min.rpt]"
+    set worst_setup "[exec python3 $::env(TIMING_ROOT)/scripts/get_worst.py -i ${logs_path}/mprj-max.rpt]"
 }
 
 
-run_puts_logs "report_checks \\
-    -path_delay min \\
-    -through [get_cells mprj] \\
-    -format full_clock_expanded \\
-    -fields {slew cap input_pins nets fanout} \\
-    -no_line_splits \\
-    -group_count 1000 \\
-    -slack_max 40 \\
-    -digits 2 \\
-    -unique_paths_to_endpoint \\
-    "\
-    "${logs_path}/mprj-min.rpt"
-lappend reports "${logs_path}/mprj-min.rpt"
-
-run_puts_logs "report_checks \\
-    -path_delay max \\
-    -through [get_cells mprj] \\
-    -format full_clock_expanded \\
-    -fields {slew cap input_pins nets fanout} \\
-    -no_line_splits \\
-    -group_count 1000 \\
-    -slack_max 40 \\
-    -digits 2 \\
-    -unique_paths_to_endpoint \\
-    "\
-    "${logs_path}/mprj-max.rpt"
-lappend reports "${logs_path}/mprj-max.rpt"
-
 run_puts "report_parasitic_annotation -report_unannotated > ${logs_path}/unannotated.log"
-
-
-set summary_report ${logs_path}/summary.log
-run_puts_logs "report_check_types \\
-    -max_delay \\
-    -min_delay \\
-    -max_slew \\
-    -max_capacitance \\
-    -clock_gating_setup \\
-    -clock_gating_hold \\
-    -format end \\
-    -violators" \
-    "${summary_report}"
-
 
 set max_delay_result "met"
 set min_delay_result "met"
@@ -268,8 +293,6 @@ set min_reg_to_reg_result "met"
 set max_reg_to_reg_result "met"
 
 set max_cap_value "[exec bash -c "grep 'max cap' $summary_report -A 4 | tail -n1 | awk -F '  *' '{print \$4}'"]"
-set worst_hold "[exec bash -c "grep 'min_delay\/hold' $summary_report -A 10 | grep VIOLATED | head -n1 | awk -F '  *' '{print \$5}'"]"
-set worst_setup "[exec bash -c "grep 'max_delay\/setup' $summary_report -A 10 | grep VIOLATED | head -n1 | awk -F '  *' '{print \$5}'"]"
 set max_slew_value "[exec bash -c "grep 'max slew' $summary_report -A 4 | tail -n1 | awk -F '  *' '{print \$4}'"]"
 
 set table_format "%7s| %13s |%13s |%13s |%13s |%13s |%13s"
@@ -293,11 +316,11 @@ if {![catch {exec grep -q {max slew} $summary_report} err]} {
     set max_slew_result "vio($max_slew_value)"
 }
 
-if {![catch {exec grep -q {min_delay\/hold} $summary_report} err]} {
+if { [expr $worst_setup < "0"] } {
     set min_delay_result "vio($worst_hold)"
 }
 
-if {![catch {exec grep -q {max_delay\/setup} $summary_report} err]} {
+if { [expr $worst_hold < "0"] } {
     set max_delay_result "vio($worst_setup)"
 }
 
