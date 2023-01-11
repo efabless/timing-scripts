@@ -1,8 +1,5 @@
-from pathlib import Path
 from report import Report
 import click
-import logging
-import sys
 
 
 @click.command()

@@ -106,8 +106,8 @@ set spef_mapping(padframe)                 ${SPEF_MAPPING_PREFIX}chip_io${SPEF_M
 set SPEF_MAPPING_PREFIX "$::env(CARAVEL_ROOT)/signoff/digital_pll/openlane-signoff/spef/"
 set spef_mapping(pll)                      ${SPEF_MAPPING_PREFIX}digital_pll${SPEF_MAPPING_POSTFIX}
 
-set SPEF_MAPPING_PREFIX "$::env(CARAVEL_ROOT)/signoff/simple_por/openlane-signoff/spef/"
-set spef_mapping(por)                      ${SPEF_MAPPING_PREFIX}simple_por${SPEF_MAPPING_POSTFIX}
+#set SPEF_MAPPING_PREFIX "$::env(CARAVEL_ROOT)/signoff/simple_por/openlane-signoff/spef/"
+#set spef_mapping(por)                      ${SPEF_MAPPING_PREFIX}simple_por${SPEF_MAPPING_POSTFIX}
 
 set SPEF_MAPPING_PREFIX "$::env(CARAVEL_ROOT)/signoff/xres_buf/openlane-signoff/spef/"
 set spef_mapping(rstb_level)               ${SPEF_MAPPING_PREFIX}xres_buf${SPEF_MAPPING_POSTFIX}
