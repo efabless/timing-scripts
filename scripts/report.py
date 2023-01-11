@@ -57,7 +57,8 @@ class Report:
 
                 path_line = file.readline()
                 while path_line != "":
-                    if "Startpoint" in path_line:
+                    path_values += path_line
+                    if "slack" in path_line or "Path is unconstrained" in path_line:
                         path_object = TimingPath(
                             start_point=start_point.rstrip(),
                             end_point=end_point.rstrip(),
@@ -67,19 +68,8 @@ class Report:
                         )
                         self.paths.append(path_object)
 
-                        path_line = path_line.strip()
-                        start_point = " ".join(path_line.split(" ")[1:])
-                        x = file.tell()
-                        line2 = file.readline()
-                        if "Endpoint" not in line2:
-                            start_point += line2
-                        else:
-                            file.seek(x)
-
                         path_values = ""
                         break
-                    else:
-                        path_values += path_line
                     path_line = file.readline()
             line = file.readline()
 
