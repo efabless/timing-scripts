@@ -20,7 +20,7 @@ def trim(stream, endpoints):
         if done:
             break
         if "VIOLATED" in line:
-            if "mprj" in line:
+            if "mprj/" or "mprj." in line:
                 lines.append(line)
                 violated = True
         else:
