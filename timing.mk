@@ -7,7 +7,7 @@ export ALLOW_MISSING_SPEF ?= 1
 export PDK_REF_PATH = $(PDK_ROOT)/$(PDK)/libs.ref/
 export PDK_TECH_PATH = $(PDK_ROOT)/$(PDK)/libs.tech/
 export PROJECT_ROOT ?= $(CARAVEL_ROOT)
-export TIMING_USER_REPORTS ?= 0
+export TIMING_USER_REPORTS ?= 1
 
 logs-dir = $(PROJECT_ROOT)/logs
 logs = $(logs-dir)/rcx $(logs-dir)/sdf $(logs-dir)/top $(logs-dir)/sta
