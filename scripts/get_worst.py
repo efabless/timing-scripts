@@ -13,12 +13,12 @@ import click
 def main(input):
     report = Report(input)
 
-    max_vio = 0.00
+    max_vio = 0
     for path in report.paths:
         if path.slack < 0:
             max_vio = min(max_vio, path.slack)
 
-    print(max_vio)
+    print(f'{max_vio:.2f}')
 
 if __name__ == "__main__":
     main()

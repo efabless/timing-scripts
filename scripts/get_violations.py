@@ -62,7 +62,7 @@ def main(input, append, type):
             stream.write(result)
     else:
         print(result)
-    print(round(max_vio, 2))
+    print(f'{max_vio:.2f}')
 
 
 if __name__ == "__main__":

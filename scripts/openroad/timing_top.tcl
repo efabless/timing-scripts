@@ -316,11 +316,11 @@ if {![catch {exec grep -q {max slew} $summary_report} err]} {
     set max_slew_result "vio($max_slew_value)"
 }
 
-if { [expr $worst_setup < "0"] } {
+if { [exec python3 -c "print($worst_hold<0)"] eq "True" } {
     set min_delay_result "vio($worst_hold)"
 }
 
-if { [expr $worst_hold < "0"] } {
+if { [exec python3 -c "print($worst_setup<0)"] eq "True" } {
     set max_delay_result "vio($worst_setup)"
 }
 
@@ -333,12 +333,12 @@ set min_vio "0"
 set violating_min_reports ""
 foreach report $reports {
     set vio [check_reg_to_reg_min $report]
-    if { [expr $vio != 0] } {
+    if { [exec python3 -c "print($vio<0)"] eq "True" } {
         set violating_min_reports "$violating_min_reports $report"
     }
-    if { [expr $vio < $min_vio] } { set min_vio "$vio" }
+    set min_vio [exec python3 -c "print(f'{min($vio, $min_vio):.2f}')"]
 }
-if { "$min_vio" ne "0" } {
+if { [exec python3 -c "print($min_vio<0)"] eq "True" } {
     set min_reg_to_reg_result "vio($min_vio)"
 }
 
@@ -347,12 +347,12 @@ set min_vio "0"
 set violating_max_reports ""
 foreach report $reports {
     set vio [check_reg_to_reg_max $report]
-    if { [expr $vio != 0] } {
+    if { [exec python3 -c "print($vio<0)"] eq "True" } {
         set violating_max_reports "$violating_max_reports $report"
     }
-    if { [expr $vio < $min_vio] } { set min_vio "$vio" }
+    set min_vio [exec python3 -c "print(f'{min($vio, $min_vio):.2f}')"]
 }
-if { "$min_vio" ne "0" } {
+if { [exec python3 -c "print($min_vio<0)"] eq "True" } {
     set max_reg_to_reg_result "vio($min_vio)"
 }
 
