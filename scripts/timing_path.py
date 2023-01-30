@@ -10,7 +10,7 @@ class TimingPath:
         self.path_type = path_type
         self.path = path
         self.category = ""
-        self.slack = None
+        self.slack = "unconstrained"
         self.edges = ""
         self.required_time = None
         self.arrival_time = None
@@ -70,11 +70,11 @@ class TimingPath:
         for line in self.path.splitlines():
             if "slack" in line:
                 slack = textwrap.dedent(line)
+                self.slack = re.findall(
+                    r"[+-]? *(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][+-]?\d+)?", slack
+                )[0].strip()
+                self.slack = float(self.slack)
                 break
-        self.slack = re.findall(
-            r"[+-]? *(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][+-]?\d+)?", slack
-        )[0].strip()
-        self.slack = float(self.slack)
 
     def summarize(self):
         slack_value = self.slack
