@@ -27,39 +27,32 @@ import click
 
 def main(min,max,output):
     result = ""
-    tabs = "\t\t\t\t\t\t\t\t\t\t"
-    removal_header = "removal\n\n"
-    removal_header += f"Endpoint{tabs}  Slack\n"
-    removal_header += "---------------------------------------------------\n"
-    first_viol = 1
     report = Report(min)
     if report.removal_paths:
+        removal_header = f"removal\n\n"
+        removal_header += f"{'Endpoint':50}{'Slack':>10}\n"
+        removal_header += f"{'-':-<60}\n"
+        first_viol = 1
         for path in report.removal_paths:
             if path.slack < 0:
                 if first_viol:
                     result += removal_header
                     first_viol = 0
-                result += path.end_point 
-                result += tabs
-                result += str(path.slack)
-                result += "\t(VIOLATED)\n"
+                result += f"{path.end_point:50}{path.slack:>10.2f} (VIOLATED)\n"
         result+="\n"
 
     report = Report(max)
     if report.recovery_paths:
-        recovery_header = "recovery\n\n"
-        recovery_header += f"Endpoint{tabs}  Slack\n"
-        recovery_header += "---------------------------------------------------\n"
+        recovery_header = f"recovery\n\n"
+        recovery_header += f"{'Endpoint':50}{'Slack':>10}\n"
+        recovery_header += f"{'-':-<60}\n"
         first_viol = 1
         for path in report.recovery_paths:
             if path.slack < 0:
                 if first_viol:
                     result += recovery_header
                     first_viol = 0
-                result += path.end_point 
-                result += tabs
-                result += str(path.slack)
-                result += "\t(VIOLATED)\n"
+                result += f"{path.end_point:50}{path.slack:>10.2f} (VIOLATED)\n"
         result+="\n"
 
     if result: 
