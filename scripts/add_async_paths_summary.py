@@ -28,13 +28,17 @@ import click
 def main(min,max,output):
     result = ""
     tabs = "\t\t\t\t\t\t\t\t\t\t"
+    removal_header = "removal\n\n"
+    removal_header += f"Endpoint{tabs}  Slack\n"
+    removal_header += "---------------------------------------------------\n"
+    first_viol = 1
     report = Report(min)
     if report.removal_paths:
-        result += "removal\n\n"
-        result += f"Endpoint{tabs}  Slack\n"
-        result += "---------------------------------------------------\n"
         for path in report.removal_paths:
             if path.slack < 0:
+                if first_viol:
+                    result += removal_header
+                    first_viol = 0
                 result += path.end_point 
                 result += tabs
                 result += str(path.slack)
@@ -43,11 +47,15 @@ def main(min,max,output):
 
     report = Report(max)
     if report.recovery_paths:
-        result += "recovery\n\n"
-        result += f"Endpoint{tabs}  Slack\n"
-        result += "---------------------------------------------------\n"
+        recovery_header = "recovery\n\n"
+        recovery_header += f"Endpoint{tabs}  Slack\n"
+        recovery_header += "---------------------------------------------------\n"
+        first_viol = 1
         for path in report.recovery_paths:
             if path.slack < 0:
+                if first_viol:
+                    result += recovery_header
+                    first_viol = 0
                 result += path.end_point 
                 result += tabs
                 result += str(path.slack)
