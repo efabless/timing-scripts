@@ -70,190 +70,219 @@ proc check_reg_to_reg_max {report} {
 
 set reports ""
 
-run_puts_logs "report_checks \\
-    -path_delay min \\
-    -format full_clock_expanded \\
-    -fields {slew cap input_pins nets fanout} \\
-    -no_line_splits \\
-    -group_count 10000 \\
-    -slack_max 10 \\
-    -digits 2 \\
-    -endpoint_count 10 \\
-    -unique_paths_to_endpoint \\
-    "\
-    "${logs_path}/min.rpt"
-lappend reports "${logs_path}/min.rpt"
 
-run_puts_logs "report_checks \\
-    -path_delay max \\
-    -format full_clock_expanded \\
-    -fields {slew cap input_pins nets fanout} \\
-    -no_line_splits \\
-    -group_count 10000 \\
-    -slack_max 10 \\
-    -digits 2 \\
-    -endpoint_count 10 \\
-    -unique_paths_to_endpoint \\
-    "\
-    "${logs_path}/max.rpt"
-lappend reports "${logs_path}/max.rpt"
+if {!$::env(TIMING_USER_REPORTS)} {
 
-run_puts_logs "report_checks \\
-    -path_delay min \\
-    -format full_clock_expanded \\
-    -fields {slew cap input_pins nets fanout} \\
-    -no_line_splits \\
-    -path_group hk_serial_clk \\
-    -group_count 1000 \\
-    -slack_max 10 \\
-    -digits 2 \\
-    -unique_paths_to_endpoint \\
-    "\
-    "${logs_path}/hk_serial_clk-min.rpt"
-lappend reports "${logs_path}/hk_serial_clk-min.rpt"
+    run_puts_logs "report_checks \\
+        -path_delay min \\
+        -format full_clock_expanded \\
+        -fields {slew cap input_pins nets fanout} \\
+        -no_line_splits \\
+        -group_count 10000 \\
+        -slack_max 10 \\
+        -digits 2 \\
+        -endpoint_count 10 \\
+        -unique_paths_to_endpoint \\
+        "\
+        "${logs_path}/min.rpt"
+    lappend reports "${logs_path}/min.rpt"
+
+    run_puts_logs "report_checks \\
+        -path_delay max \\
+        -format full_clock_expanded \\
+        -fields {slew cap input_pins nets fanout} \\
+        -no_line_splits \\
+        -group_count 10000 \\
+        -slack_max 10 \\
+        -digits 2 \\
+        -endpoint_count 10 \\
+        -unique_paths_to_endpoint \\
+        "\
+        "${logs_path}/max.rpt"
+    lappend reports "${logs_path}/max.rpt"
+
+    run_puts_logs "report_checks \\
+        -path_delay min \\
+        -format full_clock_expanded \\
+        -fields {slew cap input_pins nets fanout} \\
+        -no_line_splits \\
+        -path_group hk_serial_clk \\
+        -group_count 1000 \\
+        -slack_max 10 \\
+        -digits 2 \\
+        -unique_paths_to_endpoint \\
+        "\
+        "${logs_path}/hk_serial_clk-min.rpt"
+    lappend reports "${logs_path}/hk_serial_clk-min.rpt"
+
+    run_puts_logs "report_checks \\
+        -path_delay max \\
+        -format full_clock_expanded \\
+        -fields {slew cap input_pins nets fanout} \\
+        -no_line_splits \\
+        -path_group hk_serial_clk \\
+        -group_count 1000 \\
+        -slack_max 10 \\
+        -digits 2 \\
+        -unique_paths_to_endpoint \\
+        "\
+        "${logs_path}/hk_serial_clk-max.rpt"
+    lappend reports "${logs_path}/hk_serial_clk-max.rpt"
+
+    run_puts_logs "report_checks \\
+        -path_delay max \\
+        -format full_clock_expanded \\
+        -fields {slew cap input_pins nets fanout} \\
+        -no_line_splits \\
+        -path_group hkspi_clk \\
+        -group_count 1000 \\
+        -slack_max 10 \\
+        -digits 2 \\
+        -unique_paths_to_endpoint \\
+        "\
+        "${logs_path}/hkspi_clk-max.rpt"
+    lappend reports "${logs_path}/hkspi_clk-max.rpt"
+
+    run_puts_logs "report_checks \\
+        -path_delay min \\
+        -format full_clock_expanded \\
+        -fields {slew cap input_pins nets fanout} \\
+        -no_line_splits \\
+        -path_group hkspi_clk \\
+        -group_count 1000 \\
+        -slack_max 10 \\
+        -digits 2 \\
+        -unique_paths_to_endpoint \\
+        "\
+        "${logs_path}/hkspi_clk-min.rpt"
+    lappend reports "${logs_path}/hkspi_clk-min.rpt"
+
+    run_puts_logs "report_checks \\
+        -path_delay min \\
+        -through [get_cells soc] \\
+        -format full_clock_expanded \\
+        -fields {slew cap input_pins nets fanout} \\
+        -no_line_splits \\
+        -group_count 1000 \\
+        -slack_max 10 \\
+        -digits 2 \\
+        -unique_paths_to_endpoint \\
+        "\
+        "${logs_path}/soc-min.rpt"
+    lappend reports "${logs_path}/soc-min.rpt"
+
+    run_puts_logs "report_checks \\
+        -path_delay max \\
+        -through [get_cells soc] \\
+        -format full_clock_expanded \\
+        -fields {slew cap input_pins nets fanout} \\
+        -no_line_splits \\
+        -group_count 1000 \\
+        -slack_max 10 \\
+        -digits 2 \\
+        -unique_paths_to_endpoint \\
+        "\
+        "${logs_path}/soc-max.rpt"
+    lappend reports "${logs_path}/soc-max.rpt"
+
+    run_puts_logs "report_checks \\
+        -path_delay min \\
+        -format full_clock_expanded \\
+        -fields {slew cap input_pins nets fanout} \\
+        -no_line_splits \\
+        -path_group clk \\
+        -group_count 1000 \\
+        -slack_max 10 \\
+        -digits 2 \\
+        -unique_paths_to_endpoint \\
+        "\
+        "${logs_path}/clk-min.rpt"
+    lappend reports "${logs_path}/clk-min.rpt"
+
+    run_puts_logs "report_checks \\
+        -path_delay max \\
+        -format full_clock_expanded \\
+        -fields {slew cap input_pins nets fanout} \\
+        -no_line_splits \\
+        -path_group clk \\
+        -group_count 1000 \\
+        -slack_max 10 \\
+        -digits 2 \\
+        -unique_paths_to_endpoint \\
+        "\
+        "${logs_path}/clk-max.rpt"
+    lappend reports "${logs_path}/clk-max.rpt"
+
+    set summary_report ${logs_path}/summary.log
+    run_puts_logs "report_check_types \\
+        -max_delay \\
+        -min_delay \\
+        -max_slew \\
+        -max_capacitance \\
+        -clock_gating_setup \\
+        -clock_gating_hold \\
+        -format end \\
+        -violators" \
+        "${summary_report}"
+
+    set worst_hold "[exec bash -c "grep 'min_delay\/hold' $summary_report -A 10 | grep VIOLATED | head -n1 | awk -F '  *' '{print \$5}'"]"
+    set worst_setup "[exec bash -c "grep 'max_delay\/setup' $summary_report -A 10 | grep VIOLATED | head -n1 | awk -F '  *' '{print \$5}'"]"
+    if { $worst_hold eq "" } {
+        set worst_hold "0.00"
+    }
+    if { $worst_setup eq "" } {
+        set worst_setup "0.00"
+    }
 
 
-run_puts_logs "report_checks \\
-    -path_delay max \\
-    -format full_clock_expanded \\
-    -fields {slew cap input_pins nets fanout} \\
-    -no_line_splits \\
-    -path_group hk_serial_clk \\
-    -group_count 1000 \\
-    -slack_max 10 \\
-    -digits 2 \\
-    -unique_paths_to_endpoint \\
-    "\
-    "${logs_path}/hk_serial_clk-max.rpt"
-lappend reports "${logs_path}/hk_serial_clk-max.rpt"
+} else {
 
-run_puts_logs "report_checks \\
-    -path_delay max \\
-    -format full_clock_expanded \\
-    -fields {slew cap input_pins nets fanout} \\
-    -no_line_splits \\
-    -path_group hkspi_clk \\
-    -group_count 1000 \\
-    -slack_max 10 \\
-    -digits 2 \\
-    -unique_paths_to_endpoint \\
-    "\
-    "${logs_path}/hkspi_clk-max.rpt"
-lappend reports "${logs_path}/hkspi_clk-max.rpt"
+    run_puts_logs "report_checks \\
+        -path_delay min \\
+        -through [get_cells mprj] \\
+        -format full_clock_expanded \\
+        -fields {slew cap input_pins nets fanout} \\
+        -no_line_splits \\
+        -group_count 1000 \\
+        -slack_max 40 \\
+        -digits 2 \\
+        -unique_paths_to_endpoint \\
+        "\
+        "${logs_path}/mprj-min.rpt"
+    lappend reports "${logs_path}/mprj-min.rpt"
 
-run_puts_logs "report_checks \\
-    -path_delay min \\
-    -format full_clock_expanded \\
-    -fields {slew cap input_pins nets fanout} \\
-    -no_line_splits \\
-    -path_group hkspi_clk \\
-    -group_count 1000 \\
-    -slack_max 10 \\
-    -digits 2 \\
-    -unique_paths_to_endpoint \\
-    "\
-    "${logs_path}/hkspi_clk-min.rpt"
-lappend reports "${logs_path}/hkspi_clk-min.rpt"
+    run_puts_logs "report_checks \\
+        -path_delay max \\
+        -through [get_cells mprj] \\
+        -format full_clock_expanded \\
+        -fields {slew cap input_pins nets fanout} \\
+        -no_line_splits \\
+        -group_count 1000 \\
+        -slack_max 40 \\
+        -digits 2 \\
+        -unique_paths_to_endpoint \\
+        "\
+        "${logs_path}/mprj-max.rpt"
+    lappend reports "${logs_path}/mprj-max.rpt"
 
-run_puts_logs "report_checks \\
-    -path_delay min \\
-    -format full_clock_expanded \\
-    -fields {slew cap input_pins nets fanout} \\
-    -no_line_splits \\
-    -path_group clk \\
-    -group_count 1000 \\
-    -slack_max 10 \\
-    -digits 2 \\
-    -unique_paths_to_endpoint \\
-    "\
-    "${logs_path}/clk-min.rpt"
-lappend reports "${logs_path}/clk-min.rpt"
-        
-run_puts_logs "report_checks \\
-    -path_delay max \\
-    -format full_clock_expanded \\
-    -fields {slew cap input_pins nets fanout} \\
-    -no_line_splits \\
-    -path_group clk \\
-    -group_count 1000 \\
-    -slack_max 10 \\
-    -digits 2 \\
-    -unique_paths_to_endpoint \\
-    "\
-    "${logs_path}/clk-max.rpt"
-lappend reports "${logs_path}/clk-max.rpt"
+    set summary_report ${logs_path}/summary.log
+    run_puts_logs "report_check_types \\
+        -max_slew \\
+        -max_capacitance \\
+        -format end \\
+        -violators" \
+        "${summary_report}"
 
-run_puts_logs "report_checks \\
-    -path_delay min \\
-    -through [get_cells soc] \\
-    -format full_clock_expanded \\
-    -fields {slew cap input_pins nets fanout} \\
-    -no_line_splits \\
-    -group_count 1000 \\
-    -slack_max 10 \\
-    -digits 2 \\
-    -unique_paths_to_endpoint \\
-    "\
-    "${logs_path}/soc-min.rpt"
-lappend reports "${logs_path}/soc-min.rpt"
+    exec python3 $::env(TIMING_ROOT)/scripts/trim_violators.py -i $summary_report -o ${summary_report}.new
+    file rename -force ${summary_report} ${summary_report}.untrimmed
+    file rename -force ${summary_report}.new $summary_report
 
-run_puts_logs "report_checks \\
-    -path_delay max \\
-    -through [get_cells soc] \\
-    -format full_clock_expanded \\
-    -fields {slew cap input_pins nets fanout} \\
-    -no_line_splits \\
-    -group_count 1000 \\
-    -slack_max 10 \\
-    -digits 2 \\
-    -unique_paths_to_endpoint \\
-    "\
-    "${logs_path}/soc-max.rpt"
-lappend reports "${logs_path}/soc-max.rpt"
+    set worst_hold "[exec python3 $::env(TIMING_ROOT)/scripts/get_worst.py -i ${logs_path}/mprj-min.rpt]"
+    set worst_setup "[exec python3 $::env(TIMING_ROOT)/scripts/get_worst.py -i ${logs_path}/mprj-max.rpt]"
+}
 
-run_puts_logs "report_checks \\
-    -path_delay min \\
-    -through [get_cells mprj] \\
-    -format full_clock_expanded \\
-    -fields {slew cap input_pins nets fanout} \\
-    -no_line_splits \\
-    -group_count 1000 \\
-    -slack_max 40 \\
-    -digits 2 \\
-    -unique_paths_to_endpoint \\
-    "\
-    "${logs_path}/mprj-min.rpt"
-lappend reports "${logs_path}/mprj-min.rpt"
-
-run_puts_logs "report_checks \\
-    -path_delay max \\
-    -through [get_cells mprj] \\
-    -format full_clock_expanded \\
-    -fields {slew cap input_pins nets fanout} \\
-    -no_line_splits \\
-    -group_count 1000 \\
-    -slack_max 40 \\
-    -digits 2 \\
-    -unique_paths_to_endpoint \\
-    "\
-    "${logs_path}/mprj-max.rpt"
-lappend reports "${logs_path}/mprj-max.rpt"
 
 run_puts "report_parasitic_annotation -report_unannotated > ${logs_path}/unannotated.log"
-
-
-set summary_report ${logs_path}/summary.log
-run_puts_logs "report_check_types \\
-    -max_delay \\
-    -min_delay \\
-    -max_slew \\
-    -max_capacitance \\
-    -clock_gating_setup \\
-    -clock_gating_hold \\
-    -format end \\
-    -violators" \
-    "${summary_report}"
-
 
 set max_delay_result "met"
 set min_delay_result "met"
@@ -264,8 +293,6 @@ set min_reg_to_reg_result "met"
 set max_reg_to_reg_result "met"
 
 set max_cap_value "[exec bash -c "grep 'max cap' $summary_report -A 4 | tail -n1 | awk -F '  *' '{print \$4}'"]"
-set worst_hold "[exec bash -c "grep 'min_delay\/hold' $summary_report -A 10 | grep VIOLATED | head -n1 | awk -F '  *' '{print \$5}'"]"
-set worst_setup "[exec bash -c "grep 'max_delay\/setup' $summary_report -A 10 | grep VIOLATED | head -n1 | awk -F '  *' '{print \$5}'"]"
 set max_slew_value "[exec bash -c "grep 'max slew' $summary_report -A 4 | tail -n1 | awk -F '  *' '{print \$4}'"]"
 
 set table_format "%7s| %13s |%13s |%13s |%13s |%13s |%13s"
@@ -289,11 +316,11 @@ if {![catch {exec grep -q {max slew} $summary_report} err]} {
     set max_slew_result "vio($max_slew_value)"
 }
 
-if {![catch {exec grep -q {min_delay\/hold} $summary_report} err]} {
+if { [exec python3 -c "print($worst_hold<0)"] eq "True" } {
     set min_delay_result "vio($worst_hold)"
 }
 
-if {![catch {exec grep -q {max_delay\/setup} $summary_report} err]} {
+if { [exec python3 -c "print($worst_setup<0)"] eq "True" } {
     set max_delay_result "vio($worst_setup)"
 }
 
@@ -306,12 +333,12 @@ set min_vio "0"
 set violating_min_reports ""
 foreach report $reports {
     set vio [check_reg_to_reg_min $report]
-    if { [expr $vio != 0] } { 
+    if { [exec python3 -c "print($vio<0)"] eq "True" } {
         set violating_min_reports "$violating_min_reports $report"
     }
-    if { [expr $vio < $min_vio] } { set min_vio "$vio" }
+    set min_vio [exec python3 -c "print(f'{min($vio, $min_vio):.2f}')"]
 }
-if { "$min_vio" ne "0" } {
+if { [exec python3 -c "print($min_vio<0)"] eq "True" } {
     set min_reg_to_reg_result "vio($min_vio)"
 }
 
@@ -320,12 +347,12 @@ set min_vio "0"
 set violating_max_reports ""
 foreach report $reports {
     set vio [check_reg_to_reg_max $report]
-    if { [expr $vio != 0] } { 
+    if { [exec python3 -c "print($vio<0)"] eq "True" } {
         set violating_max_reports "$violating_max_reports $report"
     }
-    if { [expr $vio < $min_vio] } { set min_vio "$vio" } 
+    set min_vio [exec python3 -c "print(f'{min($vio, $min_vio):.2f}')"]
 }
-if { "$min_vio" ne "0" } {
+if { [exec python3 -c "print($min_vio<0)"] eq "True" } {
     set max_reg_to_reg_result "vio($min_vio)"
 }
 
@@ -351,7 +378,7 @@ exec cat ${summary_report}-tmp-table ${summary_report} > ${summary_report}-tmp
 exec mv ${summary_report}-tmp ${summary_report}
 exec rm ${summary_report}-tmp-table
 
-report_parasitic_annotation 
+report_parasitic_annotation
 
 if { $missing_spefs } {
     puts "there are missing spefs. check the log for ALLOW_MISSING_SPEF"

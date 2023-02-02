@@ -7,6 +7,7 @@ export ALLOW_MISSING_SPEF ?= 1
 export PDK_REF_PATH = $(PDK_ROOT)/$(PDK)/libs.ref/
 export PDK_TECH_PATH = $(PDK_ROOT)/$(PDK)/libs.tech/
 export PROJECT_ROOT ?= $(CARAVEL_ROOT)
+export TIMING_USER_REPORTS ?= 1
 
 logs-dir = $(PROJECT_ROOT)/logs
 logs = $(logs-dir)/rcx $(logs-dir)/sdf $(logs-dir)/top $(logs-dir)/sta
@@ -30,6 +31,7 @@ define docker_run_base
 		-e PDK_REF_PATH=$(PDK_ROOT)/$(PDK)/libs.ref/ \
 		-e PDK_TECH_PATH=$(PDK_ROOT)/$(PDK)/libs.tech/ \
 		-e ALLOW_MISSING_SPEF=$(ALLOW_MISSING_SPEF) \
+		-e TIMING_USER_REPORTS=$(TIMING_USER_REPORTS) \
 		-v $(PDK_ROOT):$(PDK_ROOT) \
 		-v $(CUP_ROOT):$(CUP_ROOT) \
 		-v $(MCW_ROOT):$(MCW_ROOT) \
@@ -88,12 +90,12 @@ defs += $(shell cd $(CUP_ROOT)/def && find *.def -maxdepth 0 -type f)
 endif
 
 rcx-blocks     = $(defs:%.def=rcx-%)
-rcx-blocks-nom = $(blocks:%=rcx-%-nom)
-rcx-blocks-max = $(blocks:%=rcx-%-max)
-rcx-blocks-min = $(blocks:%=rcx-%-min)
-rcx-blocks-t = $(blocks:%=rcx-%-t)
-rcx-blocks-f = $(blocks:%=rcx-%-f)
-rcx-blocks-s = $(blocks:%=rcx-%-s)
+rcx-blocks-nom = $(defs:%.def=rcx-%-nom)
+rcx-blocks-max = $(defs:%.def=rcx-%-max)
+rcx-blocks-min = $(defs:%.def=rcx-%-min)
+rcx-blocks-t = $(defs:%.def=rcx-%-t)
+rcx-blocks-f = $(defs:%.def=rcx-%-f)
+rcx-blocks-s = $(defs:%.def=rcx-%-s)
 
 sdf-blocks = $(blocks:%=sdf-%)
 sdf-blocks-t = $(blocks:%=sdf-%-t)
@@ -156,6 +158,7 @@ $(sta-blocks-s): sta-%-s:
 $(sta-blocks-f): sta-%-f:
 	$(call docker_run_sta,$*)
 
+rcx-requirements  = $(CARAVEL_ROOT)/def/%.def
 
 $(rcx-blocks): rcx-%: $(rcx-requirements)
 	$(MAKE) -f timing.mk rcx-$*-nom &
@@ -243,11 +246,6 @@ $(caravel-timing-targets): $(logs-dir)/top
 
 # some useful dev double checking
 #
-rcx-requirements  = $(CARAVEL_ROOT)/def/%.def
-rcx-requirements += $(CARAVEL_ROOT)/lef/%.lef
-rcx-requirements += $(CARAVEL_ROOT)/sdc/%.sdc
-rcx-requirements += $(CARAVEL_ROOT)/verilog/gl/%.v
-
 exceptions  = $(MCW_ROOT)/lef/caravel.lef
 exceptions += $(MCW_ROOT)/lef/caravan.lef
 # lets ignore these for now
@@ -274,22 +272,22 @@ $(exceptions):
 $(CARAVEL_ROOT)/def/%.def: $(MCW_ROOT)/def/%.def ;
 $(MCW_ROOT)/def/%.def: $(CUP_ROOT)/def/%.def ;
 $(CUP_ROOT)/def/%.def:
-	$(error error if you are here it probably means that $@.def is mising from mcw and caravel)
+	$(error error if you are here it probably means that $@ is mising from mcw and caravel)
 
 $(CARAVEL_ROOT)/lef/%.lef: $(MCW_ROOT)/lef/%.lef ;
 $(MCW_ROOT)/lef/%.lef: $(CUP_ROOT)/lef/%.lef ;
 $(CUP_ROOT)/lef/%.lef:
-	$(error error if you are here it probably means that $@.lef is mising from mcw and caravel)
+	$(error error if you are here it probably means that $@ is mising from mcw and caravel)
 
 $(CARAVEL_ROOT)/sdc/%.sdc: $(MCW_ROOT)/sdc/%.sdc ;
 $(MCW_ROOT)/sdc/%.sdc: $(CUP_ROOT)/sdc/%.sdc ;
 $(CUP_ROOT)/sdc/%.sdc:
-	$(error error if you are here it probably means that $@.sdc is mising from mcw and caravel)
+	$(error error if you are here it probably means that $@ is mising from mcw and caravel)
 
 $(CARAVEL_ROOT)/verilog/gl/%.v: $(MCW_ROOT)/verilog/gl/%.v ;
 $(MCW_ROOT)/verilog/gl/%.v: $(CUP_ROOT)/verilog/gl/%.v ;
 $(CUP_ROOT)/verilog/gl/%.v:
-	$(error error if you are here it probably means that gl/$@.v is mising from mcw and caravel)
+	$(error error if you are here it probably means that $@ is mising from mcw and caravel)
 
 check_defined = \
     $(strip $(foreach 1,$1, \
@@ -305,3 +303,9 @@ $(call check_defined, \
 	CARAVEL_ROOT \
 	TIMING_ROOT \
 )
+
+.PHONY: clean-timing-top
+clean-timing-top:
+	rm -rf $(logs-dir)/top
+	rm -rf $(PROJECT_ROOT)/signoff/caravel/openlane-signoff/timing/ -r
+
