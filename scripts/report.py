@@ -10,6 +10,8 @@ class Report:
         self.reg_reg_paths = []
         self.reg_output_paths = []
         self.unknown_paths = []
+        self.removal_paths = []
+        self.recovery_paths = []
         self.build_db()
         self.classify_paths()
 
@@ -26,6 +28,11 @@ class Report:
                 self.reg_output_paths.append(path)
             else:
                 self.unknown_paths.append(path)
+            path_async = path.async_path
+            if path_async == "removal":
+                self.removal_paths.append(path)
+            elif path_async == "recovery":
+                self.recovery_paths.append(path)
 
     def build_db(self):
         file = open(self.report_file)
