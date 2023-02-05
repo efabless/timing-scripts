@@ -5,14 +5,12 @@ import click
 @click.command()
 @click.option(
     "--min",
-    "-min",
     required=True,
     type=click.Path(exists=True, dir_okay=False),
     help="sta min report",
 )
 @click.option(
     "--max",
-    "-max",
     required=True,
     type=click.Path(exists=True, dir_okay=False),
     help="sta max report",
@@ -24,8 +22,14 @@ import click
     type=click.Path(exists=True, dir_okay=False),
     help="output summary report",
 )
+@click.option(
+    "--append", 
+    "-a", 
+    is_flag=True,
+    help="append at the end of the given summary report"
+)
 
-def main(min,max,output):
+def main(min, max, output, append):
     result = ""
     report = Report(min)
     if report.removal_paths:
@@ -55,9 +59,13 @@ def main(min,max,output):
                 result += f"{path.end_point:50}{path.slack:>10.2f} (VIOLATED)\n"
         result+="\n"
 
-    if result: 
-        with open(output, "a") as stream:
-            stream.write(result)
+    if result:
+        if append: 
+            with open(output, "a") as stream:
+                stream.write(result)
+        else:
+            with open(output,"w") as stream:
+                stream.write(result)
 
 if __name__ == "__main__":
     main()

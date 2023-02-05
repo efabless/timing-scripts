@@ -234,7 +234,7 @@ if {!$::env(TIMING_USER_REPORTS)} {
         set worst_setup "0.00"
     }
 
-    exec python3 $::env(TIMING_ROOT)/scripts/add_async_paths_summary.py -min ${logs_path}/min.rpt -max ${logs_path}/max.rpt -o $summary_report  
+    exec python3 $::env(TIMING_ROOT)/scripts/generate_async_paths_summary.py --min ${logs_path}/min.rpt --max ${logs_path}/max.rpt -o $summary_report -a
 
 } else {
 
@@ -281,7 +281,7 @@ if {!$::env(TIMING_USER_REPORTS)} {
     set worst_hold "[exec python3 $::env(TIMING_ROOT)/scripts/get_worst.py -i ${logs_path}/mprj-min.rpt]"
     set worst_setup "[exec python3 $::env(TIMING_ROOT)/scripts/get_worst.py -i ${logs_path}/mprj-max.rpt]"
 
-    exec python3 $::env(TIMING_ROOT)/scripts/add_async_paths_summary.py -min ${logs_path}/mprj-min.rpt -max ${logs_path}/mprj-max.rpt -o $summary_report  
+    exec python3 $::env(TIMING_ROOT)/scripts/generate_async_paths_summary.py --min ${logs_path}/mprj-min.rpt --max ${logs_path}/mprj-max.rpt -o $summary_report -a  
 }
 
 
