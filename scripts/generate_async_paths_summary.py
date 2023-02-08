@@ -19,53 +19,37 @@ import click
     "--output",
     "-o",
     required=True,
-    type=click.Path(exists=True, dir_okay=False),
+    type=click.Path(dir_okay=False),
     help="output summary report",
 )
 @click.option(
-    "--append", 
-    "-a", 
-    is_flag=True,
-    help="append at the end of the given summary report"
+    "--append", "-a", is_flag=True, help="append at the end of the given summary report"
 )
-
 def main(min, max, output, append):
     result = ""
+    add_header = True
     report = Report(min)
-    if report.removal_paths:
-        removal_header = f"removal\n\n"
-        removal_header += f"{'Endpoint':50}{'Slack':>10}\n"
-        removal_header += f"{'-':-<60}\n"
-        first_viol = 1
-        for path in report.removal_paths:
-            if path.slack < 0:
-                if first_viol:
-                    result += removal_header
-                    first_viol = 0
-                result += f"{path.end_point:50}{path.slack:>10.2f} (VIOLATED)\n"
-        result+="\n"
-
+    removal_header = f"\nremoval\n\n" f"{'Endpoint':50}{'Slack':>10}\n" f"{'-':-<60}\n"
+    for path in report.removal_paths:
+        if path.slack < 0:
+            result += removal_header if add_header else ""
+            add_header = False
+            result += f"{path.end_point:50}{path.slack:>10.2f} (VIOLATED)\n"
+    
+    add_header = True
     report = Report(max)
-    if report.recovery_paths:
-        recovery_header = f"recovery\n\n"
-        recovery_header += f"{'Endpoint':50}{'Slack':>10}\n"
-        recovery_header += f"{'-':-<60}\n"
-        first_viol = 1
-        for path in report.recovery_paths:
-            if path.slack < 0:
-                if first_viol:
-                    result += recovery_header
-                    first_viol = 0
-                result += f"{path.end_point:50}{path.slack:>10.2f} (VIOLATED)\n"
-        result+="\n"
+    recovery_header = f"\nrecovery\n\n" f"{'Endpoint':50}{'Slack':>10}\n" f"{'-':-<60}\n"
+    for path in report.recovery_paths:
+        if path.slack < 0:
+            result += recovery_header if add_header else ""
+            add_header = False
+            result += f"{path.end_point:50}{path.slack:>10.2f} (VIOLATED)\n"
 
     if result:
-        if append: 
-            with open(output, "a") as stream:
-                stream.write(result)
-        else:
-            with open(output,"w") as stream:
-                stream.write(result)
+        write_mode = "a" if append else "w"
+        with open(output, write_mode) as stream:
+            stream.write(result)
+
 
 if __name__ == "__main__":
     main()
