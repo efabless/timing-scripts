@@ -87,29 +87,8 @@ class TimingPath:
         return f"{start_point},{end_point},{group},{type},{slack_value:.4f}\n"
 
     def find_category(self):
-        start = ""
-        end = ""
-        if "input" in self.start_point:
-            start = "input"
-        elif "flip-flop" in self.start_point:
-            start = "reg"
-        elif "latch" in self.start_point:
-            start = "reg"
-        else:
-            start = "unknown"
-
-        if "output" in self.end_point:
-            end = "output"
-        elif "flip-flop" in self.end_point:
-            end = "reg"
-        elif "latch" in self.end_point:
-            end = "reg"
-        elif "removal" in self.end_point:
-            end = "reg"
-        elif "recovery" in self.end_point:
-            end = "reg"
-        else:
-            end = "unknown"
+        start = "input" if "input" in self.start_point else "reg"
+        end = "input" if "input" in self.end_point else "reg"
 
         self.category = f"{start}-{end}"
 
