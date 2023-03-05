@@ -1,5 +1,5 @@
 source $::env(TIMING_ROOT)/env/common.tcl
-source $::env(TIMING_ROOT)/env/caravel_spef_mapping-mpw7.tcl
+source $::env(TIMING_ROOT)/env/caravel_spef_mapping-mpw9.tcl
 
 if { [file exists $::env(CUP_ROOT)/env/spef-mapping.tcl] } {
     source $::env(CUP_ROOT)/env/spef-mapping.tcl
@@ -29,7 +29,20 @@ if { $::env(SPEF_OVERWRITE) ne "" } {
 
 set missing_spefs 0
 set missing_spefs_list ""
-run_puts "read_spef $spef"
+
+if { [file exists $spef] } {
+    run_puts "read_spef $spef"
+} else {
+    set missing_spefs 1
+    set missing_spefs_list "$missing_spefs_list $spef"
+    puts "$spef not found"
+    if { $::env(ALLOW_MISSING_SPEF) } {
+        puts "WARNING ALLOW_MISSING_SPEF set to 1. continuing"
+    } else {
+        exit 1
+    }
+}
+
 foreach key [array names spef_mapping] {
     set spef_file $spef_mapping($key)
     if { [file exists $spef_file] } {
@@ -239,7 +252,7 @@ if {!$::env(TIMING_USER_REPORTS)} {
 
     run_puts_logs "report_checks \\
         -path_delay min \\
-        -through [get_cells mprj] \\
+        -through [get_cells chip_core/mprj] \\
         -format full_clock_expanded \\
         -fields {slew cap input_pins nets fanout} \\
         -no_line_splits \\
@@ -253,7 +266,7 @@ if {!$::env(TIMING_USER_REPORTS)} {
 
     run_puts_logs "report_checks \\
         -path_delay max \\
-        -through [get_cells mprj] \\
+        -through [get_cells chip_core/mprj] \\
         -format full_clock_expanded \\
         -fields {slew cap input_pins nets fanout} \\
         -no_line_splits \\
