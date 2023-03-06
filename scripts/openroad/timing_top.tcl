@@ -34,7 +34,7 @@ if { [file exists $spef] } {
     run_puts "read_spef $spef"
 } else {
     set missing_spefs 1
-    set missing_spefs_list "$missing_spefs_list $spef"
+    set missing_spefs_list "$missing_spefs_list $::env(BLOCK)"
     puts "$spef not found"
     if { $::env(ALLOW_MISSING_SPEF) } {
         puts "WARNING ALLOW_MISSING_SPEF set to 1. continuing"
@@ -198,6 +198,34 @@ if {!$::env(TIMING_USER_REPORTS)} {
         "${logs_path}/clk-max.rpt"
     lappend reports "${logs_path}/clk-max.rpt"
 
+    run_puts_logs "report_checks \\
+        -path_delay min \\
+        -through [get_cells chip_core/mprj] \\
+        -format full_clock_expanded \\
+        -fields {slew cap input_pins nets fanout} \\
+        -no_line_splits \\
+        -group_count 1000 \\
+        -slack_max 40 \\
+        -digits 2 \\
+        -unique_paths_to_endpoint \\
+        "\
+        "${logs_path}/mprj-min.rpt"
+    lappend reports "${logs_path}/mprj-min.rpt"
+
+    run_puts_logs "report_checks \\
+        -path_delay max \\
+        -through [get_cells chip_core/mprj] \\
+        -format full_clock_expanded \\
+        -fields {slew cap input_pins nets fanout} \\
+        -no_line_splits \\
+        -group_count 1000 \\
+        -slack_max 40 \\
+        -digits 2 \\
+        -unique_paths_to_endpoint \\
+        "\
+        "${logs_path}/mprj-max.rpt"
+    lappend reports "${logs_path}/mprj-max.rpt"
+
     set summary_report ${logs_path}/summary.log
     run_puts_logs "report_check_types \\
         -max_delay \\
@@ -210,15 +238,8 @@ if {!$::env(TIMING_USER_REPORTS)} {
         -violators" \
         "${summary_report}"
 
-    set worst_hold "[exec bash -c "grep 'min_delay\/hold' $summary_report -A 10 | grep VIOLATED | head -n1 | awk -F '  *' '{print \$5}'"]"
-    set worst_setup "[exec bash -c "grep 'max_delay\/setup' $summary_report -A 10 | grep VIOLATED | head -n1 | awk -F '  *' '{print \$5}'"]"
-    if { $worst_hold eq "" } {
-        set worst_hold "0.00"
-    }
-    if { $worst_setup eq "" } {
-        set worst_setup "0.00"
-    }
-
+    set worst_hold "[exec python3 $::env(TIMING_ROOT)/scripts/get_worst.py -i ${logs_path}/min.rpt]"
+    set worst_setup "[exec python3 $::env(TIMING_ROOT)/scripts/get_worst.py -i ${logs_path}/max.rpt]"
 
 } else {
 
