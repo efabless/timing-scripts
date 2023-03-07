@@ -14,7 +14,9 @@ class TimingPath:
         self.edges = ""
         self.required_time = None
         self.arrival_time = None
+        self.async_paths = ""
         self.find_category()
+        self.find_async_path()
         self.simplify_points()
         self.find_slack()
         self.find_required()
@@ -85,23 +87,18 @@ class TimingPath:
         return f"{start_point},{end_point},{group},{type},{slack_value:.4f}\n"
 
     def find_category(self):
-        start = ""
-        end = ""
-        if "input" in self.start_point:
-            start = "input"
-        elif "edge-triggered" in self.start_point:
-            start = "reg"
-        else:
-            start = "unknown"
-
-        if "output" in self.end_point:
-            end = "output"
-        elif "edge-triggered" in self.end_point:
-            end = "reg"
-        else:
-            end = "unknown"
+        start = "input" if "input" in self.start_point else "reg"
+        end = "input" if "input" in self.end_point else "reg"
 
         self.category = f"{start}-{end}"
+
+    def find_async_path(self):
+        if "removal" in self.end_point:
+            self.async_path = "removal"
+        elif "recovery" in self.end_point:
+            self.async_path = "recovery"
+        else:
+            self.async_path = ""
 
     def __eq__(self, other):
         return self.id == other.id
