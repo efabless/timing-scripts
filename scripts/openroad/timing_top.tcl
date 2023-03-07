@@ -230,12 +230,8 @@ if {!$::env(TIMING_USER_REPORTS)} {
 
     set summary_report ${logs_path}/summary.log
     run_puts_logs "report_check_types \\
-        -max_delay \\
-        -min_delay \\
         -max_slew \\
         -max_capacitance \\
-        -clock_gating_setup \\
-        -clock_gating_hold \\
         -format end \\
         -violators" \
         "${summary_report}"
