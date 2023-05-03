@@ -1,5 +1,5 @@
 source $::env(TIMING_ROOT)/env/common.tcl
-source $::env(TIMING_ROOT)/env/caravel_spef_mapping-mpw7.tcl
+source $::env(TIMING_ROOT)/env/caravel_spef_mapping-mpw9.tcl
 
 if { [file exists $::env(CUP_ROOT)/env/spef-mapping.tcl] } {
     source $::env(CUP_ROOT)/env/spef-mapping.tcl
@@ -29,7 +29,20 @@ if { $::env(SPEF_OVERWRITE) ne "" } {
 
 set missing_spefs 0
 set missing_spefs_list ""
-run_puts "read_spef $spef"
+
+if { [file exists $spef] } {
+    run_puts "read_spef $spef"
+} else {
+    set missing_spefs 1
+    set missing_spefs_list "$missing_spefs_list $::env(BLOCK)"
+    puts "$spef not found"
+    if { $::env(ALLOW_MISSING_SPEF) } {
+        puts "WARNING ALLOW_MISSING_SPEF set to 1. continuing"
+    } else {
+        exit 1
+    }
+}
+
 foreach key [array names spef_mapping] {
     set spef_file $spef_mapping($key)
     if { [file exists $spef_file] } {
@@ -161,34 +174,6 @@ if {!$::env(TIMING_USER_REPORTS)} {
 
     run_puts_logs "report_checks \\
         -path_delay min \\
-        -through [get_cells soc] \\
-        -format full_clock_expanded \\
-        -fields {slew cap input_pins nets fanout} \\
-        -no_line_splits \\
-        -group_count 1000 \\
-        -slack_max 10 \\
-        -digits 2 \\
-        -unique_paths_to_endpoint \\
-        "\
-        "${logs_path}/soc-min.rpt"
-    lappend reports "${logs_path}/soc-min.rpt"
-
-    run_puts_logs "report_checks \\
-        -path_delay max \\
-        -through [get_cells soc] \\
-        -format full_clock_expanded \\
-        -fields {slew cap input_pins nets fanout} \\
-        -no_line_splits \\
-        -group_count 1000 \\
-        -slack_max 10 \\
-        -digits 2 \\
-        -unique_paths_to_endpoint \\
-        "\
-        "${logs_path}/soc-max.rpt"
-    lappend reports "${logs_path}/soc-max.rpt"
-
-    run_puts_logs "report_checks \\
-        -path_delay min \\
         -format full_clock_expanded \\
         -fields {slew cap input_pins nets fanout} \\
         -no_line_splits \\
@@ -215,37 +200,9 @@ if {!$::env(TIMING_USER_REPORTS)} {
         "${logs_path}/clk-max.rpt"
     lappend reports "${logs_path}/clk-max.rpt"
 
-    set summary_report ${logs_path}/summary.log
-    run_puts_logs "report_check_types \\
-        -max_delay \\
-        -min_delay \\
-        -max_slew \\
-        -max_capacitance \\
-        -clock_gating_setup \\
-        -clock_gating_hold \\
-        -format end \\
-        -violators" \
-        "${summary_report}"
-
-    set worst_hold "[exec bash -c "grep 'min_delay\/hold' $summary_report -A 10 | grep VIOLATED | head -n1 | awk -F '  *' '{print \$5}'"]"
-    set worst_setup "[exec bash -c "grep 'max_delay\/setup' $summary_report -A 10 | grep VIOLATED | head -n1 | awk -F '  *' '{print \$5}'"]"
-    if { $worst_hold eq "" } {
-        set worst_hold "0.00"
-    }
-    if { $worst_setup eq "" } {
-        set worst_setup "0.00"
-    }
-
-    exec python3 $::env(TIMING_ROOT)/scripts/generate_async_paths_summary.py \
-        --min ${logs_path}/min.rpt \
-        --max ${logs_path}/max.rpt \
-        -o $summary_report -a
-
-} else {
-
     run_puts_logs "report_checks \\
         -path_delay min \\
-        -through [get_cells mprj] \\
+        -through [get_cells chip_core/mprj] \\
         -format full_clock_expanded \\
         -fields {slew cap input_pins nets fanout} \\
         -no_line_splits \\
@@ -259,7 +216,53 @@ if {!$::env(TIMING_USER_REPORTS)} {
 
     run_puts_logs "report_checks \\
         -path_delay max \\
-        -through [get_cells mprj] \\
+        -through [get_cells chip_core/mprj] \\
+        -format full_clock_expanded \\
+        -fields {slew cap input_pins nets fanout} \\
+        -no_line_splits \\
+        -group_count 1000 \\
+        -slack_max 40 \\
+        -digits 2 \\
+        -unique_paths_to_endpoint \\
+        "\
+        "${logs_path}/mprj-max.rpt"
+    lappend reports "${logs_path}/mprj-max.rpt"
+
+    set summary_report ${logs_path}/summary.log
+    run_puts_logs "report_check_types \\
+        -max_slew \\
+        -max_capacitance \\
+        -format end \\
+        -violators" \
+        "${summary_report}"
+
+    set worst_hold "[exec python3 $::env(TIMING_ROOT)/scripts/get_worst.py -i ${logs_path}/min.rpt]"
+    set worst_setup "[exec python3 $::env(TIMING_ROOT)/scripts/get_worst.py -i ${logs_path}/max.rpt]"
+
+    exec python3 $::env(TIMING_ROOT)/scripts/generate_async_paths_summary.py \
+        --min ${logs_path}/min.rpt \
+        --max ${logs_path}/max.rpt \
+        -o $summary_report -a
+
+} else {
+
+    run_puts_logs "report_checks \\
+        -path_delay min \\
+        -through [get_cells chip_core/mprj] \\
+        -format full_clock_expanded \\
+        -fields {slew cap input_pins nets fanout} \\
+        -no_line_splits \\
+        -group_count 1000 \\
+        -slack_max 40 \\
+        -digits 2 \\
+        -unique_paths_to_endpoint \\
+        "\
+        "${logs_path}/mprj-min.rpt"
+    lappend reports "${logs_path}/mprj-min.rpt"
+
+    run_puts_logs "report_checks \\
+        -path_delay max \\
+        -through [get_cells chip_core/mprj] \\
         -format full_clock_expanded \\
         -fields {slew cap input_pins nets fanout} \\
         -no_line_splits \\
