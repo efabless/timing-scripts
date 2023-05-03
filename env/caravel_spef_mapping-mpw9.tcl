@@ -90,6 +90,7 @@ set spef_mapping(chip_core/\spare_logic[0]) "$::env(CARAVEL_ROOT)/signoff/spare_
 set spef_mapping(chip_core/\spare_logic[1]) "$::env(CARAVEL_ROOT)/signoff/spare_logic_block/openlane-signoff/spef/spare_logic_block.$::env(RCX_CORNER).spef"
 set spef_mapping(chip_core/\spare_logic[2]) "$::env(CARAVEL_ROOT)/signoff/spare_logic_block/openlane-signoff/spef/spare_logic_block.$::env(RCX_CORNER).spef"
 set spef_mapping(chip_core/\spare_logic[3]) "$::env(CARAVEL_ROOT)/signoff/spare_logic_block/openlane-signoff/spef/spare_logic_block.$::env(RCX_CORNER).spef"
+set spef_mapping(chip_core/user_id_value) "$::env(CARAVEL_ROOT)/signoff/user_id_programming/openlane-signoff/spef/user_id_programming.$::env(RCX_CORNER).spef"
 set spef_mapping(chip_core) "$::env(CARAVEL_ROOT)/signoff/caravel_core/openlane-signoff/spef/caravel_core.$::env(RCX_CORNER).spef"
 set spef_mapping(padframe/\constant_value_inst[0]) "$::env(CARAVEL_ROOT)/signoff/constant_block/openlane-signoff/spef/constant_block.$::env(RCX_CORNER).spef"
 set spef_mapping(padframe/\constant_value_inst[1]) "$::env(CARAVEL_ROOT)/signoff/constant_block/openlane-signoff/spef/constant_block.$::env(RCX_CORNER).spef"
