@@ -57,9 +57,9 @@ set caravel_root "[file normalize $::env(CARAVEL_ROOT)]"
 set mcw_root "[file normalize $::env(MCW_ROOT)]"
 set cup_root "[file normalize $::env(CUP_ROOT)]"
 set verilogs [concat \
-[glob $mcw_root/verilog/gl/*] \
-[glob $caravel_root/verilog/gl/*] \
-[glob $cup_root/verilog/gl/*] \
+[glob $mcw_root/verilog/gl/*.v] \
+[glob $caravel_root/verilog/gl/*.v] \
+[glob $cup_root/verilog/gl/*.v] \
 ]
 
 set verilog_exceptions [list \
