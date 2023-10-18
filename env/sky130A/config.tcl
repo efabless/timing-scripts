@@ -32,3 +32,4 @@ set pdk(lefs) [list \
 set pdk(rcx_rules_file) $::env(PDK_TECH_PATH)/openlane/rules.openrcx.$::env(PDK).$::env(RCX_CORNER).calibre
 
 source $::env(TIMING_ROOT)/env/$::env(PDK)/$::env(LIB_CORNER).tcl
+source $::env(TIMING_ROOT)/env/caravel_spef_mapping-mpw9.tcl
