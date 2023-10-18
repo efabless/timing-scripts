@@ -1,5 +1,4 @@
 source $::env(TIMING_ROOT)/env/common.tcl
-source $::env(TIMING_ROOT)/env/caravel_spef_mapping-gfmpw.tcl
 
 if { [file exists $::env(CUP_ROOT)/env/spef-mapping.tcl] } {
     source $::env(CUP_ROOT)/env/spef-mapping.tcl
