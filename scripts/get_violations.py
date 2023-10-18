@@ -29,7 +29,7 @@ def main(input, append, type):
     for category, paths in paths_dict.items():
         filtered_paths = filter_paths(paths, type)
         violating_paths = filter_violating(filtered_paths)
-        if violating_paths != []:
+        if violating_paths != [] and category == "reg-reg":
             max_vio = min(min(violating_paths, key=lambda x: x.slack).slack, max_vio)
         result += f"{category}: {len(violating_paths)}/{len(filtered_paths)}\n"
 

@@ -88,7 +88,7 @@ class TimingPath:
 
     def find_category(self):
         start = "input" if "input" in self.start_point else "reg"
-        end = "input" if "input" in self.end_point else "reg"
+        end = "output" if "output" in self.end_point else "reg"
 
         self.category = f"{start}-{end}"
 
