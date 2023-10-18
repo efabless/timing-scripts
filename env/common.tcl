@@ -27,6 +27,12 @@ set extra_lefs [concat \
 [glob $::env(CUP_ROOT)/lef/*.lef] \
 ]
 
+# analog macros might exist in this directory. for example: simple_por in gf180mcu caravel
+set extra_macros_lefs [glob -nocomplain $::env(CARAVEL_ROOT)/macros/*/lef/*.lef]
+if {[llength $extra_macros_lefs] != 0} {
+    lappend extra_lefs $extra_macros_lefs
+}
+
 # search order:
 # cup -> mcw -> caravel
 
