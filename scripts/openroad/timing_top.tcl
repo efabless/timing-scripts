@@ -230,19 +230,12 @@ if {!$::env(TIMING_USER_REPORTS)} {
 
     set summary_report ${logs_path}/summary.log
     run_puts_logs "report_check_types \\
-        -max_slew \\
-        -max_capacitance \\
         -format end \\
         -violators" \
         "${summary_report}"
 
     set worst_hold "[exec python3 $::env(TIMING_ROOT)/scripts/get_worst.py -i ${logs_path}/min.rpt]"
     set worst_setup "[exec python3 $::env(TIMING_ROOT)/scripts/get_worst.py -i ${logs_path}/max.rpt]"
-
-    exec python3 $::env(TIMING_ROOT)/scripts/generate_async_paths_summary.py \
-        --min ${logs_path}/min.rpt \
-        --max ${logs_path}/max.rpt \
-        -o $summary_report -a
 
 } else {
 
@@ -278,6 +271,8 @@ if {!$::env(TIMING_USER_REPORTS)} {
     run_puts_logs "report_check_types \\
         -max_slew \\
         -max_capacitance \\
+        -recovery \\
+        -removal \\
         -format end \\
         -violators" \
         "${summary_report}"
@@ -289,10 +284,6 @@ if {!$::env(TIMING_USER_REPORTS)} {
     set worst_hold "[exec python3 $::env(TIMING_ROOT)/scripts/get_worst.py -i ${logs_path}/mprj-min.rpt]"
     set worst_setup "[exec python3 $::env(TIMING_ROOT)/scripts/get_worst.py -i ${logs_path}/mprj-max.rpt]"
 
-    exec python3 $::env(TIMING_ROOT)/scripts/generate_async_paths_summary.py \
-        --min ${logs_path}/mprj-min.rpt \
-        --max ${logs_path}/mprj-max.rpt \
-        -o $summary_report -a
 }
 
 
@@ -347,10 +338,10 @@ set min_vio "0"
 set violating_min_reports ""
 foreach report $reports {
     set vio [check_reg_to_reg_min $report]
-    if { [exec python3 -c "print($vio<0)"] eq "True" } {
+    if { $vio } {
         set violating_min_reports "$violating_min_reports $report"
+        set min_vio [exec python3 -c "print(f'{min($vio, $min_vio):.2f}')"]
     }
-    set min_vio [exec python3 -c "print(f'{min($vio, $min_vio):.2f}')"]
 }
 if { [exec python3 -c "print($min_vio<0)"] eq "True" } {
     set min_reg_to_reg_result "vio($min_vio)"
@@ -361,10 +352,10 @@ set min_vio "0"
 set violating_max_reports ""
 foreach report $reports {
     set vio [check_reg_to_reg_max $report]
-    if { [exec python3 -c "print($vio<0)"] eq "True" } {
+    if { $vio } {
         set violating_max_reports "$violating_max_reports $report"
+        set min_vio [exec python3 -c "print(f'{min($vio, $min_vio):.2f}')"]
     }
-    set min_vio [exec python3 -c "print(f'{min($vio, $min_vio):.2f}')"]
 }
 if { [exec python3 -c "print($min_vio<0)"] eq "True" } {
     set max_reg_to_reg_result "vio($min_vio)"
