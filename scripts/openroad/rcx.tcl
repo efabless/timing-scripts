@@ -6,7 +6,6 @@ foreach liberty $pdk(libs) {
 foreach lef $pdk(lefs) {
   run_puts "read_lef $lef"
 }
-run_puts "read_lef $sram_lef"
 
 foreach lef_file $extra_lefs {		
   run_puts "read_lef $lef_file"
