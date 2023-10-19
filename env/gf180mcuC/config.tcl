@@ -12,14 +12,14 @@ set sram_lefs [list \
     $::env(PDK_REF_PATH)/gf180mcu_fd_ip_sram/lef/gf180mcu_fd_ip_sram__sram512x8m8wm1.lef \
     $::env(PDK_REF_PATH)/gf180mcu_fd_ip_sram/lef/gf180mcu_fd_ip_sram__sram64x8m8wm1.lef
 ]
-
-
 set pdk(lefs) [list \
     $tech_lef \
     $cells_lef \
-    $io_lef \
-    $sram_lefs
+    $io_lef 
 ]
+foreach lef $sram_lefs {
+    lappend pdk(lefs) $lef
+}
 
 set pdk(rcx_rules_file) $::env(PDK_TECH_PATH)/openlane/rules.openrcx.$::env(PDK).$::env(RCX_CORNER)
 
